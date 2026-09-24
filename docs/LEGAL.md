@@ -180,8 +180,9 @@ and link them from the Terms of Use and footer.
 5. **Governing law.** The Terms name Northern Ireland; confirm.
 6. **Domain email.** Replace the Gmail address with a domain address when available: change
    `contact.email` and the Google entry in `processing.ts` if the provider changes.
-7. **GitHub private vulnerability reporting.** Enable it in the repository settings; the Security page
-   depends on it.
+7. **GitHub private vulnerability reporting.** Enabled (confirmed through GitHub's API on
+   24 September 2026). The Security page links straight to the private report form; keep the
+   setting on.
 
 ## For professional legal review
 

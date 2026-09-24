@@ -14,11 +14,11 @@ described on the site is separate, is not hosted here, and is not reachable from
 **Please report vulnerabilities privately. Do not open a public issue, discussion or pull request
 for a security problem.**
 
-Use GitHub's private vulnerability reporting:
+Use GitHub's private vulnerability reporting (you need to be signed in to GitHub):
 
-1. Go to the repository's **Security** tab.
-2. Choose **Report a vulnerability**.
-3. Describe the issue, how to reproduce it and its potential impact.
+1. Open <https://github.com/TheApolloNTWK/ApolloNetwork/security/advisories/new>, or go to the
+   repository's **Security** tab and choose **Report a vulnerability**.
+2. Describe the issue, how to reproduce it and its potential impact.
 
 You can expect an acknowledgement within a few working days. Once the issue is understood, you
 will be told what will be done and roughly when. Credit is given on request once a fix is

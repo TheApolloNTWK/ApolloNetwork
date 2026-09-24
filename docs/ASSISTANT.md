@@ -15,7 +15,14 @@ links into the site and to the contact page.
 - Keyboard accessible: focus moves into the panel on open; `Escape` closes it and returns focus.
   Hidden completely when JavaScript is unavailable.
 
-Edit `src/data/assistant.ts` to change topics and answers. Keep answers consistent with the site.
+Edit `src/data/assistant.ts` to change topics and answers. Keep answers consistent with the site,
+and describe the APOLLO Network Application as a project within APOLLO Network, not the business
+itself. Enquiry links can pre-select a contact topic (`contact/?topic=web`).
+
+The Privacy, Cookie and Terms pages say that nothing leaves the visitor's browser. That statement
+is enforced: `connect-src 'none'` in the CSP, and a build test ("no network calls from client
+code") that fails if client JavaScript gains a network API. Connecting a model means changing both
+deliberately, together with the legal pages — never one without the others.
 
 ## Before connecting a real AI model
 
