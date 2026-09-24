@@ -1,0 +1,62 @@
+---
+/**
+ * "Show email address" control. The address is never in the HTML as plain
+ * text; see src/lib/email.ts. Without JavaScript, visitors are pointed to
+ * the contact page instead.
+ */
+import { obfuscatedEmail } from '../lib/email';
+import { link } from '../lib/url';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'Show email address' } = Astro.props;
+const parts = obfuscatedEmail();
+---
+
+{parts ? (
+  <span class="email-reveal" data-email-reveal data-u={parts.u} data-d={parts.d}>
+    <button type="button" class="email-reveal__button" data-email-button hidden>
+      {label}
+    </button>
+    <span class="email-reveal__address" data-email-slot hidden />
+    <noscript>
+      <a href={link('contact/')}>see the contact page</a>
+    </noscript>
+  </span>
+) : (
+  <a href={link('contact/')}>the contact page</a>
+)}
+
+<script>
+  import { initEmailReveals } from '../scripts/email';
+  initEmailReveals();
+</script>
+
+<style>
+  .email-reveal__button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.95rem;
+    border: 1px solid var(--c-line-signal);
+    border-radius: var(--radius-sm);
+    background: rgb(27 77 255 / 0.14);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--c-text);
+    transition: box-shadow var(--dur-base) var(--ease-standard);
+  }
+
+  .email-reveal__button:hover {
+    box-shadow: var(--glow-sm);
+  }
+
+  .email-reveal__address :global(a) {
+    color: var(--c-cyan);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+</style>

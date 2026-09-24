@@ -1,0 +1,112 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import EmailReveal from '../../components/EmailReveal.astro';
+import { site } from '../../config/site';
+
+const toc = [
+  { id: 'report', title: 'How to report' },
+  { id: 'include', title: 'What to include' },
+  { id: 'please', title: 'Please do not' },
+  { id: 'scope', title: 'Scope' },
+  { id: 'expect', title: 'What to expect' },
+  { id: 'principles', title: 'How the site is protected' },
+];
+
+const policyUrl = `${site.repository}/security/policy`;
+---
+
+<LegalLayout
+  doc="security"
+  description="How to report a security issue in the APOLLO Network website responsibly, what is in scope, and the principles the site is built on."
+  lead="Security reports are welcome. If you think you have found a vulnerability in this website, please tell us privately so it can be fixed before anyone else finds it."
+  toc={toc}
+  summary={[
+    'Report privately through GitHub’s private vulnerability reporting — never in a public issue.',
+    'Give us reasonable time to fix the problem before discussing it publicly.',
+    'Only this public website and its repository are in scope.',
+  ]}
+>
+  <section id="report" aria-labelledby="report-title">
+    <h2 id="report-title">How to report</h2>
+    <p>
+      Use GitHub’s private vulnerability reporting for this website’s repository: open the{' '}
+      <a href={policyUrl} rel="noopener noreferrer external">
+        security policy on GitHub<span class="visually-hidden"> (opens external site)</span>
+      </a>{' '}
+      and choose <strong>Report a vulnerability</strong>. Only APOLLO Network can see what you send.
+    </p>
+    <p>
+      If you cannot use GitHub, email <EmailReveal label="Show security contact" /> with a short
+      note asking for a private channel — without technical details in that first message.
+    </p>
+    <p>Please do not report security problems in public GitHub issues or enquiries.</p>
+  </section>
+
+  <section id="include" aria-labelledby="include-title">
+    <h2 id="include-title">What to include</h2>
+    <ul>
+      <li>the page or file affected, and what the problem is;</li>
+      <li>steps to reproduce it, and what an attacker could achieve;</li>
+      <li>any suggestions for a fix, if you have them.</li>
+    </ul>
+    <p>Never include real passwords, keys or other people’s personal data in a report.</p>
+  </section>
+
+  <section id="please" aria-labelledby="please-title">
+    <h2 id="please-title">Please do not</h2>
+    <ul>
+      <li>
+        publish or share details before the issue has been fixed, or before we have agreed a date;
+      </li>
+      <li>
+        access, change or delete data that is not yours — stop and report if you encounter any;
+      </li>
+      <li>run denial-of-service tests, flood the site, or send spam through contact channels;</li>
+      <li>use social engineering, phishing or physical attacks;</li>
+      <li>test anything outside the scope below.</li>
+    </ul>
+    <p>
+      If you act in good faith and follow this page, your report will be treated as help — not as
+      hostility.
+    </p>
+  </section>
+
+  <section id="scope" aria-labelledby="scope-title">
+    <h2 id="scope-title">Scope</h2>
+    <p>
+      In scope: this public website and its public source repository. Please do not attempt to
+      access any other system. Issues in third-party services we use, such as GitHub or Google,
+      should be reported to those companies directly.
+    </p>
+  </section>
+
+  <section id="expect" aria-labelledby="expect-title">
+    <h2 id="expect-title">What to expect</h2>
+    <p>
+      We will acknowledge your report, keep you informed while we look into it, and tell you when it
+      is fixed. With your permission, we are happy to credit you once the fix is public. There is no
+      paid bug bounty at present.
+    </p>
+  </section>
+
+  <section id="principles" aria-labelledby="principles-title">
+    <h2 id="principles-title">How the site is protected</h2>
+    <ul>
+      <li>
+        <strong>Small attack surface.</strong> A static website: no server-side code, database,
+        accounts or admin area.
+      </li>
+      <li>
+        <strong>Strict browser policy.</strong> A restrictive content security policy, and no
+        third-party scripts.
+      </li>
+      <li>
+        <strong>Careful dependencies.</strong> Few, pinned, regularly audited and updated.
+      </li>
+      <li>
+        <strong>Automated checks.</strong> Every build is tested for unsafe code patterns and
+        accidentally published secrets before it can be deployed.
+      </li>
+    </ul>
+  </section>
+</LegalLayout>

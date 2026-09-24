@@ -1,0 +1,139 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import { link } from '../lib/url';
+
+interface Props {
+  /** Site-relative path ('work/') or an absolute https:// URL when `external`. */
+  href: string;
+  variant?: 'primary' | 'ghost' | 'text';
+  icon?: IconName | null;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, variant = 'ghost', icon = 'arrow', external = false, class: className } = Astro.props;
+
+// External links are restricted to https to avoid javascript:/data: URLs ever
+// reaching an href, even through a content mistake.
+if (external && !href.startsWith('https://')) {
+  throw new Error(`External link must use https: ${href}`);
+}
+
+const resolved = external ? href : link(href);
+---
+
+<a
+  href={resolved}
+  class:list={['btn', `btn--${variant}`, className]}
+  rel={external ? 'noopener noreferrer external' : undefined}
+>
+  <span class="btn__label">
+    <slot />
+  </span>
+  {icon && (
+    <span class="btn__icon">
+      <Icon name={external && icon === 'arrow' ? 'external' : icon} size={18} />
+    </span>
+  )}
+  {external && <span class="visually-hidden"> (opens external site)</span>}
+</a>
+
+<style>
+  .btn {
+    --btn-border: var(--c-line-strong);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    min-height: 3rem;
+    padding: 0.75rem 1.35rem;
+    border: 1px solid var(--btn-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    color: var(--c-text);
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      border-color var(--dur-base) var(--ease-standard),
+      box-shadow var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  /* A light sweep on hover — the only decorative flourish buttons get. */
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, transparent, rgb(91 134 255 / 0.18), transparent);
+    transform: translateX(-100%);
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: translateX(100%);
+  }
+
+  .btn__icon {
+    display: inline-flex;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .btn:hover .btn__icon,
+  .btn:focus-visible .btn__icon {
+    transform: translateX(3px);
+  }
+
+  .btn--primary {
+    --btn-border: rgb(91 134 255 / 0.7);
+    background: linear-gradient(180deg, rgb(27 77 255 / 0.32), rgb(27 77 255 / 0.14));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  .btn--primary:hover,
+  .btn--primary:focus-visible {
+    --btn-border: var(--c-blue-bright);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.1),
+      var(--glow-md);
+  }
+
+  .btn--ghost:hover,
+  .btn--ghost:focus-visible {
+    --btn-border: var(--c-line-signal);
+  }
+
+  .btn--text {
+    min-height: 2.75rem;
+    padding-inline: 0;
+    border-color: transparent;
+    color: var(--c-text);
+  }
+
+  .btn--text::before {
+    display: none;
+  }
+
+  .btn--text .btn__label {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size var(--dur-base) var(--ease-out);
+    padding-bottom: 2px;
+  }
+
+  .btn--text:hover .btn__label,
+  .btn--text:focus-visible .btn__label {
+    background-size: 100% 1px;
+  }
+
+  @media (forced-colors: active) {
+    .btn {
+      border-color: ButtonText;
+    }
+  }
+</style>

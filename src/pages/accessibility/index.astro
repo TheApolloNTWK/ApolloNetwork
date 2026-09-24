@@ -1,0 +1,115 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import EmailReveal from '../../components/EmailReveal.astro';
+import { site } from '../../config/site';
+import { link } from '../../lib/url';
+
+const toc = [
+  { id: 'commitment', title: 'Our approach' },
+  { id: 'practices', title: 'What we have done' },
+  { id: 'testing', title: 'How it is tested' },
+  { id: 'limits', title: 'Known limitations' },
+  { id: 'report', title: 'Reporting a problem' },
+];
+
+const websiteIssueUrl = `${site.repository}/issues/new?template=website-issue.yml`;
+---
+
+<LegalLayout
+  doc="accessibility"
+  description="How the APOLLO Network website approaches accessibility, how it is tested, its known limitations, and how to report a problem."
+  lead="This website should work for everyone who visits it — whatever device, browser, input method or assistive technology they use. Here is where it stands, honestly."
+  toc={toc}
+>
+  <section id="commitment" aria-labelledby="commitment-title">
+    <h2 id="commitment-title">Our approach</h2>
+    <p>
+      We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA. Accessibility
+      is built into how the site is designed and tested, rather than checked at the end. The site
+      has not been formally audited or certified, and we do not claim full conformance.
+    </p>
+  </section>
+
+  <section id="practices" aria-labelledby="practices-title">
+    <h2 id="practices-title">What we have done</h2>
+    <ul>
+      <li>
+        Everything can be used with a keyboard, with a visible focus indicator and a “skip to
+        content” link on every page.
+      </li>
+      <li>
+        Pages use semantic HTML: landmarks, a single main heading, and a logical heading structure.
+      </li>
+      <li>
+        Text colours are chosen for contrast against the dark background, and meaning is never
+        carried by colour alone.
+      </li>
+      <li>
+        If your device is set to reduce motion, animations stop: the network visual on the home page
+        becomes a still image and content appears without transitions.
+      </li>
+      <li>
+        Layouts are designed for screens from small phones to large desktops, and text can be
+        resized.
+      </li>
+      <li>The site works without JavaScript; only optional extras need it.</li>
+      <li>
+        Decorative visuals are hidden from screen readers; informative diagrams have text
+        alternatives.
+      </li>
+      <li>
+        The APOLLO assistant can be opened, used and closed with a keyboard, and <kbd>Esc</kbd>{' '}
+        closes it.
+      </li>
+    </ul>
+  </section>
+
+  <section id="testing" aria-labelledby="testing-title">
+    <h2 id="testing-title">How it is tested</h2>
+    <p>
+      Every page is checked with automated accessibility testing (axe-core, against WCAG 2.2 AA
+      rules) in more than one browser engine, at desktop and mobile sizes. Keyboard navigation,
+      reduced-motion behaviour and layouts from 320 pixels wide upwards are checked in Chromium,
+      Firefox and WebKit before release.
+    </p>
+    <p>
+      Automated tools catch many problems, but not all of them. That is why your reports matter.
+    </p>
+  </section>
+
+  <section id="limits" aria-labelledby="limits-title">
+    <h2 id="limits-title">Known limitations</h2>
+    <ul>
+      <li>
+        The site has not yet been tested by disabled users, or with a full range of screen readers
+        and other assistive technologies.
+      </li>
+      <li>
+        Testing has been done in desktop browser engines at mobile screen sizes, not yet on a range
+        of physical phones and tablets.
+      </li>
+      <li>
+        Pages linked from this site, such as GitHub, are outside our control and may have their own
+        accessibility issues.
+      </li>
+    </ul>
+  </section>
+
+  <section id="report" aria-labelledby="report-title">
+    <h2 id="report-title">Reporting a problem</h2>
+    <p>
+      If something on this website is hard to use, or you need information in a different format,
+      please tell us: <EmailReveal /> You can also use the{' '}
+      <a href={link('contact/')}>contact page</a>, or report it publicly with the{' '}
+      <a href={websiteIssueUrl} rel="noopener noreferrer external">
+        website problem form<span class="visually-hidden"> (opens external site)</span>
+      </a>
+      .
+    </p>
+    <p>
+      It helps to include the page address, what you were trying to do, and the device, browser and
+      any assistive technology you use. We will do our best to fix the problem or find another way
+      to get you the information.
+    </p>
+  </section>
+</LegalLayout>

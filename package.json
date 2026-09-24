@@ -1,0 +1,40 @@
+{
+  "name": "apollo-network-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Public website for APOLLO Network.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "node --test tests/*.test.mjs",
+    "audit:deps": "npm audit --audit-level=low",
+    "verify": "npm run lint && npm run check && npm run build && npm test"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/space-grotesk": "5.3.0",
+    "astro": "7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.4",
+    "eslint": "10.11.0",
+    "eslint-plugin-astro": "3.2.1",
+    "eslint-plugin-jsx-a11y-x": "0.2.0",
+    "globals": "17.12.0",
+    "prettier": "3.9.9",
+    "prettier-plugin-astro": "1.0.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.70.1"
+  }
+}

@@ -1,0 +1,58 @@
+---
+/**
+ * Large statement text that brightens word by word as it scrolls through the
+ * reading zone. Driven by --progress from scripts/motion.ts. Without
+ * JavaScript, or with reduced motion, every word is fully visible.
+ *
+ * Word indices (--i / --total) are assigned by the script through the CSSOM
+ * because inline style attributes are blocked by the Content Security Policy.
+ */
+interface Props {
+  /** Plain text. Wrap words in *asterisks* to render them in the accent colour. */
+  text: string;
+  id?: string;
+  as?: 'p' | 'h2';
+}
+
+const { text, id, as: Tag = 'p' } = Astro.props;
+const words = text.split(/\s+/).map((raw) => {
+  const accent = /^\*.*\*[.,;:!?]?$/.test(raw);
+  return { word: accent ? raw.replace(/\*/g, '') : raw, accent };
+});
+---
+
+<Tag class="statement" id={id} data-scroll-progress>
+  {words.map(({ word, accent }) => (
+    <>
+      <span
+        class:list={['statement__word', { 'statement__word--accent': accent }]}
+        data-progress-item
+      >
+        {word}
+      </span>{' '}
+    </>
+  ))}
+</Tag>
+
+<style>
+  .statement {
+    max-width: 22em;
+    font-family: var(--font-display);
+    font-size: var(--fs-statement);
+    font-weight: 400;
+    line-height: 1.22;
+    letter-spacing: var(--tracking-heading);
+    color: var(--c-text);
+    text-wrap: pretty;
+  }
+
+  .statement__word--accent {
+    color: var(--c-blue-bright);
+  }
+
+  /* Only dim words once the script has started reporting progress. */
+  .statement[style*='--progress'] .statement__word {
+    opacity: clamp(0.18, calc((var(--progress) * (var(--total) + 4) - var(--i)) / 4), 1);
+    transition: opacity 120ms linear;
+  }
+</style>

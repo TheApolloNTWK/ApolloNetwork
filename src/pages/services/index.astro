@@ -1,0 +1,255 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import { engagementSteps, services } from '../../data/work';
+---
+
+<BaseLayout
+  path="services/"
+  title="Services"
+  description="Websites, software and SaaS tools, lead finding, AI guidance, workflow automation and technical prototypes — focused work from an independent technology business."
+>
+  <PageIntro
+    eyebrow="Services"
+    title="What APOLLO Network can build for you."
+    lead="Websites, software, lead finding, AI and automation — focused work from an independent technology business. You stay in control, you can see how it works, and you own what is delivered."
+  />
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Services</p>
+          <h2 id="services-title" class="split__title">
+            Areas of work.
+          </h2>
+        </div>
+        <p class="lead" data-reveal data-reveal-order="1">
+          An early-stage, independent venture — so engagements are deliberately focused. If your
+          problem sits between these areas, that is often where the interesting work is.
+        </p>
+      </div>
+
+      <ol class="svc" role="list">
+        {services.map((s, i) => (
+          <li class="svc__item" id={s.id} data-reveal data-reveal-order={String(i % 2)}>
+            <div class="svc__head">
+              <span class="svc__icon" aria-hidden="true">
+                <Icon name={s.icon} size={22} />
+              </span>
+              <span class="svc__num" aria-hidden="true">
+                0{i + 1}
+              </span>
+            </div>
+            <h3 class="svc__name">{s.name}</h3>
+            <p class="svc__summary">{s.summary}</p>
+            <ul class="svc__examples" role="list" aria-label={`Examples of ${s.name}`}>
+              {s.examples.map((e) => (
+                <li>{e}</li>
+              ))}
+            </ul>
+            {s.evidence && (
+              <div class="svc__evidence">
+                <Button
+                  href={s.evidence.path}
+                  variant="text"
+                  external={s.evidence.external ?? false}
+                >
+                  {s.evidence.label}
+                </Button>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="process-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Process</p>
+          <h2 id="process-title" class="split__title">
+            How an engagement runs.
+          </h2>
+        </div>
+        <p class="lead" data-reveal data-reveal-order="1">
+          Plain steps, written agreements and no surprises. Pricing is scoped per project and agreed
+          before work begins.
+        </p>
+      </div>
+      <ol class="steps" role="list">
+        {engagementSteps.map((step, i) => (
+          <li class="steps__item" data-reveal data-reveal-order={String(i)}>
+            <span class="steps__num" aria-hidden="true">
+              0{i + 1}
+            </span>
+            <h3 class="steps__name">{step.step}</h3>
+            <p class="steps__body">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div data-reveal>
+        <Button href="portfolio/" variant="text">
+          See the work behind these services
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Have a problem worth solving?"
+    body="Describe it in a few sentences. You will get a straight answer on whether APOLLO Network is the right fit."
+  />
+</BaseLayout>
+
+<style>
+  /* ── Services ───────────────────────────────────────────── */
+  .svc {
+    display: grid;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .svc {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .svc__item:nth-child(even) {
+      border-left: var(--border);
+      padding-left: var(--s-6);
+    }
+    .svc__item:nth-child(odd) {
+      padding-right: var(--s-6);
+    }
+  }
+
+  .svc__item {
+    display: grid;
+    align-content: start;
+    gap: var(--s-4);
+    padding-block: var(--s-7);
+    border-bottom: var(--border);
+    scroll-margin-top: calc(var(--header-h) + var(--s-5));
+  }
+
+  .svc__item:target .svc__icon {
+    color: var(--c-cyan);
+    border-color: var(--c-cyan);
+    box-shadow: var(--glow-sm);
+  }
+
+  .svc__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .svc__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--c-blue-bright);
+  }
+
+  .svc__num {
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-text-subtle);
+  }
+
+  .svc__name {
+    margin-top: var(--s-3);
+    font-size: var(--fs-h3);
+  }
+
+  .svc__summary {
+    max-width: 32rem;
+    color: var(--c-text-muted);
+  }
+
+  .svc__examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .svc__examples li,
+  .case__tags li {
+    padding: 0.25rem 0.6rem;
+    border: var(--border);
+    border-radius: var(--radius-xs);
+    font-size: 0.8125rem;
+    color: var(--c-text-muted);
+  }
+
+  /* ── Process ────────────────────────────────────────────── */
+  .steps {
+    display: grid;
+    gap: var(--s-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .steps__item {
+    position: relative;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--c-line-strong);
+  }
+
+  .steps__item::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-cyan);
+    box-shadow: var(--glow-cyan);
+  }
+
+  .steps__num {
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-blue-bright);
+  }
+
+  .steps__name {
+    margin-top: var(--s-3);
+    font-size: var(--fs-h3);
+  }
+
+  .steps__body {
+    margin-top: var(--s-3);
+    color: var(--c-text-muted);
+  }
+
+  .svc__evidence {
+    margin-top: var(--s-1);
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { link } from '../../lib/url';
+
+const beliefs = [
+  {
+    title: 'AI should answer to the person using it.',
+    body: 'Not to a platform’s incentives, and not to whichever provider happens to be behind the curtain.',
+  },
+  {
+    title: 'Useful beats impressive.',
+    body: 'A system that reliably saves an hour a day matters more than one that dazzles in a demo.',
+  },
+  {
+    title: 'Security is designed in, not bolted on.',
+    body: 'The safest feature is the one that never needed to exist. Attack surface is a design decision.',
+  },
+  {
+    title: 'Say what is true.',
+    body: 'No invented numbers, no borrowed logos, no future presented as the present. Credibility compounds.',
+  },
+];
+
+const standing = [
+  { term: 'Stage', detail: 'Early-stage and independent' },
+  { term: 'Services', detail: 'Websites, software & SaaS, lead finding, AI guidance, automation' },
+  { term: 'Tools', detail: 'Lead Finder, built and used in-house' },
+  { term: 'Application', detail: 'Working, and in active private development' },
+  { term: 'Public release', detail: 'Future direction — no date announced' },
+  { term: 'Website source', detail: 'Publicly viewable on GitHub' },
+];
+---
+
+<BaseLayout
+  path="about/"
+  title="About"
+  description="APOLLO Network is an independent technology business building websites, software, AI and automation for real problems — and developing its own personal intelligence environment."
+>
+  <PageIntro
+    eyebrow="About"
+    title="An independent technology business."
+    lead="APOLLO Network builds useful digital and AI systems: websites, software and SaaS tools, lead finding, AI guidance and automation. Alongside that work, it is developing its own application — a personal intelligence environment."
+  />
+
+  <section class="section" aria-labelledby="story-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Origin</p>
+        <h2 id="story-title" class="split__title">
+          Built by doing, not by pitching.
+        </h2>
+      </div>
+      <div class="prose" data-reveal data-reveal-order="1">
+        <p>
+          APOLLO Network is one business with several strands: building websites and digital
+          experiences, making software and SaaS tools, finding leads, helping people use AI well,
+          and automating the work nobody should be doing by hand.
+        </p>
+        <p>
+          The skills behind all of it were proven in-house first. Tools like
+          <a href={link('portfolio/#lead-finder')}>Lead Finder</a> were built to solve real problems
+          before being offered to anyone else, and this website is built to the same standard it
+          recommends.
+        </p>
+        <p>
+          The most ambitious strand is the
+          <a href={link('application/')}>APOLLO Network Application</a>: a working personal
+          intelligence environment, developed privately by its founder, with voice, specialist
+          agents, multiple models, memory, tools and an authority structure that decides what it may
+          do. Some of it is solid; some of it is still in development. It is not released yet, and
+          it is not what keeps the lights on — the work for clients is.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="beliefs-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Beliefs</p>
+          <h2 id="beliefs-title" class="split__title">
+            What guides the work.
+          </h2>
+        </div>
+        <ol class="beliefs" role="list">
+          {beliefs.map((b, i) => (
+            <li class="beliefs__item" data-reveal data-reveal-order={String(i % 2)}>
+              <span class="beliefs__num" aria-hidden="true">
+                0{i + 1}
+              </span>
+              <div>
+                <h3 class="beliefs__title">{b.title}</h3>
+                <p class="beliefs__body">{b.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="standing-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Today</p>
+        <h2 id="standing-title" class="split__title">
+          Where things stand.
+        </h2>
+      </div>
+      <dl class="spec" data-reveal data-reveal-order="1">
+        {standing.map((s) => (
+          <div class="spec__row">
+            <dt class="spec__term">{s.term}</dt>
+            <dd class="spec__detail">{s.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>
+
+<style>
+  .beliefs {
+    display: grid;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  .beliefs__item {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--s-4);
+    padding-block: var(--s-6);
+    border-bottom: var(--border);
+  }
+
+  .beliefs__num {
+    padding-top: 0.4rem;
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-blue-bright);
+  }
+
+  .beliefs__title {
+    font-size: var(--fs-h3);
+  }
+
+  .beliefs__body {
+    max-width: 34rem;
+    margin-top: var(--s-3);
+    color: var(--c-text-muted);
+  }
+</style>

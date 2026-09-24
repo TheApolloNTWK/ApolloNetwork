@@ -1,0 +1,290 @@
+---
+import Icon from './Icon.astro';
+import { modules } from '../data/environment';
+
+interface Props {
+  /** Show the written list of modules alongside the diagram. */
+  withList?: boolean;
+}
+
+const { withList = true } = Astro.props;
+
+const C = 260;
+const R = 196;
+const nodes = modules.map((m, i) => {
+  const a = -Math.PI / 2 + (i / modules.length) * Math.PI * 2;
+  const x = C + Math.cos(a) * R;
+  const y = C + Math.sin(a) * R;
+  const lx = C + Math.cos(a) * (R + 34);
+  const ly = C + Math.sin(a) * (R + 34);
+  const cos = Math.cos(a);
+  const anchor = Math.abs(cos) < 0.2 ? 'middle' : cos > 0 ? 'start' : 'end';
+  return {
+    ...m,
+    x: +x.toFixed(1),
+    y: +y.toFixed(1),
+    lx: +lx.toFixed(1),
+    ly: +(ly + 4).toFixed(1),
+    anchor,
+    ix: +(C + Math.cos(a) * 74).toFixed(1),
+    iy: +(C + Math.sin(a) * 74).toFixed(1),
+  };
+});
+---
+
+<div class:list={['env-map', { 'env-map--with-list': withList }]} data-env-map>
+  <figure class="env-map__figure">
+    <svg
+      viewBox="-60 -20 640 560"
+      class="env-map__svg"
+      role="img"
+      aria-labelledby="env-map-title env-map-desc"
+      focusable="false"
+    >
+      <title id="env-map-title">Anatomy of a personal intelligence environment</title>
+      <desc id="env-map-desc">
+        You sit at the centre. Around you, a primary interface coordinates eight configurable parts:{' '}
+        {modules.map((m) => m.name).join(', ')}.
+      </desc>
+
+      <circle cx={C} cy={C} r={R} class="env-map__orbit"></circle>
+      <circle cx={C} cy={C} r="120" class="env-map__orbit env-map__orbit--dashed"></circle>
+      <circle cx={C} cy={C} r="74" class="env-map__ring"></circle>
+
+      {nodes.map((n) => (
+        <g class="env-map__node" data-node={n.id}>
+          <line x1={n.ix} y1={n.iy} x2={n.x} y2={n.y} class="env-map__spoke" />
+          <circle cx={n.x} cy={n.y} r="7" class="env-map__dot" />
+          <circle cx={n.x} cy={n.y} r="14" class="env-map__halo" />
+          <text x={n.lx} y={n.ly} text-anchor={n.anchor} class="env-map__label">
+            {n.name}
+          </text>
+        </g>
+      ))}
+
+      <circle cx={C} cy={C} r="40" class="env-map__you"></circle>
+      <text x={C} y={C + 5} text-anchor="middle" class="env-map__you-label">
+        YOU
+      </text>
+      <text x={C} y={C - 86} text-anchor="middle" class="env-map__ring-label">
+        PRIMARY INTERFACE
+      </text>
+    </svg>
+  </figure>
+
+  {withList && (
+    <ul class="env-map__list" role="list">
+      {modules.map((m, i) => (
+        <li class="env-map__item" data-module={m.id} data-reveal data-reveal-order={String(i % 2)}>
+          <span class="env-map__icon">
+            <Icon name={m.icon} size={20} />
+          </span>
+          <div>
+            <h3 class="env-map__name">{m.name}</h3>
+            <p class="env-map__summary">{m.summary}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
+<script>
+  // Hovering a module in the list lights its node in the diagram. Purely a
+  // visual aid: every module is fully described in text.
+  for (const map of document.querySelectorAll<HTMLElement>('[data-env-map]')) {
+    const light = (id: string | undefined, on: boolean) => {
+      if (!id) return;
+      map.querySelector(`[data-node="${CSS.escape(id)}"]`)?.classList.toggle('is-lit', on);
+    };
+    for (const item of map.querySelectorAll<HTMLElement>('[data-module]')) {
+      item.addEventListener('pointerenter', () => light(item.dataset.module, true));
+      item.addEventListener('pointerleave', () => light(item.dataset.module, false));
+    }
+  }
+</script>
+
+<style>
+  .env-map {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .env-map--with-list {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: var(--s-9);
+    }
+  }
+
+  .env-map__figure {
+    width: min(100%, 36rem);
+    margin-inline: auto;
+  }
+
+  .env-map__svg {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .env-map__orbit {
+    fill: none;
+    stroke: var(--c-line-strong);
+  }
+
+  .env-map__orbit--dashed {
+    stroke-dasharray: 2 8;
+    transform-origin: 260px 260px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .env-map__orbit--dashed {
+      animation: spin 80s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .env-map__ring {
+    fill: rgb(27 77 255 / 0.06);
+    stroke: var(--c-blue-bright);
+    stroke-width: 1.2;
+  }
+
+  .env-map__ring-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    fill: var(--c-blue-bright);
+  }
+
+  .env-map__you {
+    fill: var(--c-space);
+    stroke: var(--c-cyan);
+    stroke-width: 1.2;
+    filter: drop-shadow(0 0 16px rgb(0 224 255 / 0.4));
+  }
+
+  .env-map__you-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    fill: var(--c-text);
+  }
+
+  .env-map__spoke {
+    stroke: var(--c-line-signal);
+    stroke-width: 1;
+    stroke-dasharray: 1 5;
+    stroke-linecap: round;
+  }
+
+  .env-map__dot {
+    fill: var(--c-space);
+    stroke: var(--c-blue-bright);
+    stroke-width: 1.5;
+    transition:
+      fill var(--dur-base) var(--ease-standard),
+      stroke var(--dur-base) var(--ease-standard);
+  }
+
+  .env-map__halo {
+    fill: none;
+    stroke: var(--c-cyan);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .env-map__label {
+    font-family: var(--font-display);
+    font-size: 17px;
+    fill: var(--c-text-muted);
+    transition: fill var(--dur-base) var(--ease-standard);
+  }
+
+  @media (max-width: 639px) {
+    .env-map__label {
+      font-size: 24px;
+    }
+    .env-map__ring-label {
+      display: none;
+    }
+  }
+
+  .env-map__node.is-lit .env-map__dot {
+    fill: var(--c-cyan);
+    stroke: var(--c-cyan);
+  }
+
+  .env-map__node.is-lit .env-map__halo {
+    opacity: 0.6;
+  }
+
+  .env-map__node.is-lit .env-map__label {
+    fill: var(--c-text);
+  }
+
+  .env-map__node.is-lit .env-map__spoke {
+    stroke: var(--c-cyan);
+    stroke-dasharray: none;
+  }
+
+  /* ── List ───────────────────────────────────────────────── */
+  .env-map__list {
+    display: grid;
+    gap: 0 var(--s-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Two columns when there is room; one when text is enlarged or space is tight. */
+  @media (min-width: 640px) {
+    .env-map__list {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    }
+  }
+
+  .env-map__item > div {
+    min-width: 0;
+  }
+
+  .env-map__item {
+    display: flex;
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+    border-top: var(--border);
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .env-map__item:hover {
+    border-top-color: var(--c-line-signal);
+  }
+
+  .env-map__icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--c-blue-bright);
+  }
+
+  .env-map__name {
+    font-size: var(--fs-h4);
+  }
+
+  .env-map__summary {
+    margin-top: var(--s-2);
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--c-text-muted);
+  }
+</style>

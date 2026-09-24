@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import Button from '../../components/Button.astro';
+import { selectedWork } from '../../data/work';
+---
+
+<BaseLayout
+  path="portfolio/"
+  title="Portfolio"
+  description="Real work by APOLLO Network — Lead Finder, this website and the APOLLO Network Application — each labelled for exactly what it is. A portfolio in progress."
+>
+  <PageIntro
+    eyebrow="Portfolio"
+    title="Work we can show you."
+    lead="Real projects, labelled honestly. This portfolio is a work in progress: client projects will be added as they are completed and permission is given."
+  />
+
+  <section class="section" aria-labelledby="selected-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Selected work</p>
+          <h2 id="selected-title" class="split__title">
+            Built by APOLLO Network.
+          </h2>
+        </div>
+        <p class="lead" data-reveal data-reveal-order="1">
+          Real projects, shown honestly — including APOLLO Network’s own tools. Client case studies
+          will be added as projects are completed and permission is given.
+        </p>
+      </div>
+
+      <div class="cases">
+        {selectedWork.map((w, i) => (
+          <div data-reveal data-reveal-order={String(i)}>
+            <WorkCard item={w} detailed />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="next-title">
+    <div class="container">
+      <div class="slot" data-reveal>
+        <p class="label label--signal">In progress</p>
+        <h2 id="next-title" class="slot__title">
+          Client work will appear here.
+        </h2>
+        <p class="slot__body">
+          No invented case studies, no borrowed logos. As projects are delivered — and clients agree
+          to be shown — they will be added to this page.
+        </p>
+        <Button href="services/" variant="ghost">
+          See the services
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Want your project here?"
+    body="Tell us what you are trying to build or fix. You will get a straight answer on whether APOLLO Network is the right fit."
+  />
+</BaseLayout>
+
+<style>
+  /* ── Cases ──────────────────────────────────────────────── */
+  .cases {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .cases > div {
+    display: flex;
+  }
+
+  .cases :global(.card) {
+    flex: 1;
+  }
+
+  @media (min-width: 1280px) {
+    .cases {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .slot {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+    padding: var(--s-7) var(--s-6);
+    border: 1px dashed var(--c-line-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  .slot__title {
+    font-size: var(--fs-h3);
+  }
+
+  .slot__body {
+    max-width: 38rem;
+    color: var(--c-text-muted);
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Triad from '../components/home/Triad.astro';
+import Statement from '../components/Statement.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Principles from '../components/Principles.astro';
+import ApplicationBand from '../components/home/ApplicationBand.astro';
+import ServiceIndex from '../components/ServiceIndex.astro';
+import WorkCard from '../components/WorkCard.astro';
+import ContactCTA from '../components/ContactCTA.astro';
+import Button from '../components/Button.astro';
+import { selectedWork } from '../data/work';
+import { businessPrinciples } from '../data/company';
+import { site } from '../config/site';
+import { absolute } from '../lib/url';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: absolute('', Astro.site),
+  logo: absolute('apple-touch-icon.png', Astro.site),
+  description: site.description,
+  sameAs: [site.github],
+};
+---
+
+<BaseLayout path="" structuredData={structuredData}>
+  <Hero />
+
+  <section class="section intro" id="intro" aria-labelledby="intro-label">
+    <div class="container">
+      <p class="label label--signal intro__label" id="intro-label">
+        01 — The idea
+      </p>
+      <Statement text="Most businesses do not need more technology. They need the right piece, built properly: a website that brings work in, a tool that finds the next customer, an automation that gives an hour back. *APOLLO* *Network* *builds* *those* *pieces* — and makes sure you understand and control them." />
+    </div>
+  </section>
+
+  <section class="section services-section" aria-labelledby="work-title">
+    <div class="container stack">
+      <SectionHeading
+        index="02"
+        eyebrow="What we do"
+        title="Useful digital and AI systems, built for you."
+        id="work-title"
+      >
+        <p>
+          Focused work from an independent technology venture — websites, software, lead finding, AI
+          and automation — each built with the same care for clarity, ownership and security.
+        </p>
+      </SectionHeading>
+      <ServiceIndex />
+      <div data-reveal>
+        <Button href="services/" variant="text">
+          All services and how engagements work
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="selected-title">
+    <div class="container stack">
+      <SectionHeading
+        index="03"
+        eyebrow="Selected work"
+        title="Built, running, and honest about it."
+        id="selected-title"
+      >
+        <p>
+          A working lead-finding tool, the site you are reading, and our own application in private
+          development — each labelled for exactly what it is.
+        </p>
+      </SectionHeading>
+      <div class="home-cards">
+        {selectedWork.map((w, i) => (
+          <div data-reveal data-reveal-order={String(i)}>
+            <WorkCard item={w} />
+          </div>
+        ))}
+      </div>
+      <div data-reveal>
+        <Button href="portfolio/" variant="text">
+          Visit the portfolio
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <Triad />
+
+  <section class="section principles-section" aria-labelledby="principles-title">
+    <div class="container stack">
+      <SectionHeading
+        index="05"
+        eyebrow="Principles"
+        title="Technology you understand and control."
+        id="principles-title"
+      />
+      <Principles items={businessPrinciples} />
+    </div>
+  </section>
+
+  <ApplicationBand />
+
+  <ContactCTA />
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: var(--section-y) calc(var(--section-y) * 0.5);
+  }
+
+  .intro__label {
+    margin-bottom: var(--s-6);
+  }
+
+  .services-section {
+    padding-top: calc(var(--section-y) * 0.6);
+  }
+
+  .home-cards {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .home-cards > div {
+    display: flex;
+  }
+
+  .home-cards :global(.card) {
+    flex: 1;
+  }
+
+  @media (min-width: 1280px) {
+    .home-cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .principles-section {
+    background:
+      radial-gradient(60% 50% at 100% 0%, rgb(27 77 255 / 0.08), transparent 70%),
+      linear-gradient(180deg, transparent, var(--c-space) 30%, var(--c-space) 70%, transparent);
+  }
+</style>

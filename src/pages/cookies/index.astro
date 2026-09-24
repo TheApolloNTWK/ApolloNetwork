@@ -1,0 +1,169 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import EmailReveal from '../../components/EmailReveal.astro';
+import { deviceStorage } from '../../data/legal/storage';
+import { link } from '../../lib/url';
+
+const toc = [
+  { id: 'what', title: 'What cookies are' },
+  { id: 'ours', title: 'What this website uses' },
+  { id: 'banner', title: 'Why there is no cookie banner' },
+  { id: 'others', title: 'Other websites and services' },
+  { id: 'cache', title: 'Your browser’s cache' },
+  { id: 'control', title: 'Controlling cookies' },
+  { id: 'changes', title: 'Changes to this policy' },
+];
+const none = deviceStorage.length === 0;
+---
+
+<LegalLayout
+  doc="cookies"
+  description="The APOLLO Network website sets no cookies and stores nothing on your device. This policy explains what that means and what would change it."
+  lead={
+    none
+      ? 'This website sets no cookies and stores nothing on your device — no analytics, advertising or tracking cookies, and no similar technologies.'
+      : 'This policy lists everything this website stores on your device, and why.'
+  }
+  toc={toc}
+  summary={
+    none
+      ? [
+          'No cookies of any kind are set by this website.',
+          'Nothing is stored in your browser’s local storage, session storage or similar.',
+          'That is why there is no cookie banner: there is nothing to consent to.',
+        ]
+      : undefined
+  }
+>
+  <section id="what" aria-labelledby="what-title">
+    <h2 id="what-title">What cookies are</h2>
+    <p>
+      Cookies are small files a website can save in your browser. Similar technologies — such as
+      local storage and session storage — do the same job in different ways. They can be used to
+      keep you signed in, remember preferences, or track what you do across sites. UK law (PECR)
+      requires websites to ask for your consent before storing anything that is not strictly
+      necessary.
+    </p>
+  </section>
+
+  <section id="ours" aria-labelledby="ours-title">
+    <h2 id="ours-title">What this website uses</h2>
+    {none ? (
+      <p>
+        <strong>Nothing.</strong> This website does not set cookies and does not use local storage,
+        session storage, IndexedDB or any similar technology. This is checked automatically every
+        time the site is built.
+      </p>
+    ) : (
+      <div class="storage">
+        {deviceStorage.map((item) => (
+          <div class="storage__item">
+            <h3>{item.name}</h3>
+            <dl>
+              <div>
+                <dt>Type</dt>
+                <dd>{item.kind}</dd>
+              </div>
+              <div>
+                <dt>Set by</dt>
+                <dd>{item.setBy}</dd>
+              </div>
+              <div>
+                <dt>Purpose</dt>
+                <dd>{item.purpose}</dd>
+              </div>
+              <div>
+                <dt>Duration</dt>
+                <dd>{item.duration}</dd>
+              </div>
+              <div>
+                <dt>Category</dt>
+                <dd>{item.strictlyNecessary ? 'Strictly necessary' : 'Needs your consent'}</dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section id="banner" aria-labelledby="banner-title">
+    <h2 id="banner-title">Why there is no cookie banner</h2>
+    <p>
+      Consent is only needed for storage that is not strictly necessary. As this website stores
+      nothing at all, a consent banner would have nothing to ask about — so there isn’t one.
+    </p>
+    <p>
+      If APOLLO Network ever adds something that needs consent, such as analytics, this policy will
+      be updated first and you will be asked before anything is stored. Declining will be as easy as
+      accepting.
+    </p>
+  </section>
+
+  <section id="others" aria-labelledby="others-title">
+    <h2 id="others-title">Other websites and services</h2>
+    <p>
+      If you follow a link to another website — for example GitHub — or email us, those services may
+      set their own cookies under their own policies. See our{' '}
+      <a href={link('privacy/')}>Privacy Policy</a> for the services involved.
+    </p>
+  </section>
+
+  <section id="cache" aria-labelledby="cache-title">
+    <h2 id="cache-title">Your browser’s cache</h2>
+    <p>
+      Like any website, the pages, fonts and images you load may be kept in your browser’s ordinary
+      cache so they load faster next time. This is managed by your browser, contains no information
+      about you, and is not a cookie.
+    </p>
+  </section>
+
+  <section id="control" aria-labelledby="control-title">
+    <h2 id="control-title">Controlling cookies</h2>
+    <p>
+      Your browser’s settings let you view, block and delete cookies and site data for any website.
+      Blocking them will not affect how this website works.
+    </p>
+  </section>
+
+  <section id="changes" aria-labelledby="changes-title">
+    <h2 id="changes-title">Changes to this policy</h2>
+    <p>
+      The “last updated” date shows when this policy last changed. Questions: <EmailReveal /> or the{' '}
+      <a href={link('contact/')}>contact page</a>.
+    </p>
+  </section>
+</LegalLayout>
+
+<style>
+  .storage {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .storage__item {
+    padding: var(--s-5);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .storage__item h3 {
+    margin-top: 0;
+  }
+
+  .storage__item dl {
+    display: grid;
+    gap: var(--s-2);
+    margin-top: var(--s-3);
+  }
+
+  .storage__item dl > div {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--s-4);
+  }
+
+  .storage__item dt {
+    color: var(--c-text-subtle);
+  }
+</style>

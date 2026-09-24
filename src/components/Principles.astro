@@ -1,0 +1,110 @@
+---
+import { principles as productPrinciples } from '../data/environment';
+
+interface Props {
+  items?: readonly { title: string; body: string }[];
+}
+
+const { items = productPrinciples } = Astro.props;
+---
+
+<ol class="principles" role="list">
+  {items.map((p, i) => (
+    <li class="principles__item" data-reveal data-reveal-order={String(i)}>
+      <span class="principles__num" aria-hidden="true">
+        0{i + 1}
+      </span>
+      <h3 class="principles__title">{p.title}</h3>
+      <p class="principles__body">{p.body}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .principles {
+    display: grid;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  @media (min-width: 768px) {
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .principles {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .principles__item {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    position: relative;
+    display: grid;
+    align-content: start;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--s-5) var(--s-7) 0;
+    border-bottom: var(--border);
+  }
+
+  /* A line of light traces the top edge on hover. */
+  .principles__item::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--c-cyan), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .principles__item:hover::before {
+    transform: scaleX(1);
+  }
+
+  @media (min-width: 768px) {
+    .principles__item {
+      padding-left: var(--s-5);
+      border-left: var(--border);
+    }
+    .principles__item:nth-child(odd) {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .principles__item:nth-child(odd) {
+      padding-left: var(--s-5);
+      border-left: var(--border);
+    }
+    .principles__item:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  .principles__num {
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-blue-bright);
+  }
+
+  .principles__title {
+    margin-top: var(--s-6);
+    font-size: var(--fs-h3);
+  }
+
+  .principles__body {
+    color: var(--c-text-muted);
+    font-size: 0.975rem;
+  }
+</style>

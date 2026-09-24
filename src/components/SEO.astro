@@ -1,0 +1,61 @@
+---
+import { site } from '../config/site';
+import { absolute, link } from '../lib/url';
+
+export interface SEOProps {
+  /** Page title without the site name. Omit on the home page. */
+  title?: string;
+  description?: string;
+  /** Site-relative path of this page, e.g. 'work/'. */
+  path: string;
+  noindex?: boolean;
+  /** Optional JSON-LD object. Only include facts that are true. */
+  structuredData?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description = site.description,
+  path,
+  noindex = false,
+  structuredData,
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
+const canonical = absolute(path, Astro.site);
+const ogImage = absolute('og-image.png', Astro.site);
+
+// JSON-LD is serialised with `<` escaped so content can never close the
+// script element early.
+const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : null;
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta
+  property="og:image:alt"
+  content="APOLLO Network — a luminous network sphere around a central core on a dark field."
+/>
+<meta property="og:locale" content={site.locale} />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href={link('favicon.svg')} type="image/svg+xml" />
+<link rel="icon" href={link('favicon.ico')} sizes="32x32" />
+<link rel="apple-touch-icon" href={link('apple-touch-icon.png')} />
+<link rel="manifest" href={link('site.webmanifest')} />
+<link rel="sitemap" href={link('sitemap.xml')} />
+
+{
+  /* eslint-disable-next-line astro/no-set-html-directive -- JSON-LD from our own data, `<` escaped above; not executable. */
+  jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd}></script>
+}

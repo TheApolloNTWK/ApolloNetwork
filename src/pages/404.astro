@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout path="404.html" title="Page not found" noindex>
+  <section class="lost" aria-labelledby="lost-title">
+    <div class="lost__orbit" aria-hidden="true">
+      <span class="lost__sat"></span>
+    </div>
+    <div class="container lost__content">
+      <p class="label label--signal">Error 404</p>
+      <h1 id="lost-title" class="lost__title">
+        This page is out of orbit.
+      </h1>
+      <p class="lost__body">The address may be mistyped, or the page may have moved.</p>
+      <div class="lost__actions">
+        <Button href="" variant="primary">
+          Return home
+        </Button>
+        <Button href="contact/" variant="text">
+          Report a broken link
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 90svh;
+    padding-block: calc(var(--header-h) + var(--s-8)) var(--s-9);
+    overflow: clip;
+    text-align: center;
+  }
+
+  .lost__orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(90vw, 40rem);
+    aspect-ratio: 1;
+    border: 1px solid var(--c-line-strong);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .lost__sat {
+    position: absolute;
+    top: 14.6%;
+    left: 14.6%;
+    width: 8px;
+    height: 8px;
+    margin: -4px;
+    border-radius: 50%;
+    background: var(--c-cyan);
+    box-shadow: var(--glow-cyan);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lost__orbit {
+      animation: orbit 40s linear infinite;
+    }
+  }
+
+  @keyframes orbit {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .lost__content {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: var(--s-5);
+  }
+
+  .lost__title {
+    font-size: var(--fs-h1);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .lost__body {
+    color: var(--c-text-muted);
+  }
+
+  .lost__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-4);
+  }
+</style>

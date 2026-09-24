@@ -1,0 +1,93 @@
+---
+import { statusLabel, type Status } from '../data/status';
+
+interface Props {
+  status: Status;
+}
+
+const { status } = Astro.props;
+---
+
+<span class:list={['status', `status--${status}`]}>
+  <span class="status__shape" aria-hidden="true"></span>
+  {statusLabel[status]}
+</span>
+
+<style>
+  /* Status is carried by the text label; shape and colour only reinforce it. */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0.28rem 0.6rem;
+    border: var(--border-strong);
+    border-radius: var(--radius-xs);
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    max-width: 100%;
+  }
+
+  .status__shape {
+    width: 6px;
+    height: 6px;
+    border: 1px solid currentColor;
+  }
+
+  .status--live {
+    color: var(--c-cyan);
+    border-color: rgb(0 224 255 / 0.35);
+  }
+
+  .status--live .status__shape {
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .status--private {
+    color: var(--c-blue-bright);
+    border-color: rgb(91 134 255 / 0.4);
+  }
+
+  .status--private .status__shape {
+    background: currentColor;
+  }
+
+  .status--internal {
+    color: var(--c-text);
+  }
+
+  .status--internal .status__shape {
+    background: var(--c-steel);
+    border-color: var(--c-steel);
+  }
+
+  .status--developing {
+    color: var(--c-blue-bright);
+    border-color: rgb(91 134 255 / 0.4);
+  }
+
+  .status--developing .status__shape {
+    background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  }
+
+  .status--experimental .status__shape {
+    border-style: dashed;
+    transform: rotate(45deg);
+  }
+
+  .status--exploring .status__shape {
+    transform: rotate(45deg);
+  }
+
+  .status--future {
+    border-style: dashed;
+  }
+
+  .status--future .status__shape {
+    border-radius: 50%;
+  }
+</style>

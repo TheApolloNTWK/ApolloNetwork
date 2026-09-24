@@ -1,0 +1,145 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../data/work';
+import { link } from '../lib/url';
+---
+
+<ul class="services" role="list">
+  {services.map((s, i) => (
+    <li data-reveal data-reveal-order={String(i % 3)}>
+      <a class="services__row" href={link(`services/#${s.id}`)}>
+        <span class="services__num" aria-hidden="true">
+          0{i + 1}
+        </span>
+        <span class="services__icon" aria-hidden="true">
+          <Icon name={s.icon} size={22} />
+        </span>
+        <span class="services__name">{s.name}</span>
+        <span class="services__summary">{s.summary}</span>
+        <span class="services__arrow" aria-hidden="true">
+          <Icon name="arrow" size={20} />
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .services {
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  .services__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      'icon name arrow'
+      'icon summary arrow';
+    gap: var(--s-2) var(--s-5);
+    align-items: center;
+    padding: var(--s-6) 0;
+    border-bottom: var(--border);
+    text-decoration: none;
+    isolation: isolate;
+    transition: padding var(--dur-base) var(--ease-out);
+  }
+
+  /* Hover: a soft wash slides in from the left and the row opens slightly. */
+  .services__row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, rgb(27 77 255 / 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .services__row:hover::before,
+  .services__row:focus-visible::before {
+    opacity: 1;
+  }
+
+  .services__num {
+    display: none;
+    grid-area: num;
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-text-subtle);
+  }
+
+  .services__icon {
+    grid-area: icon;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    align-self: start;
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--c-blue-bright);
+    transition:
+      color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .services__name {
+    grid-area: name;
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-heading);
+  }
+
+  .services__summary {
+    grid-area: summary;
+    max-width: 36rem;
+    color: var(--c-text-muted);
+    font-size: 0.975rem;
+  }
+
+  .services__arrow {
+    grid-area: arrow;
+    color: var(--c-text-subtle);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .services__row:hover .services__arrow,
+  .services__row:focus-visible .services__arrow {
+    color: var(--c-cyan);
+    transform: translateX(4px);
+  }
+
+  .services__row:hover .services__icon,
+  .services__row:focus-visible .services__icon {
+    color: var(--c-cyan);
+    border-color: var(--c-line-signal);
+  }
+
+  @media (min-width: 1024px) {
+    .services__row {
+      grid-template-columns: 3rem 3rem minmax(0, 1fr) minmax(0, 1.1fr) 2rem;
+      grid-template-areas: 'num icon name summary arrow';
+      gap: var(--s-6);
+      padding-block: var(--s-7);
+    }
+
+    .services__num {
+      display: block;
+    }
+
+    .services__icon {
+      align-self: center;
+    }
+
+    .services__row:hover,
+    .services__row:focus-visible {
+      padding-inline: var(--s-4);
+    }
+  }
+</style>

@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageIntro from '../../../components/PageIntro.astro';
+import Principles from '../../../components/Principles.astro';
+import StatusTag from '../../../components/StatusTag.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import Button from '../../../components/Button.astro';
+import { configurable, notThis } from '../../../data/environment';
+---
+
+<BaseLayout
+  path="application/vision/"
+  title="The vision — APOLLO Network Application"
+  description="What a personal intelligence environment is: one place to configure the models, agents, tools, memory and permissions behind the AI you use — and to stay in charge of them."
+>
+  <PageIntro
+    eyebrow="The application — vision"
+    title="Where the application is going."
+    lead="The private system is the proving ground. The public APOLLO Network Application is meant to be something different: an environment each person configures for themselves. None of it is released yet — this page describes the direction."
+  />
+
+  <section class="section" aria-labelledby="configure-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Direction</p>
+        <h2 id="configure-title" class="split__title">
+          What you would decide.
+        </h2>
+        <p class="configure__note">
+          This is the shape of the product APOLLO Network is working towards. None of it is publicly
+          available today, and each line is marked accordingly.
+        </p>
+      </div>
+      <dl class="spec" data-reveal data-reveal-order="1">
+        {configurable.map((item) => (
+          <div class="spec__row">
+            <dt class="spec__term">{item.name}</dt>
+            <dd class="spec__detail">{item.decide}</dd>
+            <dd class="configure__status">
+              <StatusTag status="future" />
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="philosophy-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Philosophy</p>
+          <h2 id="philosophy-title" class="split__title">
+            Provider-independent. User-controlled.
+          </h2>
+        </div>
+        <div class="prose" data-reveal data-reveal-order="1">
+          <p>
+            The best model today will not be the best model next year. Prices change, policies
+            change, companies change direction. An environment that belongs to you should be able to
+            absorb all of that without you starting over.
+          </p>
+          <p>
+            So the environment, not any one model, is the product. Models, agents and tools are
+            components — swappable, comparable and accountable to the person who owns the system.
+          </p>
+        </div>
+      </div>
+      <Principles />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="not-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">To be clear</p>
+          <h2 id="not-title" class="split__title">
+            What it is not.
+          </h2>
+        </div>
+        <ul class="not" role="list">
+          {notThis.map((item, i) => (
+            <li class="not__item" data-reveal data-reveal-order={String(i)}>
+              <h3 class="not__title">{item.title}</h3>
+              <p class="not__body">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="next" data-reveal>
+        <p class="next__text">The ideas above are being tested in a real, working system.</p>
+        <Button href="application/" variant="primary">
+          Back to the application
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>
+
+<style>
+  .configure__note {
+    max-width: 24rem;
+    margin-top: var(--s-5);
+    color: var(--c-text-muted);
+  }
+
+  .configure__status {
+    justify-self: start;
+  }
+
+  .not {
+    display: grid;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  .not__item {
+    padding-block: var(--s-6);
+    border-bottom: var(--border);
+  }
+
+  .not__title {
+    font-size: var(--fs-h3);
+  }
+
+  .not__body {
+    max-width: 36rem;
+    margin-top: var(--s-3);
+    color: var(--c-text-muted);
+  }
+
+  .next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding: var(--s-6);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, rgb(27 77 255 / 0.12), transparent);
+  }
+
+  .next__text {
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+  }
+</style>
