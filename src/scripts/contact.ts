@@ -7,17 +7,9 @@
  * page with textContent only — never parsed as HTML.
  */
 
-const LIMITS = { name: 120, message: 2000 } as const;
+import { assembleAddress } from './email';
 
-function assembleAddress(root: HTMLElement): string | null {
-  const u = root.dataset.u;
-  const d = root.dataset.d;
-  if (!u || !d) return null;
-  const reverse = (s: string) => [...s].reverse().join('');
-  const address = `${reverse(u)}@${reverse(d)}`;
-  // Defence in depth: only ever build a mailto for a plain address.
-  return /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(address) ? address : null;
-}
+const LIMITS = { name: 120, message: 2000 } as const;
 
 function setError(input: HTMLInputElement | HTMLTextAreaElement, message: string | null): void {
   const error = document.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);

@@ -149,8 +149,8 @@ controls required before connecting a real AI model.
 - See [`SECURITY.md`](SECURITY.md) to report a vulnerability.
 - See [`docs/SECURITY-ARCHITECTURE.md`](docs/SECURITY-ARCHITECTURE.md) for the controls in place,
   what GitHub Pages cannot enforce, and the migration path for full header control.
-- The site sets no cookies and loads no analytics or third-party scripts. The assistant keeps one
-  `sessionStorage` flag (greeting seen) for the current tab. If privacy-preserving analytics are
+- The site sets no cookies and loads no analytics or third-party scripts. Nothing is stored on
+  visitors' devices. If privacy-preserving analytics are
   ever added, update the Privacy page and CSP in the same change.
 
 ## Brand assets
@@ -158,6 +158,13 @@ controls required before connecting a real AI model.
 The logo mark, favicon set and social image are interim artwork. See
 [`docs/BRAND-ASSETS.md`](docs/BRAND-ASSETS.md) for every asset's location, required format and
 size, and the replacement steps.
+
+## Legal and trust pages
+
+Privacy, Terms, Cookies, Accessibility and Security pages live under `src/pages/` and are linked from
+the footer. Their facts come from `src/config/legal.ts` and the registers in `src/data/legal/`. Read
+[`docs/LEGAL.md`](docs/LEGAL.md) before adding any feature that collects data, stores anything on
+visitors' devices, adds a third party, or sells anything.
 
 ## Content rules
 

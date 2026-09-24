@@ -4,6 +4,8 @@ import Icon from './Icon.astro';
 import { footerNav, site } from '../config/site';
 import { link } from '../lib/url';
 
+// Set at build time. The deploy workflow also rebuilds on 1 January, so the
+// year never goes stale even if nothing else changes.
 const year = new Date().getFullYear();
 ---
 
@@ -56,10 +58,10 @@ const year = new Date().getFullYear();
 
     <div class="footer__bottom">
       <p>
-        © {year} {site.name}
+        © {year} {site.name}. All rights reserved.
       </p>
       <p>
-        No cookies. No trackers. <a href={link('privacy/')}>Privacy</a>
+        No cookies. No trackers. <a href={link('cookies/')}>Cookie policy</a>
       </p>
     </div>
   </div>
@@ -68,7 +70,8 @@ const year = new Date().getFullYear();
 <style>
   .footer {
     position: relative;
-    padding-block: var(--s-9) var(--s-6);
+    /* Extra bottom room so the fixed assistant launcher never covers the last line. */
+    padding-block: var(--s-9) calc(var(--s-6) + 4.5rem);
     border-top: var(--border);
     background: linear-gradient(180deg, var(--c-space) 0%, var(--c-void) 100%);
     font-size: var(--fs-small);
@@ -98,9 +101,10 @@ const year = new Date().getFullYear();
     gap: var(--s-6) var(--s-5);
   }
 
+  /* Up to four columns, fewer when space is tight or text is enlarged. */
   @media (min-width: 768px) {
     .footer__nav {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
     }
   }
 
@@ -138,6 +142,8 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
     color: var(--c-text-subtle);
     white-space: nowrap;
+    /* Decorative line: clip rather than scroll when text is enlarged. */
+    overflow: hidden;
   }
 
   .footer__verbs span:not(.footer__sep) {

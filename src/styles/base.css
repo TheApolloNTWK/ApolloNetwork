@@ -114,6 +114,9 @@ h4 {
   line-height: var(--lh-heading);
   letter-spacing: var(--tracking-heading);
   text-wrap: balance;
+  /* Long words break rather than overflow when text is enlarged. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 p,

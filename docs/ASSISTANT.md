@@ -2,15 +2,15 @@
 
 ## What ships today
 
-A **guided helper, not an AI**. It greets visitors once per tab ("What can I help you with
+A **guided helper, not an AI**. It greets visitors on the home page ("What can I help you with
 today?"), offers topic choices, and answers from content written in `src/data/assistant.ts`, with
 links into the site and to the contact page.
 
 - Runs entirely in the browser. No network requests, no third-party code, no model, no API key.
 - Answers are pre-rendered into `<template>` elements and cloned; no HTML strings are parsed, so
   the Content Security Policy and Trusted Types enforcement are unchanged.
-- Stores one value — that the greeting was seen — in `sessionStorage` for the current tab. This is
-  disclosed on the Privacy page.
+- Stores nothing on the visitor's device. The greeting is offered only on the home page, so no
+  "already seen" flag is needed (avoiding PECR device-storage questions entirely).
 - Labelled in its own header: “Guided answers — not AI. Nothing you choose leaves your browser.”
 - Keyboard accessible: focus moves into the panel on open; `Escape` closes it and returns focus.
   Hidden completely when JavaScript is unavailable.
@@ -56,7 +56,10 @@ Browser (this site)  ──HTTPS──▶  Assistant endpoint (server-side, you 
 - It must say it is an AI, must not invent prices, timelines or capabilities, and should hand off
   to a person (the contact page) whenever it is unsure.
 
-### Privacy
+### Privacy and legal
+
+The full legal-readiness checklist is in `docs/LEGAL.md` ("Website AI assistant or chatbot"). The
+assistant is not production-ready until every item there is complete.
 
 - Update the Privacy page first: what is sent, to which provider, retention, and purpose.
 - Show a short notice before the first message is sent, and do not send anything until the

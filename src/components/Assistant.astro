@@ -8,9 +8,16 @@
  */
 import { assistantGreeting, assistantTopics } from '../data/assistant';
 import { link } from '../lib/url';
+
+interface Props {
+  /** Offer the "What can I help you with today?" greeting on this page. */
+  greet?: boolean;
+}
+
+const { greet = false } = Astro.props;
 ---
 
-<div class="assistant" data-assistant hidden>
+<div class="assistant" data-assistant data-assistant-greet={greet ? '' : undefined} hidden>
   <div class="assistant__bubble" data-assistant-bubble hidden>
     <p>{assistantGreeting}</p>
     <button type="button" class="assistant__bubble-close" data-assistant-dismiss>

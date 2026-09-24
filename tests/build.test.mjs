@@ -7,6 +7,7 @@ import { before, describe, test } from 'node:test';
 import {
   BASE,
   DIST,
+  ROOT,
   ORIGIN,
   assertBuilt,
   attrs,
@@ -27,7 +28,12 @@ const PAGES = [
   'about/',
   'contact/',
   'privacy/',
+  'terms/',
+  'cookies/',
+  'accessibility/',
+  'security/',
 ];
+const LEGAL = ['privacy/', 'terms/', 'cookies/', 'accessibility/', 'security/'];
 
 before(assertBuilt);
 
@@ -280,5 +286,76 @@ describe('content integrity', () => {
     const t = text(read(join(DIST, 'portfolio', 'index.html')));
     assert.match(t, /Lead Finder/);
     assert.match(t, /Internal tool/);
+  });
+});
+
+describe('legal and trust', () => {
+  const pageHtml = (p) => read(join(DIST, p, 'index.html'));
+  const clientCode = () => [
+    ...walk(DIST, (f) => f.endsWith('.js')).map((f) => read(f)),
+    ...htmlFiles().flatMap((f) =>
+      [...read(f).matchAll(/<script type="module">([\s\S]*?)<\/script>/g)].map((m) => m[1]),
+    ),
+  ];
+
+  test('no cookies or device storage unless the storage register lists them', () => {
+    const register = readFileSync(join(ROOT, 'src', 'data', 'legal', 'storage.ts'), 'utf8');
+    const registerEmpty = /deviceStorage: StorageItem\[\] = \[\];/.test(register);
+    const uses = clientCode().some((c) =>
+      /document\.cookie|localStorage|sessionStorage|indexedDB|caches\.open/.test(c),
+    );
+    if (registerEmpty)
+      assert.equal(uses, false, 'client code uses storage but the register is empty');
+  });
+
+  test('there is no cookie consent banner (nothing requires consent)', () => {
+    for (const f of htmlFiles()) {
+      assert.doesNotMatch(read(f), /accept (all )?cookies|cookie consent|consent-banner/i, rel(f));
+    }
+  });
+
+  test('every legal page has a date, a contact route and metadata', () => {
+    for (const p of LEGAL) {
+      const html = pageHtml(p);
+      assert.match(html, /Last updated <time datetime="\d{4}-\d{2}-\d{2}"/, p);
+      assert.match(html, new RegExp(`href="${BASE}/contact/"`), `${p}: contact link`);
+      assert.match(html, /<meta name="description" content="[^"]{60,}"/, p);
+      assert.match(html, /<nav[^>]*aria-label="On this page"/, p);
+    }
+  });
+
+  test('legal pages make no invented claims about the business', () => {
+    // Company suffixes are matched case-sensitively ("limited by law" is fine).
+    const entity = /\b(Ltd|Limited|PLC|plc|LLP)\b/;
+    const invented =
+      /company (number|no\.)|registered (office|in England|in Northern Ireland)|VAT (number|no)|Data Protection Officer|\bDPO\b|ISO ?27001|SOC ?2|Cyber Essentials|reviewed by (a )?(solicitor|lawyer)/i;
+    for (const p of LEGAL) {
+      const t = read(join(DIST, p, 'index.html')).replace(/<[^>]+>/g, ' ');
+      assert.doesNotMatch(t, invented, p);
+      assert.doesNotMatch(t, entity, p);
+    }
+  });
+
+  test('the privacy policy names every recipient in the processing register', () => {
+    const register = readFileSync(join(ROOT, 'src', 'data', 'legal', 'processing.ts'), 'utf8');
+    const names = [...register.matchAll(/name: '([^']+)'/g)].map((m) => m[1]);
+    assert.ok(names.length > 0);
+    const html = pageHtml('privacy/');
+    for (const n of names) assert.ok(html.includes(n.replace(/&/g, '&amp;')), n);
+  });
+
+  test('every page links to all legal pages in the footer, with a copyright notice', () => {
+    for (const f of htmlFiles()) {
+      const footer = read(f).match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
+      for (const p of LEGAL)
+        assert.match(footer, new RegExp(`href="${BASE}/${p}"`), `${rel(f)}: ${p}`);
+      assert.match(footer, /© \d{4} APOLLO Network\. All rights reserved\./, rel(f));
+    }
+  });
+
+  test('the repository has no open-source licence file', () => {
+    for (const name of ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'COPYING']) {
+      assert.equal(existsSync(join(ROOT, name)), false, name);
+    }
   });
 });

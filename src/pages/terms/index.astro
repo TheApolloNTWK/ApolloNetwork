@@ -1,0 +1,185 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import EmailReveal from '../../components/EmailReveal.astro';
+import { legal } from '../../config/legal';
+import { site } from '../../config/site';
+import { link } from '../../lib/url';
+
+const toc = [
+  { id: 'about', title: 'About these terms' },
+  { id: 'using', title: 'Using this website' },
+  { id: 'misuse', title: 'What you must not do' },
+  { id: 'information', title: 'Information on this website' },
+  { id: 'ip', title: 'Intellectual property' },
+  { id: 'links', title: 'Links to other websites' },
+  { id: 'availability', title: 'Availability and changes' },
+  { id: 'liability', title: 'Our responsibility to you' },
+  { id: 'law', title: 'Governing law' },
+  { id: 'changes', title: 'Changes to these terms' },
+  { id: 'contact', title: 'Contact' },
+];
+---
+
+<LegalLayout
+  doc="terms"
+  description="The terms for using the APOLLO Network website: permitted use, what is not allowed, intellectual property and our responsibilities."
+  lead="Plain terms for using this website. They cover the site itself — not services, which are always agreed separately in writing."
+  toc={toc}
+  summary={[
+    'You are welcome to read, share links to and learn from this website.',
+    'Please do not attack, overload or misuse it, or copy its content or design for your own use.',
+    'The site is information, not an offer: any work is agreed separately in writing.',
+    'Nothing here affects your legal rights as a consumer.',
+  ]}
+>
+  <section id="about" aria-labelledby="about-title">
+    <h2 id="about-title">About these terms</h2>
+    <p>
+      These terms apply to your use of the {site.name} website. {legal.operator} is{' '}
+      {legal.operatorDescription} operated from {legal.location}; “we” and “us” refer to it. By
+      using the website you accept these terms. If you do not agree with them, please do not use the
+      site.
+    </p>
+    <p>
+      Our <a href={link('privacy/')}>Privacy Policy</a> and{' '}
+      <a href={link('cookies/')}>Cookie Policy</a> explain how personal data and device storage are
+      handled.
+    </p>
+  </section>
+
+  <section id="using" aria-labelledby="using-title">
+    <h2 id="using-title">Using this website</h2>
+    <p>
+      The website is free to use. You may browse it, read and save pages for your own reference, and
+      share links to it. It is intended for people and businesses who want to learn about APOLLO
+      Network and its work.
+    </p>
+  </section>
+
+  <section id="misuse" aria-labelledby="misuse-title">
+    <h2 id="misuse-title">What you must not do</h2>
+    <p>When using this website or the ways of contacting us from it, you must not:</p>
+    <ul>
+      <li>use it for anything unlawful, fraudulent or harmful;</li>
+      <li>try to gain unauthorised access to it, or to any system or account connected with it;</li>
+      <li>
+        disrupt, overload or impair it — for example with automated traffic, denial-of-service
+        attacks or malicious code;
+      </li>
+      <li>
+        copy, republish or reuse substantial parts of its content, design or graphics without our
+        written permission;
+      </li>
+      <li>suggest that you are, or are endorsed by, APOLLO Network when you are not;</li>
+      <li>use our enquiry channels to send spam, abuse or unlawful material.</li>
+    </ul>
+    <p>
+      Good-faith security research that follows our <a href={link('security/')}>security policy</a>{' '}
+      is welcome and is not treated as misuse.
+    </p>
+  </section>
+
+  <section id="information" aria-labelledby="information-title">
+    <h2 id="information-title">Information on this website</h2>
+    <p>
+      The content is general information about APOLLO Network and its work. It is not professional,
+      legal, financial or technical advice for your situation, and while we aim to keep it accurate,
+      we do not promise that it is complete or up to date.
+    </p>
+    <p>
+      Descriptions of services are an invitation to get in touch, not an offer. No products,
+      subscriptions or services are sold through this website: any work is agreed separately, in
+      writing, with its own terms.
+    </p>
+    <p>
+      The APOLLO Network Application is described as it currently stands. It is in private
+      development and not publicly available, and its features and plans may change.
+    </p>
+    <p>
+      The APOLLO assistant gives short, pre-written answers to common questions. It is not an AI,
+      and its answers are general guidance only.
+    </p>
+  </section>
+
+  <section id="ip" aria-labelledby="ip-title">
+    <h2 id="ip-title">Intellectual property</h2>
+    <p>
+      Unless stated otherwise, the APOLLO Network name and branding, the design of this website, its
+      original graphics and visual effects, its written content, and its demonstrations belong to
+      APOLLO Network. All rights are reserved.
+    </p>
+    <p>
+      The website’s source code is publicly viewable on{' '}
+      <a href={site.repository} rel="noopener noreferrer external">
+        GitHub<span class="visually-hidden"> (opens external site)</span>
+      </a>
+      , but it is <strong>not open source</strong>. Being able to see the code does not grant a
+      licence to use, copy, modify or distribute it, beyond what GitHub’s own terms allow for
+      viewing public repositories on GitHub.
+    </p>
+    <p>
+      Some material belongs to others and is used under their licences — for example the{' '}
+      <a href={link('licenses/inter-OFL.txt')}>Inter</a> and{' '}
+      <a href={link('licenses/space-grotesk-OFL.txt')}>Space Grotesk</a> typefaces, available under
+      the SIL Open Font License. Names and marks of other companies, such as GitHub and Google,
+      belong to their owners.
+    </p>
+  </section>
+
+  <section id="links" aria-labelledby="links-title">
+    <h2 id="links-title">Links to other websites</h2>
+    <p>
+      Links to other websites are provided for convenience. We do not control those sites and are
+      not responsible for their content, availability or policies.
+    </p>
+  </section>
+
+  <section id="availability" aria-labelledby="availability-title">
+    <h2 id="availability-title">Availability and changes</h2>
+    <p>
+      We may change, suspend or withdraw any part of the website at any time. We aim to keep it
+      available and working well, but cannot guarantee that it will always be available,
+      uninterrupted or free of errors.
+    </p>
+  </section>
+
+  <section id="liability" aria-labelledby="liability-title">
+    <h2 id="liability-title">Our responsibility to you</h2>
+    <p>
+      The website is provided free of charge, as information. To the extent the law allows, we are
+      not responsible for loss or damage arising from your use of the website or from relying on its
+      content.
+    </p>
+    <p>
+      Nothing in these terms excludes or limits our liability for death or personal injury caused by
+      negligence, for fraud or fraudulent misrepresentation, or for anything else that cannot be
+      excluded or limited by law. If you are a consumer, these terms do not affect your statutory
+      rights.
+    </p>
+  </section>
+
+  <section id="law" aria-labelledby="law-title">
+    <h2 id="law-title">Governing law</h2>
+    <p>
+      These terms are governed by the law of {legal.governingLaw}, and the courts of{' '}
+      {legal.governingLaw} have jurisdiction. If you are a consumer living elsewhere in the United
+      Kingdom, you may also bring proceedings in the courts where you live.
+    </p>
+  </section>
+
+  <section id="changes" aria-labelledby="changes-title">
+    <h2 id="changes-title">Changes to these terms</h2>
+    <p>
+      We may update these terms. The “last updated” date at the top shows when they last changed,
+      and the version on this page is the one that applies.
+    </p>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Contact</h2>
+    <p>
+      Questions about these terms: <EmailReveal /> or use the{' '}
+      <a href={link('contact/')}>contact page</a>.
+    </p>
+  </section>
+</LegalLayout>

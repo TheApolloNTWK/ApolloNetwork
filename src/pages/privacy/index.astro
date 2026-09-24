@@ -1,102 +1,266 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageIntro from '../../components/PageIntro.astro';
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import EmailReveal from '../../components/EmailReveal.astro';
+import { legal } from '../../config/legal';
+import { processing } from '../../data/legal/processing';
+import { link } from '../../lib/url';
 
-const updated = '24 September 2026';
+const toc = [
+  { id: 'who', title: 'Who we are' },
+  { id: 'collect', title: 'What this website collects' },
+  { id: 'contact', title: 'When you contact us' },
+  { id: 'browser', title: 'What stays in your browser' },
+  { id: 'never', title: 'What we do not do' },
+  { id: 'transfers', title: 'International transfers' },
+  { id: 'rights', title: 'Your rights' },
+  { id: 'security', title: 'Security' },
+  { id: 'children', title: 'Children' },
+  { id: 'links', title: 'Other websites' },
+  { id: 'future', title: 'New features' },
+  { id: 'changes', title: 'Changes to this policy' },
+  { id: 'questions', title: 'Questions and requests' },
+];
 ---
 
-<BaseLayout
-  path="privacy/"
-  title="Privacy"
-  description="How the APOLLO Network website handles your data: no cookies, no analytics, no trackers and no third-party scripts."
+<LegalLayout
+  doc="privacy"
+  description="How the APOLLO Network website handles personal data: no cookies, no analytics, no trackers — and exactly what happens when you get in touch."
+  lead="This website is built to collect as little as possible. It sets no cookies, runs no analytics and loads no third-party scripts. This policy explains exactly what does happen, and your rights."
+  toc={toc}
+  summary={[
+    'The website itself collects nothing about you: no cookies, no analytics, no tracking, nothing stored on your device.',
+    'Our host, GitHub, logs visitor IP addresses for security. We do not receive or use those logs.',
+    'If you email us or open an enquiry, we use what you send only to reply and to discuss the work you ask about.',
+    'We never sell your data or use it for advertising.',
+  ]}
 >
-  <PageIntro
-    eyebrow="Privacy"
-    title="Privacy, briefly."
-    lead="This website does not use cookies, analytics, trackers, advertising pixels or third-party scripts. That is the short version, and it is the whole version."
-  />
-
-  <section class="section">
-    <div class="container split">
-      <div class="split__aside">
-        <p class="label">Last updated</p>
-        <p class="updated">{updated}</p>
-      </div>
-      <div class="prose">
-        <h2>What this site collects</h2>
-        <p>
-          Nothing, directly. There are no cookies, no analytics, no tracking storage and no
-          fingerprinting. Fonts, images and scripts are all served from this site itself, so your
-          browser does not contact any other company while you read it.
-        </p>
-
-        <h2>Hosting</h2>
-        <p>
-          The site is hosted on GitHub Pages. Like any web host, GitHub processes technical data
-          such as IP addresses to deliver pages and keep the service secure. That processing is
-          governed by the{' '}
-          <a
-            href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
-            rel="noopener noreferrer external"
-          >
-            GitHub General Privacy Statement
-            <span class="visually-hidden"> (opens external site)</span>
-          </a>
-          .
-        </p>
-
-        <h2>If you get in touch</h2>
-        <p>
-          The contact page never sends data anywhere by itself. Its form prepares a message in your
-          own email app; nothing is sent until you press send there. APOLLO Network’s inbox is
-          provided by Google (Gmail), so emails you send are processed by Google under its own
-          privacy terms. Your message is used only to reply to you, and is not shared or sold.
-          Please do not include passwords or sensitive personal information.
-        </p>
-        <p>
-          Public enquiries opened on GitHub are visible to anyone and are governed by GitHub’s
-          privacy statement.
-        </p>
-
-        <h2>The APOLLO assistant</h2>
-        <p>
-          The assistant in the corner of each page is a guided helper, not an AI. Its answers are
-          built into the page, and nothing you choose in it is sent anywhere. It remembers one thing
-          — that you have already seen its greeting — in your browser’s session storage for the
-          current tab only, so the greeting does not reappear on every page. That entry is removed
-          when you close the tab.
-        </p>
-
-        <h2>Leaving the site</h2>
-        <p>
-          Pages instruct your browser not to send a referrer when you follow a link elsewhere, so
-          other sites are not told which page you came from.
-        </p>
-
-        <h2>Changes</h2>
-        <p>
-          If this ever changes — for example, if privacy-preserving analytics are introduced — this
-          page will be updated first, and will say exactly what is collected and why.
-        </p>
-      </div>
-    </div>
+  <section id="who" aria-labelledby="who-title">
+    <h2 id="who-title">Who we are</h2>
+    <p>
+      {legal.operator} is {legal.operatorDescription} operated from {legal.location}. In this
+      policy, “{legal.operator}”, “we” and “us” mean the person operating {legal.operator}, who is
+      responsible for the personal data described here (the “controller” under UK data protection
+      law).
+    </p>
+    <p>
+      This policy covers this website and the ways you can contact us from it. It is written with
+      the UK GDPR, the Data Protection Act 2018 and the Privacy and Electronic Communications
+      Regulations (PECR) in mind.
+    </p>
   </section>
-</BaseLayout>
+
+  <section id="collect" aria-labelledby="collect-title">
+    <h2 id="collect-title">What this website collects</h2>
+    <p>
+      <strong>Nothing, directly.</strong> The website has no database, no accounts, no analytics, no
+      advertising and no tracking. It sets no cookies and stores nothing on your device. Fonts,
+      images and scripts are served from this site itself, so your browser does not contact any
+      other company while you read it.
+    </p>
+    <p>
+      The site is hosted on GitHub Pages. According to GitHub, when a GitHub Pages site is visited,
+      the visitor’s IP address is logged and stored for security purposes. That logging is done by
+      GitHub under its own privacy statement; we do not receive, access or use those logs.
+    </p>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">When you contact us</h2>
+    <p>
+      Personal data reaches us only if you choose to send it. Each way that can happen is listed
+      below.
+    </p>
+    {processing.map((p) => (
+      <div class="activity">
+        <h3>{p.activity}</h3>
+        <dl>
+          <div>
+            <dt>Information</dt>
+            <dd>{p.data}</dd>
+          </div>
+          <div>
+            <dt>Why</dt>
+            <dd>{p.purpose}</dd>
+          </div>
+          <div>
+            <dt>Legal basis</dt>
+            <dd>{p.basis}</dd>
+          </div>
+          <div>
+            <dt>Provided by</dt>
+            <dd>
+              {p.recipients.map((r, i) => (
+                <>
+                  {i > 0 && '; '}
+                  <a href={r.policy} rel="noopener noreferrer external">
+                    {r.name}
+                    <span class="visually-hidden"> privacy policy (opens external site)</span>
+                  </a>
+                  , which {r.role}
+                </>
+              ))}
+            </dd>
+          </div>
+          <div>
+            <dt>Kept for</dt>
+            <dd>{p.retention}</dd>
+          </div>
+        </dl>
+      </div>
+    ))}
+    <p>Please do not send passwords, financial details or other sensitive personal information.</p>
+  </section>
+
+  <section id="browser" aria-labelledby="browser-title">
+    <h2 id="browser-title">What stays in your browser</h2>
+    <p>
+      <strong>The enquiry form</strong> on the contact page does not send anything. It prepares a
+      message in your own email app; nothing leaves your device until you press send there, at which
+      point the email section above applies.
+    </p>
+    <p>
+      <strong>The APOLLO assistant</strong> is a guided helper, not an AI. Its answers are built
+      into the page, and nothing you choose in it is sent or stored anywhere.
+    </p>
+  </section>
+
+  <section id="never" aria-labelledby="never-title">
+    <h2 id="never-title">What we do not do</h2>
+    <ul>
+      <li>We do not sell, rent or trade personal data.</li>
+      <li>We do not use your data for advertising or build profiles of visitors.</li>
+      <li>We do not add you to mailing lists or send marketing you have not asked for.</li>
+      <li>We do not make automated decisions about you.</li>
+    </ul>
+  </section>
+
+  <section id="transfers" aria-labelledby="transfers-title">
+    <h2 id="transfers-title">International transfers</h2>
+    <p>
+      GitHub and Google are international providers and may process data outside the UK, including
+      in the United States. Their privacy statements, linked above, explain the safeguards they rely
+      on for international transfers.
+    </p>
+  </section>
+
+  <section id="rights" aria-labelledby="rights-title">
+    <h2 id="rights-title">Your rights</h2>
+    <p>Under UK data protection law you have the right to:</p>
+    <ul>
+      <li>ask for a copy of the personal data we hold about you;</li>
+      <li>ask us to correct it, or to delete it;</li>
+      <li>ask us to restrict how we use it, or object to our using it;</li>
+      <li>ask for data you gave us in a portable format, where that right applies.</li>
+    </ul>
+    <p>
+      Some rights have exceptions, and we will tell you if one applies. To make a request, contact
+      us as described below. You also have the right to complain to the{' '}
+      <a href={legal.regulator.complaintsUrl} rel="noopener noreferrer external">
+        {legal.regulator.name}
+        <span class="visually-hidden"> (opens external site)</span>
+      </a>
+      , the UK data protection regulator. We would appreciate the chance to deal with your concern
+      first.
+    </p>
+  </section>
+
+  <section id="security" aria-labelledby="security-title">
+    <h2 id="security-title">Security</h2>
+    <p>
+      The website is static, with no server-side code, database or user accounts, and a strict
+      browser security policy. Messages you send us are held only in the email and GitHub services
+      described above. No system is perfectly secure; see our{' '}
+      <a href={link('security/')}>security page</a> to report a concern.
+    </p>
+  </section>
+
+  <section id="children" aria-labelledby="children-title">
+    <h2 id="children-title">Children</h2>
+    <p>
+      This website is aimed at businesses and adults. We do not knowingly collect personal data from
+      children.
+    </p>
+  </section>
+
+  <section id="links" aria-labelledby="links-title">
+    <h2 id="links-title">Other websites</h2>
+    <p>
+      Links to other websites, such as GitHub, take you to services with their own privacy policies.
+      Pages instruct your browser not to send a referrer when you follow those links, so other sites
+      are not told which page you came from.
+    </p>
+  </section>
+
+  <section id="future" aria-labelledby="future-title">
+    <h2 id="future-title">New features</h2>
+    <p>
+      APOLLO Network may add features in future that handle more information — for example an AI
+      assistant, analytics, accounts or online payments. None of these are active today. This policy
+      will be updated to describe any such feature, including who processes the data and why, before
+      it goes live.
+    </p>
+  </section>
+
+  <section id="changes" aria-labelledby="changes-title">
+    <h2 id="changes-title">Changes to this policy</h2>
+    <p>
+      When this policy changes, the “last updated” date at the top of the page changes with it.
+      Significant changes will be made clear on this page.
+    </p>
+  </section>
+
+  <section id="questions" aria-labelledby="questions-title">
+    <h2 id="questions-title">Questions and requests</h2>
+    <p>
+      For privacy questions or to exercise your rights, email APOLLO Network: <EmailReveal /> You
+      can also use the <a href={link('contact/')}>contact page</a>. Please do not use a public
+      GitHub enquiry for privacy requests.
+    </p>
+  </section>
+</LegalLayout>
 
 <style>
-  .updated {
-    margin-top: var(--s-2);
-    font-family: var(--font-display);
-    font-size: var(--fs-h4);
+  .activity {
+    margin-top: var(--s-5);
+    padding: var(--s-5);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    background: rgb(8 13 28 / 0.6);
   }
 
-  .prose :global(h2) {
-    margin-top: 2em;
-    font-size: var(--fs-h3);
-    color: var(--c-text);
-  }
-
-  .prose :global(h2:first-child) {
+  .activity h3 {
     margin-top: 0;
+  }
+
+  .activity dl {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+
+  .activity dl > div {
+    display: grid;
+    gap: var(--s-1);
+  }
+
+  @media (min-width: 640px) {
+    .activity dl > div {
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: var(--s-4);
+    }
+  }
+
+  .activity dt {
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--c-text-subtle);
+    padding-top: 0.2em;
+  }
+
+  .activity dd {
+    font-size: var(--fs-small);
+    color: var(--c-text-muted);
   }
 </style>

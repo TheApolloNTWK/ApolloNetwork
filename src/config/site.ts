@@ -48,7 +48,7 @@ export const contactNav: NavItem = { label: 'Contact', href: 'contact/' };
 
 export const footerNav: { heading: string; items: NavItem[] }[] = [
   {
-    heading: 'Work with us',
+    heading: 'Explore',
     items: [
       { label: 'Home', href: '' },
       { label: 'Services', href: 'services/' },
@@ -59,13 +59,18 @@ export const footerNav: { heading: string; items: NavItem[] }[] = [
     heading: 'APOLLO',
     items: [
       { label: 'The application', href: 'application/' },
-      { label: 'The vision', href: 'application/vision/' },
       { label: 'About', href: 'about/' },
       { label: 'Contact', href: 'contact/' },
     ],
   },
   {
-    heading: 'Legal',
-    items: [{ label: 'Privacy', href: 'privacy/' }],
+    heading: 'Legal & trust',
+    items: [
+      { label: 'Privacy', href: 'privacy/' },
+      { label: 'Terms', href: 'terms/' },
+      { label: 'Cookies', href: 'cookies/' },
+      { label: 'Accessibility', href: 'accessibility/' },
+      { label: 'Security', href: 'security/' },
+    ],
   },
 ];

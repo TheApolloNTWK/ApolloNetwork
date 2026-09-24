@@ -1,0 +1,364 @@
+---
+/**
+ * Layout for legal and trust pages: consistent intro, last-updated date,
+ * optional plain-English summary, and an "On this page" index.
+ * Sections are written in the page as <section id="…"><h2>…</h2>…</section>
+ * and must match the `toc` entries.
+ */
+import BaseLayout from './BaseLayout.astro';
+import { legal, formatDate, type LegalDocument } from '../config/legal';
+import { link } from '../lib/url';
+
+interface Props {
+  doc: LegalDocument;
+  description: string;
+  lead: string;
+  toc: { id: string; title: string }[];
+  summary?: string[] | undefined;
+}
+
+const { doc, description, lead, toc, summary } = Astro.props;
+const meta = legal.documents[doc];
+const others = Object.entries(legal.documents).filter(([key]) => key !== doc);
+---
+
+<BaseLayout path={meta.path} title={meta.title} description={description}>
+  <section class="legal-intro" aria-labelledby="page-title">
+    <div class="container">
+      <p class="label legal-intro__eyebrow">
+        <span class="legal-intro__rule" aria-hidden="true"></span>
+        Legal &amp; trust
+      </p>
+      <h1 id="page-title" class="legal-intro__title">
+        {meta.title}
+      </h1>
+      <p class="legal-intro__lead">{lead}</p>
+      <p class="legal-intro__meta">
+        Last updated <time datetime={meta.updated}>{formatDate(meta.updated)}</time>
+      </p>
+    </div>
+  </section>
+
+  <div class="container legal">
+    <aside class="legal__aside">
+      <nav class="legal__toc" aria-label="On this page">
+        <p class="label">On this page</p>
+        <ol role="list">
+          {toc.map((item) => (
+            <li>
+              <a href={`#${item.id}`}>{item.title}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </aside>
+
+    <article class="legal__body">
+      {summary && (
+        <div class="legal__summary">
+          <p class="label label--signal">In short</p>
+          <ul role="list">
+            {summary.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <slot />
+    </article>
+  </div>
+
+  <nav class="container legal-more" aria-label="Other legal and trust pages">
+    <p class="label">Also see</p>
+    <ul role="list">
+      {others.map(([, d]) => (
+        <li>
+          <a href={link(d.path)}>{d.title}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</BaseLayout>
+
+<style>
+  .legal-intro {
+    position: relative;
+    padding-block: calc(var(--header-h) + clamp(3rem, 7vw, 6rem)) clamp(2.5rem, 5vw, 4rem);
+    border-bottom: var(--border);
+    overflow: clip;
+  }
+
+  .legal-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--c-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--c-line) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(70% 90% at 90% 20%, #000, transparent 70%);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .legal-intro .container {
+    position: relative;
+  }
+
+  .legal-intro__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--c-blue-bright);
+  }
+
+  .legal-intro__rule {
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .legal-intro__title {
+    margin-top: var(--s-5);
+    font-size: var(--fs-h1);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.04;
+  }
+
+  .legal-intro__lead {
+    max-width: 40rem;
+    margin-top: var(--s-5);
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--c-text-muted);
+  }
+
+  .legal-intro__meta {
+    margin-top: var(--s-5);
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    letter-spacing: 0.04em;
+    color: var(--c-text-subtle);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .legal-intro__eyebrow,
+    .legal-intro__meta {
+      animation: legal-arrive 0.9s var(--ease-out) backwards;
+    }
+    .legal-intro__title,
+    .legal-intro__lead {
+      animation: legal-settle 1s var(--ease-out) backwards;
+    }
+  }
+
+  @keyframes legal-arrive {
+    from {
+      opacity: 0;
+      translate: 0 10px;
+    }
+  }
+
+  @keyframes legal-settle {
+    from {
+      translate: 0 0.3em;
+    }
+  }
+
+  /* ── Body ───────────────────────────────────────────────── */
+  .legal {
+    display: grid;
+    gap: var(--s-7);
+    padding-block: var(--s-8) var(--s-9);
+  }
+
+  @media (min-width: 1024px) {
+    .legal {
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: var(--s-9);
+    }
+
+    .legal__aside {
+      position: sticky;
+      top: calc(var(--header-h) + var(--s-6));
+      align-self: start;
+    }
+  }
+
+  .legal__toc ol {
+    display: grid;
+    gap: var(--s-1);
+    margin-top: var(--s-4);
+    padding: 0;
+    list-style: none;
+    counter-reset: toc;
+    border-left: var(--border);
+  }
+
+  .legal__toc li {
+    counter-increment: toc;
+  }
+
+  .legal__toc a {
+    display: flex;
+    gap: var(--s-3);
+    min-height: 2rem;
+    align-items: center;
+    padding-left: var(--s-4);
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: var(--fs-small);
+    color: var(--c-text-muted);
+    text-decoration: none;
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .legal__toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: 0.1em;
+    color: var(--c-text-subtle);
+  }
+
+  .legal__toc a:hover {
+    color: var(--c-text);
+    border-left-color: var(--c-cyan);
+  }
+
+  .legal__body {
+    max-width: 46rem;
+    counter-reset: section;
+  }
+
+  .legal__summary {
+    margin-bottom: var(--s-8);
+    padding: var(--s-5) var(--s-6);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(160deg, rgb(11 30 58 / 0.5), rgb(5 8 20 / 0.4) 60%);
+  }
+
+  .legal__summary ul {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+    padding: 0;
+    list-style: none;
+  }
+
+  .legal__summary li {
+    display: flex;
+    gap: var(--s-3);
+    color: var(--c-text);
+  }
+
+  .legal__summary li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    margin-top: 0.65em;
+    flex-shrink: 0;
+    background: var(--c-cyan);
+  }
+
+  /* Section typography, applied to the page's slotted content. */
+  .legal__body :global(section) {
+    counter-increment: section;
+    padding-block: var(--s-6);
+    border-top: var(--border);
+    scroll-margin-top: calc(var(--header-h) + var(--s-5));
+    color: var(--c-text-muted);
+  }
+
+  .legal__body :global(section:first-of-type) {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .legal__body :global(h2) {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    font-size: var(--fs-h3);
+    color: var(--c-text);
+  }
+
+  .legal__body :global(h2)::before {
+    content: counter(section, decimal-leading-zero);
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-blue-bright);
+  }
+
+  .legal__body :global(h3) {
+    margin-top: var(--s-5);
+    font-size: var(--fs-h4);
+    color: var(--c-text);
+  }
+
+  .legal__body :global(section > * + *) {
+    margin-top: 1em;
+  }
+
+  .legal__body :global(section > h2 + *) {
+    margin-top: var(--s-4);
+  }
+
+  .legal__body :global(ul:not([class])) {
+    display: grid;
+    gap: var(--s-2);
+    padding-left: 1.2rem;
+  }
+
+  .legal__body :global(li::marker) {
+    color: var(--c-blue-bright);
+  }
+
+  .legal__body :global(strong) {
+    color: var(--c-text);
+    font-weight: 500;
+  }
+
+  .legal__body :global(a) {
+    color: var(--c-text);
+    text-decoration-color: var(--c-line-signal);
+  }
+
+  .legal__body :global(a:hover) {
+    text-decoration-color: var(--c-cyan);
+  }
+
+  /* ── Also see ───────────────────────────────────────────── */
+  .legal-more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-6);
+    padding-block: var(--s-6) var(--s-9);
+    border-top: var(--border);
+  }
+
+  .legal-more ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .legal-more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    color: var(--c-text-muted);
+    text-decoration: none;
+  }
+
+  .legal-more a:hover {
+    color: var(--c-text);
+  }
+</style>

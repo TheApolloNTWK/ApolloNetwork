@@ -3,18 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import Icon from '../../components/Icon.astro';
 import Button from '../../components/Button.astro';
-import { contact, site } from '../../config/site';
+import { site } from '../../config/site';
+import { obfuscatedEmail } from '../../lib/email';
 
-const email = contact.email;
-// The address is stored reversed and split so it never appears in the HTML
-// in a form that simple harvesters recognise. It is reassembled in the
-// browser only on request.
-const reversed = email
-  ? { u: [...email.user].reverse().join(''), d: [...email.domain].reverse().join('') }
-  : null;
+const reversed = obfuscatedEmail();
 
-// Public enquiries use a GitHub issue form (.github/ISSUE_TEMPLATE/enquiry.yml)
-// until a business email is configured.
+// Public enquiries use a GitHub issue form (.github/ISSUE_TEMPLATE/enquiry.yml),
+// offered alongside email and as the fallback when no address is configured.
 const enquiryUrl = `${site.repository}/issues/new?template=enquiry.yml`;
 
 const topics = [

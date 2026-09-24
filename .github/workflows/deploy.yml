@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Rebuild on 1 January so the footer copyright year stays current.
+  schedule:
+    - cron: '0 6 1 1 *'
   workflow_dispatch:
 
 # Default to no access; each job asks only for what it needs.

@@ -3,30 +3,13 @@
  * pre-rendered <template> elements, user choices are written with
  * textContent, and nothing is sent over the network.
  *
- * The only thing remembered is, for the current tab, that the greeting was
- * seen — so it does not reappear on every page. Storage failures are ignored.
+ * Nothing is stored on the visitor's device: the greeting is offered only on
+ * the page that opts in (the home page), so no "already seen" flag is needed.
  */
 
-const SEEN_KEY = 'apollo-assistant-greeted';
 const GREETING_DELAY_MS = 6000;
 const GREETING_VISIBLE_MS = 12000;
 const MAX_MESSAGES = 8;
-
-function greetingSeen(): boolean {
-  try {
-    return sessionStorage.getItem(SEEN_KEY) === '1';
-  } catch {
-    return true; // No storage: never nag.
-  }
-}
-
-function markGreetingSeen(): void {
-  try {
-    sessionStorage.setItem(SEEN_KEY, '1');
-  } catch {
-    /* ignore */
-  }
-}
 
 export function initAssistant(): void {
   const root = document.querySelector<HTMLElement>('[data-assistant]');
@@ -40,7 +23,6 @@ export function initAssistant(): void {
 
   const hideBubble = () => {
     bubble.hidden = true;
-    markGreetingSeen();
   };
 
   const setOpen = (open: boolean, { focus = true } = {}) => {
@@ -91,8 +73,8 @@ export function initAssistant(): void {
     });
   }
 
-  // A gentle, one-time greeting per tab — never over an open menu or panel.
-  if (!greetingSeen()) {
+  // A gentle greeting on the page that opts in — never over an open menu or panel.
+  if (root.hasAttribute('data-assistant-greet')) {
     window.setTimeout(() => {
       if (panel.hidden && !document.querySelector('[data-header][data-menu-open]')) {
         bubble.hidden = false;

@@ -243,10 +243,15 @@ const nodes = modules.map((m, i) => {
     list-style: none;
   }
 
+  /* Two columns when there is room; one when text is enlarged or space is tight. */
   @media (min-width: 640px) {
     .env-map__list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
     }
+  }
+
+  .env-map__item > div {
+    min-width: 0;
   }
 
   .env-map__item {

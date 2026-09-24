@@ -37,7 +37,7 @@ const props = Astro.props;
       <slot />
     </main>
     <SiteFooter />
-    <Assistant />
+    <Assistant greet={props.path === ''} />
     <script>
       import { initMotion } from '../scripts/motion';
       initMotion();

@@ -161,7 +161,7 @@ import { layers, projectFacts } from '../../data/project';
 
   .band__layer {
     display: grid;
-    grid-template-columns: 2.5rem 1fr auto;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, auto);
     align-items: center;
     gap: var(--s-3);
     padding: var(--s-4);

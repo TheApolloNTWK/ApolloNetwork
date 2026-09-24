@@ -11,4 +11,8 @@ export const indexableRoutes = [
   'about/',
   'contact/',
   'privacy/',
+  'terms/',
+  'cookies/',
+  'accessibility/',
+  'security/',
 ] as const;
