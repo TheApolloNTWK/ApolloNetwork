@@ -9,6 +9,7 @@ import ApplicationBand from '../components/home/ApplicationBand.astro';
 import ServiceIndex from '../components/ServiceIndex.astro';
 import WorkCard from '../components/WorkCard.astro';
 import ContactCTA from '../components/ContactCTA.astro';
+import WorkWithUs from '../components/home/WorkWithUs.astro';
 import Button from '../components/Button.astro';
 import { selectedWork } from '../data/work';
 import { businessPrinciples } from '../data/company';
@@ -29,19 +30,10 @@ const structuredData = {
 <BaseLayout path="" structuredData={structuredData}>
   <Hero />
 
-  <section class="section intro" id="intro" aria-labelledby="intro-label">
-    <div class="container">
-      <p class="label label--signal intro__label" id="intro-label">
-        01 — The idea
-      </p>
-      <Statement text="Most businesses do not need more technology. They need the right piece, built properly: a website that brings work in, a tool that finds the next customer, an automation that gives an hour back. *APOLLO* *Network* *builds* *those* *pieces* — and makes sure you understand and control them." />
-    </div>
-  </section>
-
-  <section class="section services-section" aria-labelledby="work-title">
+  <section class="section services-section" id="services" aria-labelledby="work-title">
     <div class="container stack">
       <SectionHeading
-        index="02"
+        index="01"
         eyebrow="What we do"
         title="Useful digital and AI systems, built for you."
         id="work-title"
@@ -54,23 +46,25 @@ const structuredData = {
       <ServiceIndex />
       <div data-reveal>
         <Button href="services/" variant="text">
-          All services and how engagements work
+          All services in detail
         </Button>
       </div>
     </div>
   </section>
+
+  <WorkWithUs />
 
   <section class="section" aria-labelledby="selected-title">
     <div class="container stack">
       <SectionHeading
         index="03"
         eyebrow="Selected work"
-        title="Built, running, and honest about it."
+        title="Things we have built."
         id="selected-title"
       >
         <p>
-          A working lead-finding tool, the site you are reading, and our own application in private
-          development — each labelled for exactly what it is.
+          A lead-finding tool built for real work, the website you are reading, and the APOLLO
+          Network Application in private development.
         </p>
       </SectionHeading>
       <div class="home-cards">
@@ -90,10 +84,21 @@ const structuredData = {
 
   <Triad />
 
+  <section class="section intro" aria-labelledby="intro-label">
+    <div class="container">
+      <p class="label label--signal intro__label" id="intro-label">
+        05 — The idea
+      </p>
+      <Statement text="Most businesses do not need more technology. They need the right piece, built properly: a website that brings work in, a tool that finds the next customer, an automation that gives an hour back. *APOLLO* *Network* *builds* *those* *pieces* — and makes sure you understand and control them." />
+    </div>
+  </section>
+
+  <ApplicationBand />
+
   <section class="section principles-section" aria-labelledby="principles-title">
     <div class="container stack">
       <SectionHeading
-        index="05"
+        index="07"
         eyebrow="Principles"
         title="Technology you understand and control."
         id="principles-title"
@@ -102,14 +107,12 @@ const structuredData = {
     </div>
   </section>
 
-  <ApplicationBand />
-
   <ContactCTA />
 </BaseLayout>
 
 <style>
   .intro {
-    padding-block: var(--section-y) calc(var(--section-y) * 0.5);
+    padding-block: calc(var(--section-y) * 0.8);
   }
 
   .intro__label {
@@ -117,7 +120,8 @@ const structuredData = {
   }
 
   .services-section {
-    padding-top: calc(var(--section-y) * 0.6);
+    padding-bottom: calc(var(--section-y) * 0.45);
+    scroll-margin-top: var(--header-h);
   }
 
   .home-cards {

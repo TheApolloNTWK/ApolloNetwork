@@ -4,12 +4,20 @@ import Button from './Button.astro';
 interface Props {
   title?: string;
   body?: string;
+  /** Contact page topic to pre-select (see enquiryTopics in src/data/work.ts). */
+  topic?: string;
+  /** Secondary link; pass null to omit it on pages where it would point back to itself. */
+  secondary?: { href: string; label: string } | null;
 }
 
 const {
   title = 'Let’s build something useful.',
-  body = 'Have a project in mind, a question about APOLLO Network, or a problem worth automating? Start a conversation.',
+  body = 'Have a project in mind, a question about APOLLO Network, or a problem worth automating? Start a conversation — every project is talked through and scoped before anything is agreed.',
+  topic,
+  secondary = { href: 'services/#process', label: 'How an engagement works' },
 } = Astro.props;
+
+const contactHref = topic ? `contact/?topic=${encodeURIComponent(topic)}` : 'contact/';
 ---
 
 <section class="cta" aria-labelledby="cta-title">
@@ -34,12 +42,14 @@ const {
     </h2>
     <p class="cta__body">{body}</p>
     <div class="cta__actions">
-      <Button href="contact/" variant="primary">
+      <Button href={contactHref} variant="primary">
         Start a conversation
       </Button>
-      <Button href="services/" variant="text">
-        How we work
-      </Button>
+      {secondary && (
+        <Button href={secondary.href} variant="text">
+          {secondary.label}
+        </Button>
+      )}
     </div>
   </div>
 </section>

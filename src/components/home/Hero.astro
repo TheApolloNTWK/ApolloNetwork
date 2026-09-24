@@ -28,16 +28,16 @@ import { triad } from '../../data/environment';
     </h1>
 
     <p class="hero__lead">
-      APOLLO Network builds AI, software, automation and digital systems for businesses that want
-      technology to earn its keep — from websites and SaaS tools to lead finding and AI guidance.
+      APOLLO Network designs and builds websites, software, automation and AI tools for businesses
+      that want technology to earn its keep.
     </p>
 
     <div class="hero__actions">
       <Button href="services/" variant="primary">
         Explore services
       </Button>
-      <Button href="portfolio/" variant="ghost">
-        See our work
+      <Button href="contact/" variant="ghost">
+        Discuss your project
       </Button>
     </div>
 
@@ -54,7 +54,7 @@ import { triad } from '../../data/environment';
   </div>
 
   <div class="hero__foot container">
-    <a class="hero__scroll" href="#intro">
+    <a class="hero__scroll" href="#services">
       <span class="hero__scroll-ring">
         <Icon name="down" size={16} />
       </span>
@@ -328,15 +328,28 @@ import { triad } from '../../data/environment';
 
     /* On phones the core sits above the copy rather than behind it. */
     .hero__visual {
-      top: calc(var(--header-h) - 2rem);
+      top: calc(var(--header-h) - 2.5rem);
       right: 50%;
-      width: min(120vw, 34rem);
+      width: min(104vw, 30rem);
       transform: translateX(50%);
       opacity: 0.85;
     }
 
+    /* Room for the core, while the proposition and first action stay in the first screen. */
     .hero__content {
-      padding-top: min(78vw, 24rem);
+      padding-top: min(50vw, 15rem);
+    }
+
+    .hero__title {
+      margin-top: var(--s-4);
+    }
+
+    .hero__lead {
+      margin-top: var(--s-4);
+    }
+
+    .hero__actions {
+      margin-top: var(--s-6);
     }
 
     /* The brand is already in the header on phones; keep the eyebrow to one line. */
@@ -353,6 +366,26 @@ import { triad } from '../../data/environment';
 
     .hero__actions :global(.btn) {
       flex: 1 1 12rem;
+    }
+  }
+
+  /* Short phones: shrink the core's share of the first screen further. */
+  @media (max-width: 767px) and (max-height: 700px) {
+    .hero__visual {
+      top: calc(var(--header-h) - 4rem);
+      width: min(84vw, 22rem);
+    }
+
+    .hero__content {
+      padding-top: min(24vw, 6rem);
+    }
+
+    .hero__eyebrow {
+      display: none;
+    }
+
+    .hero__title {
+      margin-top: 0;
     }
   }
 

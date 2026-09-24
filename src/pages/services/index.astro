@@ -51,8 +51,11 @@ import { engagementSteps, services } from '../../data/work';
                 <li>{e}</li>
               ))}
             </ul>
-            {s.evidence && (
-              <div class="svc__evidence">
+            <div class="svc__actions">
+              <Button href={`contact/?topic=${s.id}`} variant="ghost">
+                {s.enquiry}
+              </Button>
+              {s.evidence && (
                 <Button
                   href={s.evidence.path}
                   variant="text"
@@ -60,15 +63,15 @@ import { engagementSteps, services } from '../../data/work';
                 >
                   {s.evidence.label}
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </li>
         ))}
       </ol>
     </div>
   </section>
 
-  <section class="section band-tone" aria-labelledby="process-title">
+  <section class="section band-tone process" id="process" aria-labelledby="process-title">
     <div class="container stack">
       <div class="split">
         <div class="split__aside" data-reveal>
@@ -78,8 +81,8 @@ import { engagementSteps, services } from '../../data/work';
           </h2>
         </div>
         <p class="lead" data-reveal data-reveal-order="1">
-          Plain steps, written agreements and no surprises. Pricing is scoped per project and agreed
-          before work begins.
+          Every project starts with a conversation and a written scope. Nothing is agreed until you
+          have seen exactly what will be built and what it will cost.
         </p>
       </div>
       <ol class="steps" role="list">
@@ -104,6 +107,7 @@ import { engagementSteps, services } from '../../data/work';
   <ContactCTA
     title="Have a problem worth solving?"
     body="Describe it in a few sentences. You will get a straight answer on whether APOLLO Network is the right fit."
+    secondary={null}
   />
 </BaseLayout>
 
@@ -249,7 +253,15 @@ import { engagementSteps, services } from '../../data/work';
     color: var(--c-text-muted);
   }
 
-  .svc__evidence {
-    margin-top: var(--s-1);
+  .svc__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-5);
+    margin-top: var(--s-2);
+  }
+
+  .process {
+    scroll-margin-top: var(--header-h);
   }
 </style>

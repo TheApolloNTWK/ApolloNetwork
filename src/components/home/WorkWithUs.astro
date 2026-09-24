@@ -1,0 +1,154 @@
+---
+/**
+ * Compact commercial invitation placed straight after the services on the
+ * home page, so visitors with a project can act before the longer story.
+ */
+import Button from '../Button.astro';
+import { link } from '../../lib/url';
+
+const quickTopics = [
+  { id: 'web', label: 'A website' },
+  { id: 'software', label: 'Software or SaaS' },
+  { id: 'automation', label: 'Automation' },
+  { id: 'leads', label: 'Lead finding' },
+] as const;
+---
+
+<section class="section section--tight wwu" aria-labelledby="wwu-title">
+  <div class="container">
+    <div class="wwu__panel" data-reveal>
+      <div class="wwu__text">
+        <p class="label label--signal wwu__eyebrow">
+          <span class="wwu__index">02</span>
+          <span class="wwu__rule" aria-hidden="true"></span>
+          Work with us
+        </p>
+        <h2 id="wwu-title" class="wwu__title">
+          Have a project in mind?
+        </h2>
+        <p class="wwu__body">
+          Tell us what you want to build, fix or automate. We will talk it through and put the scope
+          in writing — nothing is agreed until you are happy with it.
+        </p>
+      </div>
+
+      <div class="wwu__actions">
+        <Button href="contact/" variant="primary">
+          Discuss your project
+        </Button>
+        <p class="wwu__quick-label" id="wwu-quick">
+          Or start with a topic:
+        </p>
+        <ul class="wwu__quick" role="list" aria-labelledby="wwu-quick">
+          {quickTopics.map((t) => (
+            <li>
+              <a href={link(`contact/?topic=${t.id}`)}>{t.label}</a>
+            </li>
+          ))}
+        </ul>
+        <Button href="services/#process" variant="text">
+          How an engagement works
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .wwu {
+    padding-top: 0;
+  }
+
+  .wwu__panel {
+    display: grid;
+    gap: var(--s-7);
+    padding: var(--s-7) var(--s-6);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgb(27 77 255 / 0.18), transparent 70%),
+      linear-gradient(160deg, rgb(11 30 58 / 0.55), rgb(5 8 20 / 0.5) 60%);
+  }
+
+  @media (min-width: 1024px) {
+    .wwu__panel {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--s-9);
+      padding: var(--s-8);
+    }
+  }
+
+  .wwu__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .wwu__index {
+    color: var(--c-text-subtle);
+  }
+
+  .wwu__rule {
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+  }
+
+  .wwu__title {
+    margin-top: var(--s-4);
+    font-size: var(--fs-h2);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .wwu__body {
+    max-width: 34rem;
+    margin-top: var(--s-4);
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--c-text-muted);
+  }
+
+  .wwu__actions {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+  }
+
+  .wwu__quick-label {
+    margin-top: var(--s-2);
+    font-size: var(--fs-small);
+    color: var(--c-text-subtle);
+  }
+
+  .wwu__quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: calc(var(--s-2) * -1);
+    padding: 0;
+    list-style: none;
+  }
+
+  .wwu__quick a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.9rem;
+    border: var(--border-strong);
+    border-radius: var(--radius-xs);
+    font-size: var(--fs-small);
+    color: var(--c-text);
+    text-decoration: none;
+    transition:
+      border-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .wwu__quick a:hover,
+  .wwu__quick a:focus-visible {
+    border-color: var(--c-line-signal);
+    color: var(--c-cyan);
+  }
+</style>
