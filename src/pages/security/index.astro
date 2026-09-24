@@ -12,7 +12,8 @@ const toc = [
   { id: 'principles', title: 'How the site is protected' },
 ];
 
-const policyUrl = `${site.repository}/security/policy`;
+// Private vulnerability reporting is enabled on the repository: this opens the private form.
+const reportUrl = `${site.repository}/security/advisories/new`;
 ---
 
 <LegalLayout
@@ -29,11 +30,11 @@ const policyUrl = `${site.repository}/security/policy`;
   <section id="report" aria-labelledby="report-title">
     <h2 id="report-title">How to report</h2>
     <p>
-      Use GitHub’s private vulnerability reporting for this website’s repository: open the{' '}
-      <a href={policyUrl} rel="noopener noreferrer external">
-        security policy on GitHub<span class="visually-hidden"> (opens external site)</span>
-      </a>{' '}
-      and choose <strong>Report a vulnerability</strong>. Only APOLLO Network can see what you send.
+      Use GitHub’s private vulnerability reporting for this website’s repository:{' '}
+      <a href={reportUrl} rel="noopener noreferrer external">
+        open a private report on GitHub<span class="visually-hidden"> (opens external site)</span>
+      </a>
+      . You will need to be signed in to GitHub. Only APOLLO Network can see what you send.
     </p>
     <p>
       If you cannot use GitHub, email <EmailReveal label="Show security contact" /> with a short
