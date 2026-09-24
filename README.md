@@ -5,7 +5,7 @@ A Personal Intelligence Environment. **Understand. Build. Execute.**
 This repository contains the **public website** for APOLLO Network. The private APOLLO system it
 describes is not part of this repository and must never be added to it.
 
-Live site (once deployed): <https://theapollontwk.github.io/ApolloNetwork/>
+Live site: <https://theapollontwk.github.io/ApolloNetwork/>
 
 ---
 
