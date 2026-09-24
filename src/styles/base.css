@@ -114,14 +114,22 @@ h4 {
   line-height: var(--lh-heading);
   letter-spacing: var(--tracking-heading);
   text-wrap: balance;
-  /* Long words break rather than overflow when text is enlarged. */
+  /* Long words break rather than overflow at 200% text; no automatic hyphens. */
   overflow-wrap: anywhere;
-  hyphens: auto;
 }
 
 p,
 li {
   text-wrap: pretty;
+}
+
+/* Body text in narrow grid cells: long words wrap instead of spilling at large text sizes. */
+p,
+li,
+dt,
+dd,
+.label {
+  overflow-wrap: break-word;
 }
 
 ::selection {

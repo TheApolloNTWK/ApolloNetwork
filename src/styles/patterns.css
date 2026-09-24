@@ -4,6 +4,7 @@
    stays in view while its content scrolls on large screens. */
 .split {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-6) var(--s-9);
 }
 
@@ -77,6 +78,7 @@
 /* Stack: consistent vertical rhythm between blocks of a section. */
 .stack {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-8);
 }
 

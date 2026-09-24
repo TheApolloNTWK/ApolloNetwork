@@ -118,7 +118,7 @@ until every item below is done:
   Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013, and the
   Consumer Rights Act 2015.
 - Payment processor disclosure in Privacy; never handle card data directly.
-- Business information displayed (see "Decisions for Corey"), tax/VAT position.
+- Business information displayed (see "Decisions for the owner"), tax/VAT position.
 
 ### SaaS or tools
 
@@ -163,7 +163,7 @@ No products or services are sold through the website, and the site says so. Befo
 Once decided, add pages (for example `/terms/services/`), register them in `src/config/legal.ts`,
 and link them from the Terms of Use and footer.
 
-## Decisions for Corey
+## Decisions for the owner
 
 1. **Business identity and address.** The Electronic Commerce (EC Directive) Regulations 2002
    generally require a business website to show the provider's name and a **geographic address**
@@ -180,8 +180,9 @@ and link them from the Terms of Use and footer.
 5. **Governing law.** The Terms name Northern Ireland; confirm.
 6. **Domain email.** Replace the Gmail address with a domain address when available: change
    `contact.email` and the Google entry in `processing.ts` if the provider changes.
-7. **GitHub private vulnerability reporting.** Enable it in the repository settings; the Security page
-   depends on it.
+7. **GitHub private vulnerability reporting.** Enabled (confirmed through GitHub's API on
+   24 September 2026). The Security page links straight to the private report form; keep the
+   setting on.
 
 ## For professional legal review
 

@@ -34,7 +34,7 @@ export const assistantTopics: AssistantTopic[] = [
       'APOLLO Network designs and builds fast, accessible, secure websites — like this one — that are cheap to host and easy to maintain. Tell us what the site needs to do and who it is for.',
     links: [
       { label: 'Website services', href: 'services/#web' },
-      { label: 'Start an enquiry', href: 'contact/' },
+      { label: 'Discuss a website', href: 'contact/?topic=web' },
     ],
   },
   {
@@ -44,17 +44,18 @@ export const assistantTopics: AssistantTopic[] = [
       'Custom software and SaaS tools built around a real need — from internal tools to writing aids — with a person accountable for every line.',
     links: [
       { label: 'Software & SaaS', href: 'services/#software' },
-      { label: 'Start an enquiry', href: 'contact/' },
+      { label: 'Discuss software', href: 'contact/?topic=software' },
     ],
   },
   {
     id: 'leads',
     prompt: 'Finding new leads',
     answer:
-      'Our Lead Finder tooling looks for local businesses that could use what you offer — including ones with little or no web presence.',
+      'APOLLO Network’s Lead Finder looks for local businesses that could use what you offer — including ones with little or no web presence.',
     links: [
       { label: 'Lead finding', href: 'services/#leads' },
       { label: 'About Lead Finder', href: 'portfolio/#lead-finder' },
+      { label: 'Discuss lead finding', href: 'contact/?topic=leads' },
     ],
   },
   {
@@ -64,7 +65,7 @@ export const assistantTopics: AssistantTopic[] = [
       'Practical, plain-English help: which AI tools fit your work, how to use them safely, and where they are not worth the effort.',
     links: [
       { label: 'AI guidance', href: 'services/#ai' },
-      { label: 'Start an enquiry', href: 'contact/' },
+      { label: 'Ask about AI', href: 'contact/?topic=ai' },
     ],
   },
   {
@@ -74,7 +75,7 @@ export const assistantTopics: AssistantTopic[] = [
       'Rules-heavy, repetitive work can often be handed to software — with people kept in charge of the decisions that matter.',
     links: [
       { label: 'Workflow & AI automation', href: 'services/#automation' },
-      { label: 'Start an enquiry', href: 'contact/' },
+      { label: 'Discuss automation', href: 'contact/?topic=automation' },
     ],
   },
   {
@@ -83,15 +84,32 @@ export const assistantTopics: AssistantTopic[] = [
     answer:
       'There are no fixed packages. Each project is scoped in writing and priced before any work begins, so you know exactly what you are paying for.',
     links: [
-      { label: 'How engagements work', href: 'services/#process-title' },
+      { label: 'How engagements work', href: 'services/#process' },
       { label: 'Ask for a quote', href: 'contact/' },
+    ],
+  },
+  {
+    id: 'work',
+    prompt: 'Show me your work',
+    answer:
+      'The portfolio covers the Lead Finder tool, this website and the APOLLO Network Application. It is a young portfolio: client projects are added once delivered and the client agrees.',
+    links: [{ label: 'Portfolio', href: 'portfolio/' }],
+  },
+  {
+    id: 'about',
+    prompt: 'Who is APOLLO Network?',
+    answer:
+      'An independent technology business, based in Northern Ireland, that builds websites, software, automation and AI tools. The APOLLO Network Application is one of its projects — not the business itself.',
+    links: [
+      { label: 'About APOLLO Network', href: 'about/' },
+      { label: 'Services', href: 'services/' },
     ],
   },
   {
     id: 'application',
     prompt: 'What is the APOLLO application?',
     answer:
-      'Our flagship project: a personal intelligence environment. It is a real, working system in private development — not available to download yet.',
+      'A project within APOLLO Network: a personal intelligence environment. It is a real, working system in private development — not available to download, with no release date announced.',
     links: [
       { label: 'The application', href: 'application/' },
       { label: 'The vision', href: 'application/vision/' },

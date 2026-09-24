@@ -25,7 +25,7 @@ const privateItems = [
   <PageIntro
     eyebrow="APOLLO Network Application"
     title="A personal intelligence environment."
-    lead="APOLLO Network’s flagship project: one environment for the AI you rely on. It is a real, working system — built privately, in active development, and not yet available to the public. This page describes it at the level of ideas, not implementation."
+    lead="The most ambitious project within APOLLO Network: one environment for the AI you rely on. It is a real, working system in active private development, and not yet available to the public. This page describes it at the level of ideas, not implementation."
   >
     <dl class="facts">
       {projectFacts.map((f) => (
@@ -173,7 +173,7 @@ const privateItems = [
           working system before they are promised to anyone.
         </p>
         <p>
-          <strong>Honesty about maturity.</strong> Some parts are solid, some are still being
+          <strong>Maturity, stated plainly.</strong> Some parts are solid, some are still being
           refined, and some are still being built. When any of it is ready for other people, this
           site will say so — clearly, and not before.
         </p>
@@ -192,7 +192,7 @@ const privateItems = [
       <div class="stack stack--sm" data-reveal data-reveal-order="1">
         <p class="lead">
           This website is public and its code is viewable. The system it describes is not, and the
-          two are entirely separate — nothing on this site connects to APOLLO Network itself.
+          two are entirely separate — nothing on this site connects to the application.
         </p>
         <ul class="private" role="list">
           {privateItems.map((item) => (
@@ -208,7 +208,9 @@ const privateItems = [
 
   <ContactCTA
     title="Interested in where this goes?"
-    body="Questions about APOLLO Network, thoughts on the approach, or a use you have in mind — all welcome."
+    body="Questions about the application, thoughts on the approach, or a use you have in mind — all welcome."
+    topic="application"
+    secondary={{ href: 'services/', label: 'What APOLLO Network builds today' }}
   />
 </BaseLayout>
 
@@ -227,7 +229,7 @@ const privateItems = [
 
   .facts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--s-5);
     max-width: 56rem;
     margin-top: var(--s-8);
@@ -256,6 +258,7 @@ const privateItems = [
   .compare {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-5);
   }
 

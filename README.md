@@ -30,7 +30,7 @@ src/
   data/                 Page content as typed data (services, work, principles, project layers)
   layouts/BaseLayout    Document shell: head, metadata, header, footer
   components/           Reusable components (Button, SectionHeading, EnvironmentMap, …)
-    home/               Home-page-only sections (Hero, Triad, ApplicationBand)
+    home/               Home-page-only sections (Hero, WorkWithUs, Triad, ApplicationBand)
   pages/                One file per route; sitemap.xml, robots.txt and site.webmanifest endpoints
   scripts/              Client scripts: motion system, header menu, hero canvas, contact composer
   styles/
@@ -46,7 +46,9 @@ docs/                   Security architecture and platform limitations
 ### Adding content
 
 - **A service** — add an entry to `services` in `src/data/work.ts`. It appears on the home page
-  and the Services page, with an anchor link.
+  and the Services page, with an anchor link and a "Discuss …" link. Its `id` is also an enquiry
+  topic: add a matching entry to `enquiryTopics` so `contact/?topic=<id>` pre-selects it (a test
+  checks every topic link).
 - **A portfolio item** — add to `selectedWork` in `src/data/work.ts`. It appears on the home page
   and the Portfolio page. Only real, showable work.
 - **An assistant answer** — add a topic to `src/data/assistant.ts`.

@@ -147,7 +147,8 @@ describe('pages', () => {
             continue;
           }
           assert.ok(ref.startsWith(`${BASE}/`), `${name}: link not under base path: ${ref}`);
-          const [path, hash] = ref.split('#');
+          const [pathAndQuery, hash] = ref.split('#');
+          const [path] = pathAndQuery.split('?');
           const target = resolveToFile(path);
           assert.ok(target, `${name}: broken link ${ref}`);
           if (hash && target.endsWith('.html')) {
@@ -193,9 +194,15 @@ describe('bundles', () => {
     }
   });
 
+  // The Privacy and Cookie pages state that nothing is sent from the page. This
+  // test (with connect-src 'none') is what keeps that statement true: adding a
+  // network feature must fail here until the legal pages are updated too.
   test('no network calls from client code', () => {
     for (const code of [...js.map((f) => read(f)), ...inline]) {
-      assert.doesNotMatch(code, /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|EventSource/);
+      assert.doesNotMatch(
+        code,
+        /\bfetch\(|XMLHttpRequest|WebSocket|sendBeacon|EventSource|RTCPeerConnection|import\(\s*['"`]https?:/,
+      );
     }
   });
 
@@ -280,6 +287,53 @@ describe('content integrity', () => {
     const home = read(join(DIST, 'index.html'));
     assert.match(home, /data-assistant/);
     assert.match(text(home), /not AI/);
+  });
+
+  test('inline links keep the space before them', () => {
+    for (const { name, html } of pages) {
+      assert.doesNotMatch(
+        html,
+        /[a-z,]<a href="[^"]*"(?![^>]*class=)/,
+        `${name}: text runs into a link`,
+      );
+    }
+  });
+
+  test('the organisation and the application are not conflated', () => {
+    for (const f of htmlFiles()) {
+      const t = text(read(f));
+      assert.doesNotMatch(t, /connects to APOLLO Network itself/, rel(f));
+      assert.doesNotMatch(t, /APOLLO Network (began|is designed to outlive)/, rel(f));
+      assert.doesNotMatch(t, /keeps the lights on|paying clients|our clients/i, rel(f));
+    }
+  });
+
+  test('the home page offers services and a way to engage before the application story', () => {
+    const home = read(join(DIST, 'index.html'));
+    const at = (re) => home.search(re);
+    const services = at(/id="work-title"/);
+    const engage = at(/id="wwu-title"/);
+    const application = at(/id="band-title"/);
+    assert.ok(services > 0 && engage > services && application > engage, 'home order');
+    const hero = home.slice(0, at(/id="services"/));
+    assert.match(hero, /href="[^"]*\/contact\/"/, 'hero offers a direct contact action');
+  });
+
+  test('topic links on any page match a topic offered on the contact page', () => {
+    const contact = read(join(DIST, 'contact', 'index.html'));
+    const offered = new Set([...contact.matchAll(/<option value="([^"]+)"/g)].map((m) => m[1]));
+    for (const f of htmlFiles()) {
+      for (const m of read(f).matchAll(/contact\/\?topic=([a-z-]+)/g)) {
+        assert.ok(offered.has(m[1]), `${rel(f)}: unknown topic ${m[1]}`);
+      }
+    }
+  });
+
+  test('security reports are routed to the private reporting form', () => {
+    for (const p of ['security', 'contact']) {
+      const html = read(join(DIST, p, 'index.html'));
+      assert.match(html, /\/security\/advisories\/new"/, p);
+    }
   });
 
   test('Lead Finder is present as real, conservatively described work', () => {

@@ -14,6 +14,8 @@ export interface Service {
   icon: IconName;
   summary: string;
   examples: string[];
+  /** Label for the contextual enquiry link, which pre-selects this topic on the contact page. */
+  enquiry: string;
   /** Real work that demonstrates this capability, where it exists. */
   evidence?: Evidence;
 }
@@ -31,6 +33,7 @@ export const services: Service[] = [
     summary:
       'Fast, accessible, secure websites with a considered visual identity — designed and built for you, cheap to host and easy to maintain.',
     examples: ['Business and brand sites', 'Redesigns', 'Accessibility and performance'],
+    enquiry: 'Discuss a website',
     evidence: { label: 'Example: this website', path: 'portfolio/#website' },
   },
   {
@@ -40,6 +43,7 @@ export const services: Service[] = [
     summary:
       'Custom software and software-as-a-service tools built around a real need — from writing aids to internal tools — with a person accountable for every line.',
     examples: ['Web applications', 'SaaS tools', 'Writing and content tools'],
+    enquiry: 'Discuss software',
   },
   {
     id: 'leads',
@@ -48,6 +52,7 @@ export const services: Service[] = [
     summary:
       'Finding businesses that could use what you offer — including those with little or no web presence — using APOLLO Network’s own lead-finding tools.',
     examples: ['Local-business discovery', 'Web-presence checks', 'Opportunity lists'],
+    enquiry: 'Discuss lead finding',
     evidence: { label: 'Example: Lead Finder', path: 'portfolio/#lead-finder' },
   },
   {
@@ -57,6 +62,7 @@ export const services: Service[] = [
     summary:
       'Practical help using AI well: which tools fit your work, how to use them safely, and where they are not worth the effort.',
     examples: ['Choosing the right tools', 'Hands-on guidance', 'Safe, sensible use'],
+    enquiry: 'Ask about AI',
   },
   {
     id: 'automation',
@@ -65,6 +71,7 @@ export const services: Service[] = [
     summary:
       'Repetitive, rules-heavy work handed to software — including AI where it genuinely helps — with people kept in charge of the decisions that matter.',
     examples: ['Multi-step workflows', 'Connecting your tools', 'Human approval steps'],
+    enquiry: 'Discuss automation',
   },
   {
     id: 'experiments',
@@ -73,8 +80,26 @@ export const services: Service[] = [
     summary:
       'A quick, honest test of whether an idea works — before anyone commits to building the whole thing.',
     examples: ['Proofs of concept', 'Feasibility checks', 'AI capability trials'],
+    enquiry: 'Discuss a prototype',
   },
 ];
+
+/**
+ * Topics offered on the contact page. A service's id doubles as its topic, so
+ * `contact/?topic=web` arrives with "A website" already selected.
+ */
+export const enquiryTopics = [
+  { id: 'web', label: 'A website' },
+  { id: 'software', label: 'Software or a SaaS tool' },
+  { id: 'leads', label: 'Lead finding' },
+  { id: 'ai', label: 'Help using AI' },
+  { id: 'automation', label: 'Workflow or AI automation' },
+  { id: 'experiments', label: 'A prototype or experiment' },
+  { id: 'application', label: 'The APOLLO Network Application' },
+  { id: 'other', label: 'Something else' },
+] as const;
+
+export type EnquiryTopic = (typeof enquiryTopics)[number]['id'];
 
 export const engagementSteps = [
   {
@@ -125,8 +150,7 @@ export const selectedWork: WorkItem[] = [
       'A tool for discovering potential local-business opportunities — including businesses that may lack a website or a strong web presence — to support lead-generation work.',
     details: [
       'Built and used within APOLLO Network',
-      'Focused on local businesses and their web presence',
-      'Practical automation, applied to a real workflow',
+      'Finds local businesses, checks their web presence and builds opportunity lists',
     ],
     tags: ['Automation', 'Data gathering', 'Lead generation'],
     glyph: 'map',

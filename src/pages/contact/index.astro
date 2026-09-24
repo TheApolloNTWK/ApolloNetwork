@@ -5,6 +5,7 @@ import Icon from '../../components/Icon.astro';
 import Button from '../../components/Button.astro';
 import { site } from '../../config/site';
 import { obfuscatedEmail } from '../../lib/email';
+import { enquiryTopics } from '../../data/work';
 
 const reversed = obfuscatedEmail();
 
@@ -12,22 +13,19 @@ const reversed = obfuscatedEmail();
 // offered alongside email and as the fallback when no address is configured.
 const enquiryUrl = `${site.repository}/issues/new?template=enquiry.yml`;
 
-const topics = [
-  'A project or service enquiry',
-  'A question about APOLLO Network',
-  'Something else',
-];
+// Private vulnerability reporting is enabled on the repository; this opens the private form.
+const securityReportUrl = `${site.repository}/security/advisories/new`;
 ---
 
 <BaseLayout
   path="contact/"
   title="Contact"
-  description="Get in touch with APOLLO Network about a project, a service enquiry or the personal intelligence environment."
+  description="Get in touch with APOLLO Network about a website, software, automation or another project. Every project is talked through and scoped before anything is agreed."
 >
   <PageIntro
     eyebrow="Contact"
     title="Start a conversation."
-    lead="A project in mind, a question about APOLLO Network, or a problem you suspect could be automated — a few sentences is enough to begin."
+    lead="A project in mind, a question about APOLLO Network, or a problem you suspect could be automated — a few sentences is enough to begin. Every project is talked through and scoped in writing before anything is agreed."
   />
 
   <section class="section" aria-labelledby="channel-title">
@@ -40,9 +38,8 @@ const topics = [
                 Send an enquiry
               </h2>
               <p class="contact__intro">
-                This form does not send anything by itself. It prepares a message in your own email
-                app, addressed to APOLLO Network, so you can review it before it goes — nothing
-                passes through this website on the way.
+                This form prepares a message in your own email app, addressed to APOLLO Network, so
+                you can review it before it goes. Nothing passes through this website on the way.
               </p>
 
               <noscript>
@@ -70,8 +67,8 @@ const topics = [
                 <div class="form__field">
                   <label for="f-topic">Topic</label>
                   <select id="f-topic" name="topic" required>
-                    {topics.map((t) => (
-                      <option value={t}>{t}</option>
+                    {enquiryTopics.map((t) => (
+                      <option value={t.id}>{t.label}</option>
                     ))}
                   </select>
                 </div>
@@ -100,6 +97,34 @@ const topics = [
                 </div>
 
                 <p class="form__status" role="status" aria-live="polite" data-composer-status></p>
+
+                <div class="fallback" data-composer-fallback hidden>
+                  <h3 class="fallback__title">Email app did not open?</h3>
+                  <p class="fallback__body">
+                    Copy the prepared message and send it from any email account to{' '}
+                    <strong class="fallback__address" data-fallback-address></strong>.
+                  </p>
+                  <div class="fallback__actions">
+                    <button type="button" class="copy-btn" data-copy="message">
+                      Copy message
+                    </button>
+                    <button type="button" class="copy-btn" data-copy="address">
+                      Copy email address
+                    </button>
+                  </div>
+                  <label class="visually-hidden" for="f-prepared">
+                    Prepared message
+                  </label>
+                  <textarea
+                    id="f-prepared"
+                    class="fallback__text"
+                    rows="6"
+                    readonly
+                    data-fallback-text
+                    hidden
+                  ></textarea>
+                  <p class="fallback__status" role="status" aria-live="polite" data-copy-status></p>
+                </div>
               </form>
 
               <h2 class="contact__subtitle">Other ways to reach us</h2>
@@ -131,6 +156,15 @@ const topics = [
                 </div>
                 <button type="button" class="channel__reveal" data-reveal-address hidden>
                   Show email address
+                </button>
+                <button
+                  type="button"
+                  class="copy-btn"
+                  data-copy="address"
+                  data-copy-after-reveal
+                  hidden
+                >
+                  Copy address
                 </button>
               </li>
             ) : (
@@ -194,9 +228,9 @@ const topics = [
           <li>Sensitive personal or financial data</li>
           <li>
             <span>
-              Security vulnerabilities — see the{' '}
-              <a href={`${site.repository}/security/policy`} rel="noopener noreferrer external">
-                security policy<span class="visually-hidden"> (opens external site)</span>
+              Security vulnerabilities —{' '}
+              <a href={securityReportUrl} rel="noopener noreferrer external">
+                report them privately<span class="visually-hidden"> (opens external site)</span>
               </a>
             </span>
           </li>
@@ -214,6 +248,7 @@ const topics = [
 <style>
   .contact {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-8);
   }
 
@@ -354,6 +389,68 @@ const topics = [
     display: none;
   }
 
+  /* ── Fallback when no email app opens ───────────────────── */
+  .fallback {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--c-space);
+  }
+
+  .fallback__title {
+    font-size: var(--fs-h4);
+  }
+
+  .fallback__body {
+    font-size: var(--fs-small);
+    color: var(--c-text-muted);
+  }
+
+  .fallback__address {
+    font-weight: 500;
+    color: var(--c-text);
+    overflow-wrap: anywhere;
+  }
+
+  .fallback__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .form .fallback__text {
+    min-height: 8rem;
+    font-size: var(--fs-small);
+  }
+
+  .fallback__status:empty {
+    display: none;
+  }
+
+  .fallback__status {
+    font-size: var(--fs-small);
+    color: var(--c-cyan);
+  }
+
+  .copy-btn {
+    min-height: 2.75rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--c-text);
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .copy-btn:hover {
+    border-color: var(--c-line-signal);
+  }
+
   .form__status {
     padding: var(--s-4);
     border-left: 2px solid var(--c-cyan);
@@ -403,9 +500,10 @@ const topics = [
     list-style: none;
   }
 
+  /* Icon and text share a row; the action wraps beneath them when space runs out. */
   .channel {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--s-4) var(--s-5);
     align-items: center;
     padding: var(--s-5);
@@ -419,20 +517,13 @@ const topics = [
     border-color: var(--c-line-signal);
   }
 
-  .channel > :global(.btn),
-  .channel__state {
-    grid-column: 1 / -1;
-    justify-self: start;
+  .channel__icon {
+    flex: none;
   }
 
-  @media (min-width: 640px) {
-    .channel {
-      grid-template-columns: auto 1fr auto;
-    }
-    .channel > :global(.btn),
-    .channel__state {
-      grid-column: auto;
-    }
+  .channel__text {
+    flex: 1 1 14rem;
+    min-width: 0;
   }
 
   .channel--pending {
