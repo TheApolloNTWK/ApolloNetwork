@@ -10,7 +10,7 @@ const { status } = Astro.props;
 
 <span class:list={['status', `status--${status}`]}>
   <span class="status__shape" aria-hidden="true"></span>
-  {statusLabel[status]}
+  <span class="status__label">{statusLabel[status]}</span>
 </span>
 
 <style>
@@ -31,7 +31,14 @@ const { status } = Astro.props;
     max-width: 100%;
   }
 
+  /* Lets a long label wrap inside narrow columns at large text sizes. */
+  .status__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .status__shape {
+    flex: none;
     width: 6px;
     height: 6px;
     border: 1px solid currentColor;

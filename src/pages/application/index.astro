@@ -229,7 +229,7 @@ const privateItems = [
 
   .facts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
     gap: var(--s-5);
     max-width: 56rem;
     margin-top: var(--s-8);
@@ -258,6 +258,7 @@ const privateItems = [
   .compare {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-5);
   }
 

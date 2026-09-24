@@ -34,7 +34,7 @@ import { link } from '../lib/url';
   .services__row {
     position: relative;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
       'icon name arrow'
       'icon summary arrow';

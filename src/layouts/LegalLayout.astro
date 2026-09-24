@@ -168,6 +168,7 @@ const others = Object.entries(legal.documents).filter(([key]) => key !== doc);
   /* ── Body ───────────────────────────────────────────────── */
   .legal {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-7);
     padding-block: var(--s-8) var(--s-9);
   }

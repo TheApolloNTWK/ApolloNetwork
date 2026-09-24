@@ -248,6 +248,7 @@ const securityReportUrl = `${site.repository}/security/advisories/new`;
 <style>
   .contact {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--s-8);
   }
 
@@ -499,9 +500,10 @@ const securityReportUrl = `${site.repository}/security/advisories/new`;
     list-style: none;
   }
 
+  /* Icon and text share a row; the action wraps beneath them when space runs out. */
   .channel {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--s-4) var(--s-5);
     align-items: center;
     padding: var(--s-5);
@@ -515,22 +517,13 @@ const securityReportUrl = `${site.repository}/security/advisories/new`;
     border-color: var(--c-line-signal);
   }
 
-  .channel > :global(.btn),
-  .channel > button,
-  .channel__state {
-    grid-column: 1 / -1;
-    justify-self: start;
+  .channel__icon {
+    flex: none;
   }
 
-  @media (min-width: 640px) {
-    .channel {
-      grid-template-columns: auto 1fr auto;
-    }
-    .channel > :global(.btn),
-    .channel > button,
-    .channel__state {
-      grid-column: auto;
-    }
+  .channel__text {
+    flex: 1 1 14rem;
+    min-width: 0;
   }
 
   .channel--pending {
