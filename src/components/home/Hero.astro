@@ -18,30 +18,30 @@ import { triad } from '../../data/environment';
       <span class="hero__slash" aria-hidden="true">
         /
       </span>
-      <span class="text-accent">Personal Intelligence Environment</span>
+      <span class="text-accent">AI · Software · Automation</span>
     </p>
 
     <h1 id="hero-title" class="hero__title">
-      <span class="hero__line">Intelligence</span>
-      <span class="hero__line">that answers</span>
-      <span class="hero__line hero__line--accent">to you.</span>
+      <span class="hero__line">Technology</span>
+      <span class="hero__line">that solves</span>
+      <span class="hero__line hero__line--accent">real problems.</span>
     </h1>
 
     <p class="hero__lead">
-      APOLLO Network is building one environment for the AI you rely on — models, agents, tools,
-      memory and devices, configured by you and working under your authority.
+      APOLLO Network builds AI, software, automation and digital systems for businesses that want
+      technology to earn its keep — from websites and SaaS tools to lead finding and AI guidance.
     </p>
 
     <div class="hero__actions">
-      <Button href="environment/" variant="primary">
-        What that means
+      <Button href="services/" variant="primary">
+        Explore services
       </Button>
-      <Button href="project/" variant="ghost">
-        See the project
+      <Button href="portfolio/" variant="ghost">
+        See our work
       </Button>
     </div>
 
-    <ol class="hero__verbs" aria-label="Three things the environment is for">
+    <ol class="hero__verbs" aria-label="How APOLLO Network works">
       {triad.map((item, i) => (
         <li>
           <span class="hero__verb-num" aria-hidden="true">
@@ -63,14 +63,14 @@ import { triad } from '../../data/environment';
 
     <dl class="hero__status">
       <div>
-        <dt class="label">Status</dt>
+        <dt class="label">Services</dt>
         <dd>
-          <span class="hero__dot" aria-hidden="true"></span>In private development
+          <span class="hero__dot" aria-hidden="true"></span>Open for enquiries
         </dd>
       </div>
       <div>
-        <dt class="label">Access</dt>
-        <dd>Not yet public</dd>
+        <dt class="label">Application</dt>
+        <dd>In private development</dd>
       </div>
     </dl>
   </div>
@@ -255,6 +255,8 @@ import { triad } from '../../data/environment';
 
   .hero__status {
     display: flex;
+    /* Leave the corner to the assistant launcher. */
+    margin-right: 10rem;
     gap: var(--s-6);
     padding-left: var(--s-5);
     border-left: 1px solid var(--c-line-strong);

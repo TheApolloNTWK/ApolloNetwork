@@ -4,9 +4,10 @@
  */
 export const indexableRoutes = [
   '',
-  'environment/',
-  'project/',
-  'work/',
+  'services/',
+  'portfolio/',
+  'application/',
+  'application/vision/',
   'about/',
   'contact/',
   'privacy/',

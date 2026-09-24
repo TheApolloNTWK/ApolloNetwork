@@ -70,7 +70,7 @@ function initReveals(): void {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('hashchange', onScroll);
-  // Arriving on a deep link (e.g. /work/#lead-finder) starts mid-page.
+  // Arriving on a deep link (e.g. /portfolio/#lead-finder) starts mid-page.
   if (location.hash) onScroll();
 }
 

@@ -1,21 +1,24 @@
 import type { IconName } from '../components/Icon.astro';
 
-/** The three verbs that frame what the environment is for. */
+/**
+ * The three verbs — APOLLO Network's way of working, used on the home page
+ * (hero and the "How we work" sequence).
+ */
 export const triad = [
   {
     verb: 'Understand',
-    summary: 'Think with it.',
-    body: 'Ask questions, work through problems and draw on context you have chosen to keep — with the reasoning visible, not hidden behind a single answer.',
+    summary: 'Start with the problem.',
+    body: 'Learn how your business actually works — what you offer, who you serve, and where time or opportunity is being lost — before suggesting anything.',
   },
   {
     verb: 'Build',
-    summary: 'Shape it.',
-    body: 'Choose the models, specialist agents, tools and interface that suit how you work. The environment is assembled around you, not the other way round.',
+    summary: 'Make the right thing.',
+    body: 'Websites, tools and automations shaped to that problem, built in visible steps you can use and question along the way.',
   },
   {
     verb: 'Execute',
-    summary: 'Let it act.',
-    body: 'Carry work forward: run workflows, operate tools and follow tasks through — inside permissions you set, can inspect and can revoke.',
+    summary: 'Put it to work.',
+    body: 'Launch it, hand it over properly and keep it running — with documentation, full ownership and no lock-in.',
   },
 ] as const;
 

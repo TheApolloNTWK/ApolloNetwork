@@ -29,38 +29,42 @@ export const services: Service[] = [
     name: 'Websites & digital experiences',
     icon: 'globe',
     summary:
-      'Fast, accessible, secure websites with a considered visual identity — built to be cheap to host and easy to maintain.',
-    examples: [
-      'Brand and product sites',
-      'Static, low-maintenance builds',
-      'Accessibility and performance',
-    ],
-    evidence: { label: 'Example: this website', path: 'work/#website' },
+      'Fast, accessible, secure websites with a considered visual identity — designed and built for you, cheap to host and easy to maintain.',
+    examples: ['Business and brand sites', 'Redesigns', 'Accessibility and performance'],
+    evidence: { label: 'Example: this website', path: 'portfolio/#website' },
   },
   {
     id: 'software',
-    name: 'AI-assisted software development',
+    name: 'Software & SaaS tools',
     icon: 'code',
     summary:
-      'Custom software built with AI in the loop for speed, and a person accountable for every line that ships.',
-    examples: ['Internal tools', 'Prototypes taken further', 'Small applications'],
+      'Custom software and software-as-a-service tools built around a real need — from writing aids to internal tools — with a person accountable for every line.',
+    examples: ['Web applications', 'SaaS tools', 'Writing and content tools'],
+  },
+  {
+    id: 'leads',
+    name: 'Lead finding',
+    icon: 'research',
+    summary:
+      'Finding businesses that could use what you offer — including those with little or no web presence — using APOLLO Network’s own lead-finding tools.',
+    examples: ['Local-business discovery', 'Web-presence checks', 'Opportunity lists'],
+    evidence: { label: 'Example: Lead Finder', path: 'portfolio/#lead-finder' },
+  },
+  {
+    id: 'ai',
+    name: 'AI guidance',
+    icon: 'agents',
+    summary:
+      'Practical help using AI well: which tools fit your work, how to use them safely, and where they are not worth the effort.',
+    examples: ['Choosing the right tools', 'Hands-on guidance', 'Safe, sensible use'],
   },
   {
     id: 'automation',
     name: 'Workflow & AI automation',
     icon: 'workflow',
     summary:
-      'Repetitive, rules-heavy work handed to software — including AI models where they genuinely help — with people kept in charge of the decisions that matter.',
-    examples: ['Multi-step workflows', 'Document and data handling', 'Human approval steps'],
-  },
-  {
-    id: 'research',
-    name: 'Research & automation tooling',
-    icon: 'research',
-    summary:
-      'Purpose-built tools that gather and organise information, so people spend their time judging it rather than collecting it.',
-    examples: ['Structured data gathering', 'Opportunity discovery', 'Summaries and exports'],
-    evidence: { label: 'Example: Lead Finder', path: 'work/#lead-finder' },
+      'Repetitive, rules-heavy work handed to software — including AI where it genuinely helps — with people kept in charge of the decisions that matter.',
+    examples: ['Multi-step workflows', 'Connecting your tools', 'Human approval steps'],
   },
   {
     id: 'experiments',
@@ -113,25 +117,9 @@ export interface WorkItem {
  */
 export const selectedWork: WorkItem[] = [
   {
-    id: 'apollo',
-    title: 'APOLLO Network',
-    kind: 'Personal intelligence environment',
-    status: 'private',
-    summary:
-      'A working AI environment in private development: a primary interface coordinating specialist agents, multiple models, tools and memory, under a permission architecture its owner controls.',
-    details: [
-      'Voice and text interaction with one primary interface',
-      'Specialist agents, model switching and fallback',
-      'Permission and authority architecture',
-    ],
-    tags: ['Orchestration', 'Agents', 'Voice', 'Memory'],
-    glyph: 'core',
-    href: { label: 'Inside the project', path: 'project/' },
-  },
-  {
     id: 'lead-finder',
     title: 'APOLLO Network Lead Finder',
-    kind: 'Research & automation tool',
+    kind: 'Lead-finding tool',
     status: 'internal',
     summary:
       'A tool for discovering potential local-business opportunities — including businesses that may lack a website or a strong web presence — to support lead-generation work.',
@@ -153,7 +141,7 @@ export const selectedWork: WorkItem[] = [
     details: [
       'No cookies, analytics or third-party scripts',
       'Accessible and responsive, with reduced-motion support',
-      'Open source',
+      'Source code publicly viewable',
     ],
     tags: ['Astro', 'Accessibility', 'Security', 'Motion'],
     glyph: 'layout',
@@ -162,5 +150,21 @@ export const selectedWork: WorkItem[] = [
       path: 'https://github.com/TheApolloNTWK/ApolloNetwork',
       external: true,
     },
+  },
+  {
+    id: 'apollo',
+    title: 'APOLLO Network Application',
+    kind: 'Personal intelligence environment',
+    status: 'private',
+    summary:
+      'A working AI environment in private development: a primary interface coordinating specialist agents, multiple models, tools and memory, under a permission architecture its owner controls.',
+    details: [
+      'Voice and text interaction with one primary interface',
+      'Specialist agents, model switching and fallback',
+      'Permission and authority architecture',
+    ],
+    tags: ['Orchestration', 'Agents', 'Voice', 'Memory'],
+    glyph: 'core',
+    href: { label: 'About the application', path: 'application/' },
   },
 ];

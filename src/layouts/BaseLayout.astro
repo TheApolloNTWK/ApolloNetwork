@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import SEO, { type SEOProps } from '../components/SEO.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import Assistant from '../components/Assistant.astro';
 import { site } from '../config/site';
 import '../styles/tokens.css';
 import '../styles/base.css';
@@ -36,6 +37,7 @@ const props = Astro.props;
       <slot />
     </main>
     <SiteFooter />
+    <Assistant />
     <script>
       import { initMotion } from '../scripts/motion';
       initMotion();

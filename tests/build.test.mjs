@@ -18,7 +18,16 @@ import {
   walk,
 } from './helpers.mjs';
 
-const PAGES = ['', 'environment/', 'project/', 'work/', 'about/', 'contact/', 'privacy/'];
+const PAGES = [
+  '',
+  'services/',
+  'portfolio/',
+  'application/',
+  'application/vision/',
+  'about/',
+  'contact/',
+  'privacy/',
+];
 
 before(assertBuilt);
 
@@ -223,7 +232,7 @@ describe('content integrity', () => {
   });
 
   test('unreleased work is labelled, and nothing claims public availability', () => {
-    const t = text(read(join(DIST, 'project', 'index.html')));
+    const t = text(read(join(DIST, 'application', 'index.html')));
     assert.match(t, /In private development/);
     assert.match(t, /Future direction/);
     for (const { name, html } of pages) {
@@ -239,16 +248,36 @@ describe('content integrity', () => {
     const html = read(join(DIST, 'contact', 'index.html'));
     const forms = html.match(/<form[^>]*>/g) ?? [];
     for (const f of forms) assert.match(f, /data-composer-form/, 'unexpected form');
-    if (!forms.length) {
-      // No email configured: the public enquiry channel must be offered instead.
-      assert.match(html, /issues\/new\?template=enquiry\.yml/);
-      assert.ok(existsSync(join(DIST, '..', '.github', 'ISSUE_TEMPLATE', 'enquiry.yml')));
+    // The public enquiry channel is always offered.
+    assert.match(html, /issues\/new\?template=enquiry\.yml/);
+    assert.ok(existsSync(join(DIST, '..', '.github', 'ISSUE_TEMPLATE', 'enquiry.yml')));
+  });
+
+  test('no email address appears in plain text anywhere in the build', () => {
+    // Addresses are assembled in the browser on request, never shipped whole.
+    for (const f of walk(DIST, (x) => /\.(html|js|css|xml|txt|webmanifest)$/.test(x))) {
+      assert.doesNotMatch(read(f), /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/, rel(f));
     }
-    assert.doesNotMatch(html, /@gmail\.com|@outlook\.com|@hotmail\.com/i, 'personal address');
+  });
+
+  test('the application is presented as its own section, not the home page identity', () => {
+    const home = read(join(DIST, 'index.html'));
+    const title = home.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
+    assert.doesNotMatch(title, /Personal Intelligence Environment/i);
+    const nav = home.match(/<nav id="site-nav"[\s\S]*?<\/nav>/)?.[0] ?? '';
+    for (const label of ['Home', 'Services', 'Portfolio', 'Application', 'About', 'Contact']) {
+      assert.match(nav, new RegExp(`>\\s*${label}\\s*<`), `nav: ${label}`);
+    }
+  });
+
+  test('the assistant is a guided helper that is labelled as such', () => {
+    const home = read(join(DIST, 'index.html'));
+    assert.match(home, /data-assistant/);
+    assert.match(text(home), /not AI/);
   });
 
   test('Lead Finder is present as real, conservatively described work', () => {
-    const t = text(read(join(DIST, 'work', 'index.html')));
+    const t = text(read(join(DIST, 'portfolio', 'index.html')));
     assert.match(t, /Lead Finder/);
     assert.match(t, /Internal tool/);
   });

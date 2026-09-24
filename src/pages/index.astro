@@ -4,15 +4,14 @@ import Hero from '../components/home/Hero.astro';
 import Triad from '../components/home/Triad.astro';
 import Statement from '../components/Statement.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import EnvironmentMap from '../components/EnvironmentMap.astro';
 import Principles from '../components/Principles.astro';
-import ProjectBand from '../components/home/ProjectBand.astro';
+import ApplicationBand from '../components/home/ApplicationBand.astro';
 import ServiceIndex from '../components/ServiceIndex.astro';
 import WorkCard from '../components/WorkCard.astro';
-import StatusTag from '../components/StatusTag.astro';
-import { selectedWork } from '../data/work';
 import ContactCTA from '../components/ContactCTA.astro';
 import Button from '../components/Button.astro';
+import { selectedWork } from '../data/work';
+import { businessPrinciples } from '../data/company';
 import { site } from '../config/site';
 import { absolute } from '../lib/url';
 
@@ -35,65 +34,43 @@ const structuredData = {
       <p class="label label--signal intro__label" id="intro-label">
         01 — The idea
       </p>
-      <Statement text="Today the AI you use is scattered: a chat window here, an assistant there, a tool that forgets what you told it yesterday. *APOLLO* *Network* *brings* *it* *together* — one environment you configure, understand and control." />
+      <Statement text="Most businesses do not need more technology. They need the right piece, built properly: a website that brings work in, a tool that finds the next customer, an automation that gives an hour back. *APOLLO* *Network* *builds* *those* *pieces* — and makes sure you understand and control them." />
     </div>
   </section>
 
-  <Triad />
-
-  <section class="section" aria-labelledby="anatomy-title">
+  <section class="section services-section" aria-labelledby="work-title">
     <div class="container stack">
       <SectionHeading
         index="02"
-        eyebrow="Anatomy"
-        title="Every part in one place. All of it yours."
-        id="anatomy-title"
+        eyebrow="What we do"
+        title="Useful digital and AI systems, built for you."
+        id="work-title"
       >
         <p>
-          A personal intelligence environment is made of parts you choose and can change. None of
-          them should be hidden from you.
-        </p>
-        <p class="anatomy-note">
-          <StatusTag status="future" />
-          <span>
-            The public product APOLLO Network is working towards — not something to use yet.
-          </span>
+          Focused work from an independent technology venture — websites, software, lead finding, AI
+          and automation — each built with the same care for clarity, ownership and security.
         </p>
       </SectionHeading>
-      <EnvironmentMap />
+      <ServiceIndex />
       <div data-reveal>
-        <Button href="environment/" variant="text">
-          What a personal intelligence environment means
+        <Button href="services/" variant="text">
+          All services and how engagements work
         </Button>
       </div>
     </div>
   </section>
 
-  <section class="section principles-section" aria-labelledby="principles-title">
-    <div class="container stack">
-      <SectionHeading
-        index="03"
-        eyebrow="Principles"
-        title="Power is only useful if you can see its limits."
-        id="principles-title"
-      />
-      <Principles />
-    </div>
-  </section>
-
-  <ProjectBand />
-
   <section class="section" aria-labelledby="selected-title">
     <div class="container stack">
       <SectionHeading
-        index="05"
+        index="03"
         eyebrow="Selected work"
         title="Built, running, and honest about it."
         id="selected-title"
       >
         <p>
-          The private system, a working internal tool, and the site you are reading — each labelled
-          for exactly what it is.
+          A working lead-finding tool, the site you are reading, and our own application in private
+          development — each labelled for exactly what it is.
         </p>
       </SectionHeading>
       <div class="home-cards">
@@ -103,25 +80,29 @@ const structuredData = {
           </div>
         ))}
       </div>
+      <div data-reveal>
+        <Button href="portfolio/" variant="text">
+          Visit the portfolio
+        </Button>
+      </div>
     </div>
   </section>
 
-  <section class="section work-section" aria-labelledby="work-title">
+  <Triad />
+
+  <section class="section principles-section" aria-labelledby="principles-title">
     <div class="container stack">
       <SectionHeading
-        index="06"
-        eyebrow="Work with us"
-        title="The same thinking, applied to your problems."
-        id="work-title"
-      >
-        <p>
-          APOLLO Network also takes on focused software and AI work for others — built with the same
-          care for control, clarity and security.
-        </p>
-      </SectionHeading>
-      <ServiceIndex />
+        index="05"
+        eyebrow="Principles"
+        title="Technology you understand and control."
+        id="principles-title"
+      />
+      <Principles items={businessPrinciples} />
     </div>
   </section>
+
+  <ApplicationBand />
 
   <ContactCTA />
 </BaseLayout>
@@ -135,14 +116,8 @@ const structuredData = {
     margin-bottom: var(--s-6);
   }
 
-  .anatomy-note {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--s-3);
-    font-size: var(--fs-small);
-    line-height: 1.5;
-    color: var(--c-text-subtle);
+  .services-section {
+    padding-top: calc(var(--section-y) * 0.6);
   }
 
   .home-cards {
@@ -162,10 +137,6 @@ const structuredData = {
     .home-cards {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-  }
-
-  .work-section {
-    padding-top: 0;
   }
 
   .principles-section {

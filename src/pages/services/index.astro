@@ -1,22 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
-import WorkCard from '../../components/WorkCard.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import Button from '../../components/Button.astro';
 import Icon from '../../components/Icon.astro';
-import { engagementSteps, selectedWork, services } from '../../data/work';
+import { engagementSteps, services } from '../../data/work';
 ---
 
 <BaseLayout
-  path="work/"
-  title="Work with us"
-  description="Websites, AI-assisted software, workflow automation, research tooling and technical prototypes — focused work from an independent technology venture, with real projects to show for it."
+  path="services/"
+  title="Services"
+  description="Websites, software and SaaS tools, lead finding, AI guidance, workflow automation and technical prototypes — focused work from an independent technology business."
 >
   <PageIntro
-    eyebrow="Work with us"
-    title="Focused work, built to be understood."
-    lead="APOLLO Network takes on a small number of software and AI projects alongside its own. The same principles apply: you stay in control, you can see how it works, and you own what is delivered."
+    eyebrow="Services"
+    title="What APOLLO Network can build for you."
+    lead="Websites, software, lead finding, AI and automation — focused work from an independent technology business. You stay in control, you can see how it works, and you own what is delivered."
   />
 
   <section class="section" aria-labelledby="services-title">
@@ -69,32 +68,7 @@ import { engagementSteps, selectedWork, services } from '../../data/work';
     </div>
   </section>
 
-  <section class="section band-tone" aria-labelledby="selected-title">
-    <div class="container stack">
-      <div class="split">
-        <div class="split__aside" data-reveal>
-          <p class="label">Selected work</p>
-          <h2 id="selected-title" class="split__title">
-            Built by APOLLO Network.
-          </h2>
-        </div>
-        <p class="lead" data-reveal data-reveal-order="1">
-          Real projects, shown honestly — including APOLLO Network’s own tools. Client case studies
-          will be added as projects are completed and permission is given.
-        </p>
-      </div>
-
-      <div class="cases">
-        {selectedWork.map((w, i) => (
-          <div data-reveal data-reveal-order={String(i)}>
-            <WorkCard item={w} detailed />
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="process-title">
+  <section class="section band-tone" aria-labelledby="process-title">
     <div class="container stack">
       <div class="split">
         <div class="split__aside" data-reveal>
@@ -119,6 +93,11 @@ import { engagementSteps, selectedWork, services } from '../../data/work';
           </li>
         ))}
       </ol>
+      <div data-reveal>
+        <Button href="portfolio/" variant="text">
+          See the work behind these services
+        </Button>
+      </div>
     </div>
   </section>
 
@@ -268,26 +247,6 @@ import { engagementSteps, selectedWork, services } from '../../data/work';
   .steps__body {
     margin-top: var(--s-3);
     color: var(--c-text-muted);
-  }
-
-  /* ── Cases ──────────────────────────────────────────────── */
-  .cases {
-    display: grid;
-    gap: var(--s-5);
-  }
-
-  .cases > div {
-    display: flex;
-  }
-
-  .cases :global(.card) {
-    flex: 1;
-  }
-
-  @media (min-width: 1280px) {
-    .cases {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
   }
 
   .svc__evidence {

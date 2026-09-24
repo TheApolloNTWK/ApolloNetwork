@@ -120,7 +120,7 @@ export const projectFacts = [
   { term: 'Status', detail: 'A working system in active private development' },
   { term: 'Availability', detail: 'Not publicly released or downloadable' },
   { term: 'Source', detail: 'Private — this website’s code is public, the system’s is not' },
-  { term: 'Pricing', detail: 'None — there is nothing to buy yet' },
+  { term: 'Public product', detail: 'Future direction — a configurable version for everyone' },
 ] as const;
 
 /**

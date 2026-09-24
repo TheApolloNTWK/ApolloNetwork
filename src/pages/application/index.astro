@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import ProjectLayers from '../../components/ProjectLayers.astro';
+import EnvironmentMap from '../../components/EnvironmentMap.astro';
 import StatusTag from '../../components/StatusTag.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import Button from '../../components/Button.astro';
@@ -17,14 +18,14 @@ const privateItems = [
 ---
 
 <BaseLayout
-  path="project/"
-  title="The project"
-  description="APOLLO Network is a real, working AI environment in active private development: a primary interface with voice, specialist agents, multiple models, memory, tools and a permission architecture its owner controls."
+  path="application/"
+  title="APOLLO Network Application"
+  description="The APOLLO Network Application: a personal intelligence environment, real and in active private development — a primary interface with voice, specialist agents, multiple models, memory, tools and a permission architecture its owner controls."
 >
   <PageIntro
-    eyebrow="The project"
-    title="APOLLO Network, as it exists today."
-    lead="APOLLO Network is a real, working system — built privately, in active development, and not yet available to the public. This page describes what it does at the level of ideas, not implementation."
+    eyebrow="APOLLO Network Application"
+    title="A personal intelligence environment."
+    lead="APOLLO Network’s flagship project: one environment for the AI you rely on. It is a real, working system — built privately, in active development, and not yet available to the public. This page describes it at the level of ideas, not implementation."
   >
     <dl class="facts">
       {projectFacts.map((f) => (
@@ -35,6 +36,53 @@ const privateItems = [
       ))}
     </dl>
   </PageIntro>
+
+  <section class="section" aria-labelledby="short-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">The short version</p>
+        <h2 id="short-title" class="split__title">
+          An operating layer for the AI you use.
+        </h2>
+      </div>
+      <div class="prose short" data-reveal data-reveal-order="1">
+        <p class="short__lead">
+          Your computer has an operating system. It decides which programs run, what they can touch,
+          and how you work with them. You rarely think about it — but it is the reason your machine
+          feels like <em>yours</em>.
+        </p>
+        <p>
+          A personal intelligence environment plays a similar role for AI. Instead of a separate
+          assistant in every app, each with its own memory and rules, you have one environment. It
+          knows which models are available, which specialist agents exist, which tools may be used,
+          and what it has been allowed to remember.
+        </p>
+        <p>
+          You talk to one interface. Behind it, work is routed to whatever is best suited — and
+          every part of that arrangement is something you can see, change or switch off.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="anatomy-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Anatomy</p>
+          <h2 id="anatomy-title" class="split__title">
+            The parts, and who controls them.
+          </h2>
+        </div>
+        <p class="lead" data-reveal data-reveal-order="1">
+          At the centre is you. Around you, a primary interface understands what you are asking and
+          coordinates the rest. Everything beyond that is a component you choose. This is the
+          direction for the public product; the private system is where it is being proven.
+        </p>
+      </div>
+      <EnvironmentMap />
+    </div>
+  </section>
 
   <section class="section" aria-labelledby="layers-title">
     <div class="container split">
@@ -98,8 +146,8 @@ const privateItems = [
         </span>
       </div>
       <div data-reveal>
-        <Button href="environment/" variant="text">
-          What a personal intelligence environment means
+        <Button href="application/vision/" variant="primary">
+          Read the vision for the public product
         </Button>
       </div>
     </div>
@@ -143,8 +191,8 @@ const privateItems = [
       </div>
       <div class="stack stack--sm" data-reveal data-reveal-order="1">
         <p class="lead">
-          This website is public and its code is open. The system it describes is not, and the two
-          are entirely separate — nothing on this site connects to APOLLO Network itself.
+          This website is public and its code is viewable. The system it describes is not, and the
+          two are entirely separate — nothing on this site connects to APOLLO Network itself.
         </p>
         <ul class="private" role="list">
           {privateItems.map((item) => (
@@ -165,6 +213,18 @@ const privateItems = [
 </BaseLayout>
 
 <style>
+  .short__lead {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: 1.35;
+    color: var(--c-text);
+  }
+
+  .short__lead em {
+    font-style: normal;
+    color: var(--c-blue-bright);
+  }
+
   .facts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));

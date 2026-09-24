@@ -39,11 +39,12 @@ export function initComposer(): void {
   const topicInput = form.querySelector<HTMLSelectElement>('#f-topic');
   const messageInput = form.querySelector<HTMLTextAreaElement>('#f-message');
   const status = form.querySelector<HTMLElement>('[data-composer-status]');
-  const revealButton = form.querySelector<HTMLButtonElement>('[data-reveal-address]');
-  const addressSlot = form.querySelector<HTMLElement>('[data-address-slot]');
+  const revealButton = root.querySelector<HTMLButtonElement>('[data-reveal-address]');
+  const addressSlot = root.querySelector<HTMLElement>('[data-address-slot]');
   if (!nameInput || !topicInput || !messageInput || !status) return;
 
   form.hidden = false;
+  if (revealButton) revealButton.hidden = false;
 
   const validate = (): boolean => {
     const name = nameInput.value.trim();
@@ -94,11 +95,10 @@ export function initComposer(): void {
   revealButton?.addEventListener('click', () => {
     if (!addressSlot) return;
     addressSlot.replaceChildren();
-    const lead = document.createTextNode('Email: ');
     const anchor = document.createElement('a');
     anchor.href = `mailto:${address}`;
     anchor.textContent = address;
-    addressSlot.append(lead, anchor);
+    addressSlot.append(anchor);
     addressSlot.hidden = false;
     revealButton.hidden = true;
     anchor.focus();

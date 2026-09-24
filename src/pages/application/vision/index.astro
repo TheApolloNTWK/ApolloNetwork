@@ -1,71 +1,23 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageIntro from '../../components/PageIntro.astro';
-import EnvironmentMap from '../../components/EnvironmentMap.astro';
-import Principles from '../../components/Principles.astro';
-import StatusTag from '../../components/StatusTag.astro';
-import ContactCTA from '../../components/ContactCTA.astro';
-import Button from '../../components/Button.astro';
-import { configurable, notThis } from '../../data/environment';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageIntro from '../../../components/PageIntro.astro';
+import Principles from '../../../components/Principles.astro';
+import StatusTag from '../../../components/StatusTag.astro';
+import ContactCTA from '../../../components/ContactCTA.astro';
+import Button from '../../../components/Button.astro';
+import { configurable, notThis } from '../../../data/environment';
 ---
 
 <BaseLayout
-  path="environment/"
-  title="The environment"
+  path="application/vision/"
+  title="The vision — APOLLO Network Application"
   description="What a personal intelligence environment is: one place to configure the models, agents, tools, memory and permissions behind the AI you use — and to stay in charge of them."
 >
   <PageIntro
-    eyebrow="The environment"
-    title="What a personal intelligence environment means."
-    lead="Most people meet AI as a single app with a single model behind it. A personal intelligence environment turns that around: the capabilities come to you, and you decide how they fit together."
+    eyebrow="The application — vision"
+    title="Where the application is going."
+    lead="The private system is the proving ground. The public APOLLO Network Application is meant to be something different: an environment each person configures for themselves. None of it is released yet — this page describes the direction."
   />
-
-  <section class="section" aria-labelledby="short-title">
-    <div class="container split">
-      <div class="split__aside" data-reveal>
-        <p class="label">The short version</p>
-        <h2 id="short-title" class="split__title">
-          An operating layer for the AI you use.
-        </h2>
-      </div>
-      <div class="prose short" data-reveal data-reveal-order="1">
-        <p class="short__lead">
-          Your computer has an operating system. It decides which programs run, what they can touch,
-          and how you work with them. You rarely think about it — but it is the reason your machine
-          feels like <em>yours</em>.
-        </p>
-        <p>
-          A personal intelligence environment plays a similar role for AI. Instead of a separate
-          assistant in every app, each with its own memory and rules, you have one environment. It
-          knows which models are available, which specialist agents exist, which tools may be used,
-          and what it has been allowed to remember.
-        </p>
-        <p>
-          You talk to one interface. Behind it, work is routed to whatever is best suited — and
-          every part of that arrangement is something you can see, change or switch off.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section band-tone" aria-labelledby="anatomy-title">
-    <div class="container stack">
-      <div class="split">
-        <div class="split__aside" data-reveal>
-          <p class="label">Anatomy</p>
-          <h2 id="anatomy-title" class="split__title">
-            The parts, and who controls them.
-          </h2>
-        </div>
-        <p class="lead" data-reveal data-reveal-order="1">
-          At the centre is you. Around you, a primary interface understands what you are asking and
-          coordinates the rest. Everything beyond that is a component you choose. This is the
-          direction for the public product; the private system is where it is being proven.
-        </p>
-      </div>
-      <EnvironmentMap />
-    </div>
-  </section>
 
   <section class="section" aria-labelledby="configure-title">
     <div class="container split">
@@ -137,9 +89,9 @@ import { configurable, notThis } from '../../data/environment';
         </ul>
       </div>
       <div class="next" data-reveal>
-        <p class="next__text">The ideas above are being tested in a real system.</p>
-        <Button href="project/" variant="primary">
-          See the project
+        <p class="next__text">The ideas above are being tested in a real, working system.</p>
+        <Button href="application/" variant="primary">
+          Back to the application
         </Button>
       </div>
     </div>
@@ -149,18 +101,6 @@ import { configurable, notThis } from '../../data/environment';
 </BaseLayout>
 
 <style>
-  .short__lead {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    line-height: 1.35;
-    color: var(--c-text);
-  }
-
-  .short__lead em {
-    font-style: normal;
-    color: var(--c-blue-bright);
-  }
-
   .configure__note {
     max-width: 24rem;
     margin-top: var(--s-5);

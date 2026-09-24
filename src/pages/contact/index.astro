@@ -38,118 +38,107 @@ const topics = [
   <section class="section" aria-labelledby="channel-title">
     <div class="container contact">
       <div class="contact__main">
-        {reversed ? (
-          <div class="composer" data-composer data-u={reversed.u} data-d={reversed.d}>
-            <h2 id="channel-title" class="contact__title">
-              Write your enquiry
-            </h2>
-            <p class="contact__intro">
-              This form does not send anything by itself. It prepares a message in your own email
-              app, so you can review it — and nothing passes through a third party on the way.
-            </p>
-
-            <noscript>
-              <p class="contact__notice">
-                The message composer needs JavaScript. You can still reach APOLLO Network on{' '}
-                <a href={site.github} rel="noopener noreferrer external">
-                  GitHub
-                </a>
-                .
+        <div class="contact__block" data-composer data-u={reversed?.u} data-d={reversed?.d}>
+          {reversed ? (
+            <>
+              <h2 id="channel-title" class="contact__title">
+                Send an enquiry
+              </h2>
+              <p class="contact__intro">
+                This form does not send anything by itself. It prepares a message in your own email
+                app, addressed to APOLLO Network, so you can review it before it goes — nothing
+                passes through this website on the way.
               </p>
-            </noscript>
 
-            <form class="form" data-composer-form hidden novalidate>
-              <div class="form__field">
-                <label for="f-name">Your name</label>
-                <input
-                  id="f-name"
-                  name="name"
-                  type="text"
-                  autocomplete="name"
-                  maxlength="120"
-                  required
-                  aria-describedby="f-name-error"
-                />
-                <p class="form__error" id="f-name-error" data-error-for="f-name" hidden></p>
-              </div>
-
-              <div class="form__field">
-                <label for="f-topic">Topic</label>
-                <select id="f-topic" name="topic" required>
-                  {topics.map((t) => (
-                    <option value={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div class="form__field">
-                <label for="f-message">Message</label>
-                <p class="form__hint" id="f-message-hint">
-                  What are you trying to achieve? Up to 2,000 characters.
+              <noscript>
+                <p class="contact__notice">
+                  The message composer and email address need JavaScript. You can still use the
+                  public enquiry on GitHub below.
                 </p>
-                <textarea
-                  id="f-message"
-                  name="message"
-                  rows="7"
-                  maxlength="2000"
-                  required
-                  aria-describedby="f-message-hint f-message-error"
-                ></textarea>
-                <p class="form__error" id="f-message-error" data-error-for="f-message" hidden></p>
-              </div>
+              </noscript>
 
-              <div class="form__actions">
-                <button type="submit" class="form__submit">
-                  Open in my email app
-                  <Icon name="arrow" size={18} />
-                </button>
-                <button type="button" class="form__reveal" data-reveal-address>
-                  Show email address instead
-                </button>
-              </div>
+              <form class="form" data-composer-form hidden novalidate>
+                <div class="form__field">
+                  <label for="f-name">Your name</label>
+                  <input
+                    id="f-name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    maxlength="120"
+                    required
+                    aria-describedby="f-name-error"
+                  />
+                  <p class="form__error" id="f-name-error" data-error-for="f-name" hidden></p>
+                </div>
 
-              <p class="form__status" role="status" aria-live="polite" data-composer-status></p>
-              <p class="form__address" data-address-slot hidden></p>
-            </form>
-          </div>
-        ) : (
-          <div class="staged">
-            <h2 id="channel-title" class="contact__title">
-              How to reach APOLLO Network
-            </h2>
-            <p class="contact__intro">
-              A dedicated business email is being set up. Until then, enquiries go through GitHub —
-              public, but real and read. There is no form on this page pretending to send messages
-              it cannot deliver.
-            </p>
-            <ul class="channels" role="list">
-              <li class="channel">
-                <span class="channel__icon" aria-hidden="true">
-                  <Icon name="github" size={22} />
-                </span>
-                <div class="channel__text">
-                  <h3 class="channel__name">Public enquiry</h3>
-                  <p class="channel__detail">
-                    Open a short enquiry on GitHub. It is visible to anyone, so keep private details
-                    out of it and ask for a private follow-up if you need one.
+                <div class="form__field">
+                  <label for="f-topic">Topic</label>
+                  <select id="f-topic" name="topic" required>
+                    {topics.map((t) => (
+                      <option value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="form__field">
+                  <label for="f-message">Message</label>
+                  <p class="form__hint" id="f-message-hint">
+                    What are you trying to achieve? Up to 2,000 characters.
                   </p>
+                  <textarea
+                    id="f-message"
+                    name="message"
+                    rows="7"
+                    maxlength="2000"
+                    required
+                    aria-describedby="f-message-hint f-message-error"
+                  ></textarea>
+                  <p class="form__error" id="f-message-error" data-error-for="f-message" hidden></p>
                 </div>
-                <Button href={enquiryUrl} external variant="primary">
-                  Open an enquiry
-                </Button>
-              </li>
+
+                <div class="form__actions">
+                  <button type="submit" class="form__submit">
+                    Open in my email app
+                    <Icon name="arrow" size={18} />
+                  </button>
+                </div>
+
+                <p class="form__status" role="status" aria-live="polite" data-composer-status></p>
+              </form>
+
+              <h2 class="contact__subtitle">Other ways to reach us</h2>
+            </>
+          ) : (
+            <>
+              <h2 id="channel-title" class="contact__title">
+                How to reach APOLLO Network
+              </h2>
+              <p class="contact__intro">
+                Enquiries go through GitHub — public, but real and read. There is no form on this
+                page pretending to send messages it cannot deliver.
+              </p>
+            </>
+          )}
+
+          <ul class="channels" role="list">
+            {reversed ? (
               <li class="channel">
                 <span class="channel__icon" aria-hidden="true">
-                  <Icon name="agents" size={22} />
+                  <Icon name="mail" size={22} />
                 </span>
                 <div class="channel__text">
-                  <h3 class="channel__name">Follow development</h3>
-                  <p class="channel__detail">The APOLLO Network profile and public repositories.</p>
+                  <h3 class="channel__name">Email</h3>
+                  <p class="channel__detail">
+                    Straight to the APOLLO Network inbox. Shown on request to keep spam bots away.
+                  </p>
+                  <p class="channel__address" data-address-slot hidden></p>
                 </div>
-                <Button href={site.github} external variant="ghost">
-                  GitHub profile
-                </Button>
+                <button type="button" class="channel__reveal" data-reveal-address hidden>
+                  Show email address
+                </button>
               </li>
+            ) : (
               <li class="channel channel--pending">
                 <span class="channel__icon" aria-hidden="true">
                   <Icon name="mail" size={22} />
@@ -162,9 +151,36 @@ const topics = [
                 </div>
                 <span class="channel__state">Being set up</span>
               </li>
-            </ul>
-          </div>
-        )}
+            )}
+            <li class="channel">
+              <span class="channel__icon" aria-hidden="true">
+                <Icon name="github" size={22} />
+              </span>
+              <div class="channel__text">
+                <h3 class="channel__name">Public enquiry</h3>
+                <p class="channel__detail">
+                  Open a short enquiry on GitHub. It is visible to anyone, so keep private details
+                  out of it.
+                </p>
+              </div>
+              <Button href={enquiryUrl} external variant="ghost">
+                Open an enquiry
+              </Button>
+            </li>
+            <li class="channel">
+              <span class="channel__icon" aria-hidden="true">
+                <Icon name="agents" size={22} />
+              </span>
+              <div class="channel__text">
+                <h3 class="channel__name">Follow development</h3>
+                <p class="channel__detail">The APOLLO Network profile and public repositories.</p>
+              </div>
+              <Button href={site.github} external variant="ghost">
+                GitHub profile
+              </Button>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <aside class="contact__aside" aria-labelledby="guide-title">
@@ -339,36 +355,48 @@ const topics = [
     box-shadow: var(--glow-md);
   }
 
-  .form__reveal {
-    min-height: 2.75rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--c-text-muted);
-    text-decoration: underline;
-    text-decoration-color: var(--c-line-strong);
-    text-underline-offset: 0.25em;
-  }
-
-  .form__reveal:hover {
-    color: var(--c-text);
-  }
-
   .form__status:empty {
     display: none;
   }
 
-  .form__status,
-  .form__address {
+  .form__status {
     padding: var(--s-4);
     border-left: 2px solid var(--c-cyan);
     background: var(--c-cyan-soft);
     color: var(--c-text);
   }
 
-  .form__address :global(a) {
+  .contact__subtitle {
+    margin-top: var(--s-8);
+    font-size: var(--fs-h3);
+  }
+
+  .channel__address {
+    margin-top: var(--s-2);
+    font-family: var(--font-display);
     color: var(--c-text);
+    overflow-wrap: anywhere;
+  }
+
+  .channel__address :global(a) {
+    color: var(--c-cyan);
     font-weight: 500;
+  }
+
+  .channel__reveal {
+    min-height: 2.75rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid rgb(91 134 255 / 0.7);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(180deg, rgb(27 77 255 / 0.32), rgb(27 77 255 / 0.14));
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: box-shadow var(--dur-base) var(--ease-standard);
+  }
+
+  .channel__reveal:hover {
+    box-shadow: var(--glow-md);
   }
 
   /* ── Channels (no email configured yet) ─────────────────── */

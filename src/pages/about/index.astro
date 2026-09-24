@@ -25,23 +25,23 @@ const beliefs = [
 
 const standing = [
   { term: 'Stage', detail: 'Early-stage and independent' },
-  { term: 'Private system', detail: 'Working, and in active private development' },
-  { term: 'Public product', detail: 'Future direction — not yet released, no date announced' },
-  { term: 'Tools', detail: 'Lead Finder, used internally' },
-  { term: 'Services', detail: 'Selected web, software and automation projects' },
-  { term: 'Open source', detail: 'This website’s code is public' },
+  { term: 'Services', detail: 'Websites, software & SaaS, lead finding, AI guidance, automation' },
+  { term: 'Tools', detail: 'Lead Finder, built and used in-house' },
+  { term: 'Application', detail: 'Working, and in active private development' },
+  { term: 'Public release', detail: 'Future direction — no date announced' },
+  { term: 'Website source', detail: 'Publicly viewable on GitHub' },
 ];
 ---
 
 <BaseLayout
   path="about/"
   title="About"
-  description="APOLLO Network is an independent technology venture with a working private AI system, practical tools, and a long-term plan for a configurable personal intelligence environment."
+  description="APOLLO Network is an independent technology business building websites, software, AI and automation for real problems — and developing its own personal intelligence environment."
 >
   <PageIntro
     eyebrow="About"
-    title="An independent venture with a long-term idea."
-    lead="APOLLO Network builds software and AI systems. Its long-term work is a personal intelligence environment — a way for people to use capable AI without giving up control of it."
+    title="An independent technology business."
+    lead="APOLLO Network builds useful digital and AI systems: websites, software and SaaS tools, lead finding, AI guidance and automation. Alongside that work, it is developing its own application — a personal intelligence environment."
   />
 
   <section class="section" aria-labelledby="story-title">
@@ -49,29 +49,28 @@ const standing = [
       <div class="split__aside" data-reveal>
         <p class="label">Origin</p>
         <h2 id="story-title" class="split__title">
-          It started as a real system, not a pitch.
+          Built by doing, not by pitching.
         </h2>
       </div>
       <div class="prose" data-reveal data-reveal-order="1">
         <p>
-          APOLLO Network began as a practical question: what would it take to work with many AI
-          systems — different models, specialist agents, tools and memory — as one coherent
-          environment rather than a scattering of apps?
+          APOLLO Network is one business with several strands: building websites and digital
+          experiences, making software and SaaS tools, finding leads, helping people use AI well,
+          and automating the work nobody should be doing by hand.
         </p>
         <p>
-          The answer was to build it. The result is a private system that its founder uses and
-          develops continuously: a primary interface with voice, specialist agents, several models
-          with fallback between them, memory, tools, and an authority structure that decides what it
-          may do. Some of it is solid; some of it is still in development.
+          The skills behind all of it were proven in-house first. Tools like
+          <a href={link('portfolio/#lead-finder')}>Lead Finder</a> were built to solve real problems
+          before being offered to anyone else, and this website is built to the same standard it
+          recommends.
         </p>
         <p>
-          That system is the proving ground for a broader idea — a public, configurable environment
-          that anyone could shape around their own work, with authority that stays theirs. It is not
-          released yet.
-        </p>
-        <p>
-          Alongside it, the same skills go into practical tools such as
-          <a href={link('work/#lead-finder')}>Lead Finder</a>, and into focused projects for others.
+          The most ambitious strand is the
+          <a href={link('application/')}>APOLLO Network Application</a>: a working personal
+          intelligence environment, developed privately by its founder, with voice, specialist
+          agents, multiple models, memory, tools and an authority structure that decides what it may
+          do. Some of it is solid; some of it is still in development. It is not released yet, and
+          it is not what keeps the lights on — the work for clients is.
         </p>
       </div>
     </div>

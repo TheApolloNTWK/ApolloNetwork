@@ -1,9 +1,15 @@
 ---
-import { principles } from '../data/environment';
+import { principles as productPrinciples } from '../data/environment';
+
+interface Props {
+  items?: readonly { title: string; body: string }[];
+}
+
+const { items = productPrinciples } = Astro.props;
 ---
 
 <ol class="principles" role="list">
-  {principles.map((p, i) => (
+  {items.map((p, i) => (
     <li class="principles__item" data-reveal data-reveal-order={String(i)}>
       <span class="principles__num" aria-hidden="true">
         0{i + 1}

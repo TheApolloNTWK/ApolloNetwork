@@ -30,7 +30,7 @@ src/
   data/                 Page content as typed data (services, work, principles, project layers)
   layouts/BaseLayout    Document shell: head, metadata, header, footer
   components/           Reusable components (Button, SectionHeading, EnvironmentMap, …)
-    home/               Home-page-only sections (Hero, Triad, ProjectBand)
+    home/               Home-page-only sections (Hero, Triad, ApplicationBand)
   pages/                One file per route; sitemap.xml, robots.txt and site.webmanifest endpoints
   scripts/              Client scripts: motion system, header menu, hero canvas, contact composer
   styles/
@@ -46,8 +46,10 @@ docs/                   Security architecture and platform limitations
 ### Adding content
 
 - **A service** — add an entry to `services` in `src/data/work.ts`. It appears on the home page
-  and the Work page, with an anchor link.
-- **A portfolio item** — add to `selectedWork` in `src/data/work.ts`. Only real, showable work.
+  and the Services page, with an anchor link.
+- **A portfolio item** — add to `selectedWork` in `src/data/work.ts`. It appears on the home page
+  and the Portfolio page. Only real, showable work.
+- **An assistant answer** — add a topic to `src/data/assistant.ts`.
 - **A page** — create `src/pages/<name>/index.astro` using `BaseLayout` and `PageIntro`; add it to
   `src/data/routes.ts` (sitemap) and, if it belongs in navigation, `src/config/site.ts`. Always
   link internally with `link()` from `src/lib/url.ts` so the base path is respected.
@@ -115,28 +117,41 @@ and the next deployment builds for the root path. For a local build with differe
 SITE_ORIGIN=https://example.com SITE_BASE= npm run build
 ```
 
+## Site structure
+
+| Route                               | Purpose                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------- |
+| `/`                                 | APOLLO Network as a business: what it offers, selected work, how it works |
+| `/services/`                        | Services and how engagements run                                          |
+| `/portfolio/`                       | Real work, labelled honestly (a work in progress)                         |
+| `/application/`                     | The APOLLO Network Application — the personal intelligence environment    |
+| `/application/vision/`              | Where the public application is going (future direction)                  |
+| `/about/`, `/contact/`, `/privacy/` | Company, contact channels, privacy                                        |
+
 ## Contact configuration
 
-`contact.email` in `src/config/site.ts` is `null` until a dedicated public business address exists.
-While it is null, the Contact page offers:
+`contact.email` in `src/config/site.ts` holds the public business address. The Contact page then
+offers the enquiry composer (prepares a message in the visitor's own email app — nothing is sent
+through the site), the email address on request, a **public enquiry** via the GitHub issue form
+(`.github/ISSUE_TEMPLATE/enquiry.yml`), and the GitHub profile. The address is stored reversed in
+the page and assembled in the browser only when asked for, so it never appears in the HTML in plain
+form; a test enforces this. Set `contact.email` to `null` to fall back to the GitHub channels only.
 
-- a **public enquiry** via the GitHub issue form (`.github/ISSUE_TEMPLATE/enquiry.yml`), clearly
-  labelled as public;
-- the GitHub profile, to follow development;
-- an **Email — being set up** row, which is informational and not a control.
+## Website assistant
 
-To switch on email, set `contact.email` (e.g. `{ user: 'hello', domain: 'example.com' }`). The page
-then shows the enquiry composer, which prepares a message in the visitor's own email app — nothing
-is sent through the site, and the address never appears in the HTML in plain form. Never use a
-personal address here.
+Every page has the **APOLLO assistant**: a guided helper that answers common questions and routes
+visitors to the right page. It is not an AI and sends nothing anywhere. See
+[`docs/ASSISTANT.md`](docs/ASSISTANT.md) for how it works and the security, privacy and cost
+controls required before connecting a real AI model.
 
 ## Security and privacy
 
 - See [`SECURITY.md`](SECURITY.md) to report a vulnerability.
 - See [`docs/SECURITY-ARCHITECTURE.md`](docs/SECURITY-ARCHITECTURE.md) for the controls in place,
   what GitHub Pages cannot enforce, and the migration path for full header control.
-- The site sets no cookies and loads no analytics or third-party scripts. If privacy-preserving
-  analytics are ever added, update the Privacy page and CSP in the same change.
+- The site sets no cookies and loads no analytics or third-party scripts. The assistant keeps one
+  `sessionStorage` flag (greeting seen) for the current tab. If privacy-preserving analytics are
+  ever added, update the Privacy page and CSP in the same change.
 
 ## Brand assets
 
