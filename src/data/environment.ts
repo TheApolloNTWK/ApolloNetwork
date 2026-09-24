@@ -135,11 +135,11 @@ export const configurable = [
 export const notThis = [
   {
     title: 'Not a wrapper around one provider',
-    body: 'Models will keep changing. An environment tied to one company inherits that company’s limits and decisions. APOLLO Network is designed to outlive any single model.',
+    body: 'Models will keep changing. An environment tied to one company inherits that company’s limits and decisions. The application is designed to outlive any single model.',
   },
   {
     title: 'Not a copy of someone else’s assistant',
-    body: 'APOLLO Network began as one person’s private system. The public product is meant to be yours — assembled from your choices, not cloned from theirs.',
+    body: 'The application began as one person’s private system. The public product is meant to be yours — assembled from your choices, not cloned from theirs.',
   },
   {
     title: 'Not an autonomous black box',
