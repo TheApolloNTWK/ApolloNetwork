@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Triad from '../components/home/Triad.astro';
+import Statement from '../components/Statement.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import EnvironmentMap from '../components/EnvironmentMap.astro';
+import Principles from '../components/Principles.astro';
+import ProjectBand from '../components/home/ProjectBand.astro';
+import ServiceIndex from '../components/ServiceIndex.astro';
+import WorkCard from '../components/WorkCard.astro';
+import StatusTag from '../components/StatusTag.astro';
+import { selectedWork } from '../data/work';
+import ContactCTA from '../components/ContactCTA.astro';
+import Button from '../components/Button.astro';
+import { site } from '../config/site';
+import { absolute } from '../lib/url';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: absolute('', Astro.site),
+  logo: absolute('apple-touch-icon.png', Astro.site),
+  description: site.description,
+  sameAs: [site.github],
+};
+---
+
+<BaseLayout path="" structuredData={structuredData}>
+  <Hero />
+
+  <section class="section intro" id="intro" aria-labelledby="intro-label">
+    <div class="container">
+      <p class="label label--signal intro__label" id="intro-label">
+        01 — The idea
+      </p>
+      <Statement text="Today the AI you use is scattered: a chat window here, an assistant there, a tool that forgets what you told it yesterday. *APOLLO* *Network* *brings* *it* *together* — one environment you configure, understand and control." />
+    </div>
+  </section>
+
+  <Triad />
+
+  <section class="section" aria-labelledby="anatomy-title">
+    <div class="container stack">
+      <SectionHeading
+        index="02"
+        eyebrow="Anatomy"
+        title="Every part in one place. All of it yours."
+        id="anatomy-title"
+      >
+        <p>
+          A personal intelligence environment is made of parts you choose and can change. None of
+          them should be hidden from you.
+        </p>
+        <p class="anatomy-note">
+          <StatusTag status="future" />
+          <span>
+            The public product APOLLO Network is working towards — not something to use yet.
+          </span>
+        </p>
+      </SectionHeading>
+      <EnvironmentMap />
+      <div data-reveal>
+        <Button href="environment/" variant="text">
+          What a personal intelligence environment means
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section principles-section" aria-labelledby="principles-title">
+    <div class="container stack">
+      <SectionHeading
+        index="03"
+        eyebrow="Principles"
+        title="Power is only useful if you can see its limits."
+        id="principles-title"
+      />
+      <Principles />
+    </div>
+  </section>
+
+  <ProjectBand />
+
+  <section class="section" aria-labelledby="selected-title">
+    <div class="container stack">
+      <SectionHeading
+        index="05"
+        eyebrow="Selected work"
+        title="Built, running, and honest about it."
+        id="selected-title"
+      >
+        <p>
+          The private system, a working internal tool, and the site you are reading — each labelled
+          for exactly what it is.
+        </p>
+      </SectionHeading>
+      <div class="home-cards">
+        {selectedWork.map((w, i) => (
+          <div data-reveal data-reveal-order={String(i)}>
+            <WorkCard item={w} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section work-section" aria-labelledby="work-title">
+    <div class="container stack">
+      <SectionHeading
+        index="06"
+        eyebrow="Work with us"
+        title="The same thinking, applied to your problems."
+        id="work-title"
+      >
+        <p>
+          APOLLO Network also takes on focused software and AI work for others — built with the same
+          care for control, clarity and security.
+        </p>
+      </SectionHeading>
+      <ServiceIndex />
+    </div>
+  </section>
+
+  <ContactCTA />
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-block: var(--section-y) calc(var(--section-y) * 0.5);
+  }
+
+  .intro__label {
+    margin-bottom: var(--s-6);
+  }
+
+  .anatomy-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3);
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--c-text-subtle);
+  }
+
+  .home-cards {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .home-cards > div {
+    display: flex;
+  }
+
+  .home-cards :global(.card) {
+    flex: 1;
+  }
+
+  @media (min-width: 1280px) {
+    .home-cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .work-section {
+    padding-top: 0;
+  }
+
+  .principles-section {
+    background:
+      radial-gradient(60% 50% at 100% 0%, rgb(27 77 255 / 0.08), transparent 70%),
+      linear-gradient(180deg, transparent, var(--c-space) 30%, var(--c-space) 70%, transparent);
+  }
+</style>

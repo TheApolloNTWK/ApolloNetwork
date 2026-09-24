@@ -1,0 +1,359 @@
+---
+import Button from './Button.astro';
+import StatusTag from './StatusTag.astro';
+import type { WorkItem } from '../data/work';
+
+interface Props {
+  item: WorkItem;
+  /** Show the factual detail points (Work page). */
+  detailed?: boolean;
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const { item, detailed = false, headingLevel = 3, class: className } = Astro.props;
+const Heading = headingLevel === 2 ? 'h2' : 'h3';
+
+// Deterministic dot field for the map glyph.
+const mapDots = Array.from({ length: 11 * 6 }, (_, i) => {
+  const col = i % 11;
+  const row = Math.floor(i / 11);
+  return { x: 30 + col * 26 + (row % 2) * 13, y: 32 + row * 24 };
+});
+const mapHits = [14, 27, 40, 49];
+---
+
+<article class:list={['card', className]} id={detailed ? item.id : undefined}>
+  <div class="card__inner">
+    <div class="card__art" aria-hidden="true">
+      <svg viewBox="0 0 320 180" focusable="false" class={`glyph glyph--${item.glyph}`}>
+        {item.glyph === 'core' && (
+          <g>
+            <circle cx="160" cy="90" r="46" class="g-line g-dim" />
+            <ellipse
+              cx="160"
+              cy="90"
+              rx="96"
+              ry="30"
+              class="g-line g-orbit"
+              transform="rotate(-16 160 90)"
+            />
+            <ellipse
+              cx="160"
+              cy="90"
+              rx="74"
+              ry="46"
+              class="g-line g-orbit g-orbit--b"
+              transform="rotate(28 160 90)"
+            />
+            <circle cx="160" cy="90" r="22" class="g-glow" />
+            <circle cx="160" cy="90" r="4" class="g-core" />
+            <circle cx="252" cy="64" r="3" class="g-sat" />
+            <circle cx="104" cy="126" r="2.5" class="g-sat g-sat--dim" />
+          </g>
+        )}
+        {item.glyph === 'map' && (
+          <g>
+            {mapDots.map((d, i) => (
+              <circle
+                cx={d.x}
+                cy={d.y}
+                r={mapHits.includes(i) ? 3 : 1.4}
+                class={mapHits.includes(i) ? 'g-hit' : 'g-dot'}
+              />
+            ))}
+            {mapHits.map((i) => (
+              <circle cx={mapDots[i]!.x} cy={mapDots[i]!.y} r="10" class="g-line g-ring" />
+            ))}
+            <path d="M30 150 L290 150" class="g-line g-dim" />
+          </g>
+        )}
+        {item.glyph === 'layout' && (
+          <g>
+            <rect x="40" y="24" width="240" height="132" rx="3" class="g-line g-dim" />
+            <path d="M40 42 H280" class="g-line g-dim" />
+            <rect x="56" y="62" width="92" height="9" class="g-bar" />
+            <rect x="56" y="78" width="72" height="9" class="g-bar" />
+            <rect x="56" y="94" width="54" height="9" class="g-bar g-bar--accent" />
+            <rect x="56" y="116" width="40" height="12" rx="1" class="g-line g-btn" />
+            <circle cx="222" cy="96" r="38" class="g-line g-orbit" />
+            <circle cx="222" cy="96" r="12" class="g-glow" />
+            <circle cx="222" cy="96" r="3" class="g-core" />
+          </g>
+        )}
+      </svg>
+      <span class="card__corner card__corner--tl"></span>
+      <span class="card__corner card__corner--br"></span>
+    </div>
+
+    <div class="card__body">
+      <div class="card__meta">
+        <p class="label">{item.kind}</p>
+        <StatusTag status={item.status} />
+      </div>
+      <Heading class="card__title">{item.title}</Heading>
+      <p class="card__summary">{item.summary}</p>
+      {detailed && item.details && (
+        <ul class="card__details" role="list">
+          {item.details.map((d) => (
+            <li>{d}</li>
+          ))}
+        </ul>
+      )}
+      <ul class="card__tags" role="list" aria-label="Topics">
+        {item.tags.map((t) => (
+          <li>{t}</li>
+        ))}
+      </ul>
+      {item.href && (
+        <div class="card__link">
+          <Button href={item.href.path} variant="text" external={item.href.external ?? false}>
+            {item.href.label}
+          </Button>
+        </div>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(160deg, rgb(11 30 58 / 0.5), rgb(5 8 20 / 0.4) 60%);
+    scroll-margin-top: calc(var(--header-h) + var(--s-5));
+    transition:
+      border-color var(--dur-base) var(--ease-standard),
+      transform var(--dur-slow) var(--ease-out);
+  }
+
+  .card:hover {
+    border-color: var(--c-line-signal);
+  }
+
+  /* Cards size themselves: stacked when narrow, art beside text when wide. */
+  .card {
+    container-type: inline-size;
+  }
+
+  .card__inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  @container (min-width: 620px) {
+    .card__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    }
+
+    .card__inner > .card__art {
+      aspect-ratio: auto;
+      min-height: 100%;
+      border-bottom: 0;
+      border-right: var(--border);
+    }
+  }
+
+  .card:target {
+    border-color: var(--c-blue-bright);
+    box-shadow: var(--glow-md);
+  }
+
+  /* ── Art ────────────────────────────────────────────────── */
+  .card__art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: var(--border);
+    background:
+      radial-gradient(60% 70% at 50% 50%, rgb(27 77 255 / 0.14), transparent 70%),
+      linear-gradient(var(--c-line) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, var(--c-line) 1px, transparent 1px) 0 0 / 32px 32px,
+      var(--c-void);
+  }
+
+  .card__art svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card__corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--c-cyan);
+    border-style: solid;
+    opacity: 0.8;
+  }
+
+  .card__corner--tl {
+    top: 10px;
+    left: 10px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .card__corner--br {
+    right: 10px;
+    bottom: 10px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .g-line {
+    fill: none;
+    stroke: rgb(120 160 255 / 0.55);
+    stroke-width: 1;
+  }
+
+  .g-dim {
+    stroke: rgb(120 160 255 / 0.25);
+  }
+
+  .g-orbit {
+    stroke-dasharray: 3 5;
+  }
+
+  .g-glow {
+    fill: rgb(0 224 255 / 0.18);
+    filter: blur(6px);
+  }
+
+  .g-core,
+  .g-sat,
+  .g-hit {
+    fill: var(--c-cyan);
+  }
+
+  .g-sat--dim {
+    fill: var(--c-blue-bright);
+  }
+
+  .g-dot {
+    fill: rgb(150 176 255 / 0.4);
+  }
+
+  .g-ring {
+    stroke: rgb(0 224 255 / 0.5);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .g-bar {
+    fill: rgb(234 240 250 / 0.55);
+  }
+
+  .g-bar--accent {
+    fill: var(--c-blue-bright);
+  }
+
+  .g-btn {
+    stroke: var(--c-blue-bright);
+  }
+
+  /* Hover brings the illustration to life, briefly and quietly. */
+  @media (prefers-reduced-motion: no-preference) {
+    .g-orbit {
+      transition: stroke-dashoffset 1.6s var(--ease-out);
+    }
+
+    .card:hover .g-orbit {
+      stroke-dashoffset: -32;
+    }
+
+    .card:hover .g-ring {
+      animation: ring 1.8s var(--ease-out) infinite;
+    }
+
+    .card:hover .g-ring:nth-of-type(2n) {
+      animation-delay: 0.45s;
+    }
+  }
+
+  @keyframes ring {
+    from {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+    to {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  /* ── Body ───────────────────────────────────────────────── */
+  .card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding: var(--s-6);
+  }
+
+  /* Kind and status always stack, so every card in a row lines up. */
+  .card__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+
+  .card__title {
+    margin-top: var(--s-2);
+    font-size: var(--fs-h3);
+  }
+
+  .card__summary {
+    color: var(--c-text-muted);
+  }
+
+  .card__details {
+    display: grid;
+    gap: var(--s-2);
+    padding: 0;
+    list-style: none;
+    font-size: var(--fs-small);
+    color: var(--c-text);
+  }
+
+  .card__details li {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .card__details li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    margin-top: 0.6em;
+    flex-shrink: 0;
+    background: var(--c-blue-bright);
+  }
+
+  .card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .card__tags li {
+    padding: 0.25rem 0.6rem;
+    border: var(--border);
+    border-radius: var(--radius-xs);
+    font-size: 0.8125rem;
+    color: var(--c-text-muted);
+  }
+
+  /* Links sit at the bottom so cards in a row align. */
+  .card__link {
+    margin-top: auto;
+    padding-top: var(--s-2);
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  title?: string;
+  body?: string;
+}
+
+const {
+  title = 'Let’s build something useful.',
+  body = 'Have a project in mind, a question about APOLLO Network, or a problem worth automating? Start a conversation.',
+} = Astro.props;
+---
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__horizon" aria-hidden="true">
+    <span class="cta__beam"></span>
+    <svg class="cta__ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" focusable="false">
+      <path
+        d="M0 220V168l90-24 70 12 110-58 80 30 120-72 60 26 90-52 110 74 70-10 130 64 90-30 110 40 100-36 70 18 90-20v100Z"
+        fill="#070c1a"
+      ></path>
+      <path
+        d="M0 220v-30l140-18 120 12 160-40 150 26 130-30 170 34 150-18 140 20 120-16 160 22v38Z"
+        fill="#03050b"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="container cta__inner" data-reveal>
+    <p class="label label--signal">Get in touch</p>
+    <h2 id="cta-title" class="cta__title">
+      {title}
+    </h2>
+    <p class="cta__body">{body}</p>
+    <div class="cta__actions">
+      <Button href="contact/" variant="primary">
+        Start a conversation
+      </Button>
+      <Button href="work/" variant="text">
+        How we work
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    padding-block: var(--section-y) calc(var(--section-y) * 1.2);
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  .cta__horizon {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(70% 55% at 62% 100%, rgb(27 77 255 / 0.22), transparent 70%);
+  }
+
+  .cta__ridge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: clamp(90px, 16vw, 220px);
+  }
+
+  /* A single vertical beam: the signal leaving the environment. */
+  .cta__beam {
+    position: absolute;
+    left: 62%;
+    bottom: clamp(60px, 11vw, 160px);
+    width: 1px;
+    height: 70%;
+    background: linear-gradient(0deg, var(--c-cyan), rgb(27 77 255 / 0.4) 40%, transparent);
+    box-shadow: 0 0 14px 1px rgb(0 224 255 / 0.45);
+    transform-origin: bottom;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cta__beam {
+      animation: beam 5s var(--ease-in-out) infinite;
+    }
+  }
+
+  @keyframes beam {
+    0%,
+    100% {
+      opacity: 0.75;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .cta__inner {
+    position: relative;
+  }
+
+  .cta__title {
+    max-width: 14ch;
+    margin-top: var(--s-4);
+    font-size: var(--fs-h1);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .cta__body {
+    max-width: 32rem;
+    margin-top: var(--s-5);
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--c-text-muted);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-6);
+    margin-top: var(--s-7);
+  }
+
+  @media (max-width: 767px) {
+    .cta__beam {
+      left: 82%;
+    }
+  }
+</style>

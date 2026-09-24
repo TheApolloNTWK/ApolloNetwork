@@ -1,0 +1,268 @@
+/* Reset, document defaults and shared primitives. Component-specific styling
+   lives in each component's scoped <style>. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--s-4));
+  background: var(--c-void);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Native cross-document transitions: zero JavaScript, ignored where
+     unsupported. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 280ms;
+    animation-timing-function: var(--ease-standard);
+  }
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-void);
+  color: var(--c-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* A fixed, very low-contrast grain keeps large dark fields from banding and
+   gives surfaces a physical quality. It is a small static tile, not a live SVG filter. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url('../assets/grain.png');
+  background-size: 96px;
+  opacity: 0.05;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-heading);
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--c-blue);
+  color: #fff;
+}
+
+/* ── Focus: always visible for keyboard users, never removed ──── */
+:focus-visible {
+  outline: 2px solid var(--c-cyan);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* ── Accessibility helpers ─────────────────────────────────────── */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-3);
+  left: var(--s-3);
+  z-index: var(--z-skip);
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-text);
+  color: var(--c-void);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ── Layout primitives ─────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: calc(var(--content-max) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+.section--tight {
+  padding-block: calc(var(--section-y) * 0.6);
+}
+
+.rule {
+  border: 0;
+  border-top: var(--border);
+}
+
+/* ── Typographic primitives ────────────────────────────────────── */
+.label {
+  font-family: var(--font-display);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--c-text-subtle);
+}
+
+.label--signal {
+  color: var(--c-blue-bright);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-snug);
+  color: var(--c-text-muted);
+}
+
+.prose {
+  max-width: var(--prose-max);
+  color: var(--c-text-muted);
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.prose strong {
+  color: var(--c-text);
+  font-weight: 500;
+}
+
+.prose a {
+  color: var(--c-text);
+  text-decoration-color: var(--c-line-signal);
+}
+
+.prose a:hover {
+  text-decoration-color: var(--c-cyan);
+}
+
+.text-accent {
+  color: var(--c-blue-bright);
+}
+
+/* ── Reveal system ─────────────────────────────────────────────────
+   Content is visible by default. scripts/motion.ts only hides elements that
+   start below the fold, so there is no flash, no layout shift, and nothing is
+   lost without JavaScript. */
+[data-reveal].is-pending {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0);
+}
+
+[data-reveal] {
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: calc(var(--reveal-order, 0) * 90ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].is-pending {
+    opacity: 1;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Windows High Contrast / forced colours: keep structure visible. */
+@media (forced-colors: active) {
+  .label,
+  .text-accent {
+    color: CanvasText;
+  }
+}

@@ -1,0 +1,506 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Icon from '../../components/Icon.astro';
+import Button from '../../components/Button.astro';
+import { contact, site } from '../../config/site';
+
+const email = contact.email;
+// The address is stored reversed and split so it never appears in the HTML
+// in a form that simple harvesters recognise. It is reassembled in the
+// browser only on request.
+const reversed = email
+  ? { u: [...email.user].reverse().join(''), d: [...email.domain].reverse().join('') }
+  : null;
+
+// Public enquiries use a GitHub issue form (.github/ISSUE_TEMPLATE/enquiry.yml)
+// until a business email is configured.
+const enquiryUrl = `${site.repository}/issues/new?template=enquiry.yml`;
+
+const topics = [
+  'A project or service enquiry',
+  'A question about APOLLO Network',
+  'Something else',
+];
+---
+
+<BaseLayout
+  path="contact/"
+  title="Contact"
+  description="Get in touch with APOLLO Network about a project, a service enquiry or the personal intelligence environment."
+>
+  <PageIntro
+    eyebrow="Contact"
+    title="Start a conversation."
+    lead="A project in mind, a question about APOLLO Network, or a problem you suspect could be automated — a few sentences is enough to begin."
+  />
+
+  <section class="section" aria-labelledby="channel-title">
+    <div class="container contact">
+      <div class="contact__main">
+        {reversed ? (
+          <div class="composer" data-composer data-u={reversed.u} data-d={reversed.d}>
+            <h2 id="channel-title" class="contact__title">
+              Write your enquiry
+            </h2>
+            <p class="contact__intro">
+              This form does not send anything by itself. It prepares a message in your own email
+              app, so you can review it — and nothing passes through a third party on the way.
+            </p>
+
+            <noscript>
+              <p class="contact__notice">
+                The message composer needs JavaScript. You can still reach APOLLO Network on{' '}
+                <a href={site.github} rel="noopener noreferrer external">
+                  GitHub
+                </a>
+                .
+              </p>
+            </noscript>
+
+            <form class="form" data-composer-form hidden novalidate>
+              <div class="form__field">
+                <label for="f-name">Your name</label>
+                <input
+                  id="f-name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  maxlength="120"
+                  required
+                  aria-describedby="f-name-error"
+                />
+                <p class="form__error" id="f-name-error" data-error-for="f-name" hidden></p>
+              </div>
+
+              <div class="form__field">
+                <label for="f-topic">Topic</label>
+                <select id="f-topic" name="topic" required>
+                  {topics.map((t) => (
+                    <option value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div class="form__field">
+                <label for="f-message">Message</label>
+                <p class="form__hint" id="f-message-hint">
+                  What are you trying to achieve? Up to 2,000 characters.
+                </p>
+                <textarea
+                  id="f-message"
+                  name="message"
+                  rows="7"
+                  maxlength="2000"
+                  required
+                  aria-describedby="f-message-hint f-message-error"
+                ></textarea>
+                <p class="form__error" id="f-message-error" data-error-for="f-message" hidden></p>
+              </div>
+
+              <div class="form__actions">
+                <button type="submit" class="form__submit">
+                  Open in my email app
+                  <Icon name="arrow" size={18} />
+                </button>
+                <button type="button" class="form__reveal" data-reveal-address>
+                  Show email address instead
+                </button>
+              </div>
+
+              <p class="form__status" role="status" aria-live="polite" data-composer-status></p>
+              <p class="form__address" data-address-slot hidden></p>
+            </form>
+          </div>
+        ) : (
+          <div class="staged">
+            <h2 id="channel-title" class="contact__title">
+              How to reach APOLLO Network
+            </h2>
+            <p class="contact__intro">
+              A dedicated business email is being set up. Until then, enquiries go through GitHub —
+              public, but real and read. There is no form on this page pretending to send messages
+              it cannot deliver.
+            </p>
+            <ul class="channels" role="list">
+              <li class="channel">
+                <span class="channel__icon" aria-hidden="true">
+                  <Icon name="github" size={22} />
+                </span>
+                <div class="channel__text">
+                  <h3 class="channel__name">Public enquiry</h3>
+                  <p class="channel__detail">
+                    Open a short enquiry on GitHub. It is visible to anyone, so keep private details
+                    out of it and ask for a private follow-up if you need one.
+                  </p>
+                </div>
+                <Button href={enquiryUrl} external variant="primary">
+                  Open an enquiry
+                </Button>
+              </li>
+              <li class="channel">
+                <span class="channel__icon" aria-hidden="true">
+                  <Icon name="agents" size={22} />
+                </span>
+                <div class="channel__text">
+                  <h3 class="channel__name">Follow development</h3>
+                  <p class="channel__detail">The APOLLO Network profile and public repositories.</p>
+                </div>
+                <Button href={site.github} external variant="ghost">
+                  GitHub profile
+                </Button>
+              </li>
+              <li class="channel channel--pending">
+                <span class="channel__icon" aria-hidden="true">
+                  <Icon name="mail" size={22} />
+                </span>
+                <div class="channel__text">
+                  <h3 class="channel__name">Email</h3>
+                  <p class="channel__detail">
+                    A direct business address will appear here once it is live.
+                  </p>
+                </div>
+                <span class="channel__state">Being set up</span>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <aside class="contact__aside" aria-labelledby="guide-title">
+        <h2 id="guide-title" class="label label--signal">
+          Helpful to include
+        </h2>
+        <ul class="guide" role="list">
+          <li>What you are trying to achieve, in plain terms</li>
+          <li>What exists today — tools, systems, constraints</li>
+          <li>Any timing that matters</li>
+        </ul>
+
+        <h2 class="label guide__warn-title">Please do not send</h2>
+        <ul class="guide guide--warn" role="list">
+          <li>Passwords, API keys or other credentials</li>
+          <li>Sensitive personal or financial data</li>
+          <li>
+            <span>
+              Security vulnerabilities — see the{' '}
+              <a href={`${site.repository}/security/policy`} rel="noopener noreferrer external">
+                security policy<span class="visually-hidden"> (opens external site)</span>
+              </a>
+            </span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initComposer } from '../../scripts/contact';
+  initComposer();
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--s-8);
+  }
+
+  @media (min-width: 1024px) {
+    .contact {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: var(--s-9);
+    }
+  }
+
+  .contact__title {
+    font-size: var(--fs-h2);
+  }
+
+  .contact__intro {
+    max-width: 36rem;
+    margin-top: var(--s-4);
+    color: var(--c-text-muted);
+  }
+
+  .contact__notice {
+    margin-top: var(--s-5);
+    padding: var(--s-4);
+    border: var(--border-strong);
+    color: var(--c-text);
+  }
+
+  /* ── Form ───────────────────────────────────────────────── */
+  .form {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-7);
+  }
+
+  .form__field {
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .form label {
+    font-family: var(--font-display);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--c-text);
+  }
+
+  .form__hint {
+    font-size: var(--fs-small);
+    color: var(--c-text-subtle);
+  }
+
+  .form input,
+  .form select,
+  .form textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--c-space-raised);
+    color: var(--c-text);
+    transition:
+      border-color var(--dur-fast) var(--ease-standard),
+      box-shadow var(--dur-fast) var(--ease-standard);
+  }
+
+  .form textarea {
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  .form input:hover,
+  .form select:hover,
+  .form textarea:hover {
+    border-color: var(--c-line-signal);
+  }
+
+  .form input:focus-visible,
+  .form select:focus-visible,
+  .form textarea:focus-visible {
+    outline: 2px solid var(--c-cyan);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  .form [aria-invalid='true'] {
+    border-color: #ff8a8a;
+  }
+
+  .form__error {
+    display: flex;
+    gap: var(--s-2);
+    font-size: var(--fs-small);
+    color: #ffb4b4;
+  }
+
+  .form__error::before {
+    content: '!';
+    display: inline-grid;
+    place-items: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-5);
+  }
+
+  .form__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 3rem;
+    padding: 0.75rem 1.35rem;
+    border: 1px solid rgb(91 134 255 / 0.7);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(180deg, rgb(27 77 255 / 0.32), rgb(27 77 255 / 0.14));
+    font-family: var(--font-display);
+    font-weight: 500;
+    transition: box-shadow var(--dur-base) var(--ease-standard);
+  }
+
+  .form__submit:hover {
+    box-shadow: var(--glow-md);
+  }
+
+  .form__reveal {
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--c-text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--c-line-strong);
+    text-underline-offset: 0.25em;
+  }
+
+  .form__reveal:hover {
+    color: var(--c-text);
+  }
+
+  .form__status:empty {
+    display: none;
+  }
+
+  .form__status,
+  .form__address {
+    padding: var(--s-4);
+    border-left: 2px solid var(--c-cyan);
+    background: var(--c-cyan-soft);
+    color: var(--c-text);
+  }
+
+  .form__address :global(a) {
+    color: var(--c-text);
+    font-weight: 500;
+  }
+
+  /* ── Channels (no email configured yet) ─────────────────── */
+  .channels {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-7);
+    padding: 0;
+    list-style: none;
+  }
+
+  .channel {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s-4) var(--s-5);
+    align-items: center;
+    padding: var(--s-5);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(160deg, rgb(11 30 58 / 0.5), rgb(5 8 20 / 0.4) 60%);
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .channel:hover {
+    border-color: var(--c-line-signal);
+  }
+
+  .channel > :global(.btn),
+  .channel__state {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  @media (min-width: 640px) {
+    .channel {
+      grid-template-columns: auto 1fr auto;
+    }
+    .channel > :global(.btn),
+    .channel__state {
+      grid-column: auto;
+    }
+  }
+
+  .channel--pending {
+    border-style: dashed;
+    background: transparent;
+  }
+
+  .channel--pending:hover {
+    border-color: var(--c-line-strong);
+  }
+
+  .channel__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    color: var(--c-blue-bright);
+  }
+
+  .channel--pending .channel__icon {
+    color: var(--c-text-subtle);
+  }
+
+  .channel__name {
+    font-size: var(--fs-h4);
+  }
+
+  .channel__detail {
+    max-width: 30rem;
+    margin-top: var(--s-1);
+    font-size: var(--fs-small);
+    color: var(--c-text-muted);
+  }
+
+  .channel__state {
+    padding: 0.35rem 0.7rem;
+    border: 1px dashed var(--c-line-strong);
+    border-radius: var(--radius-xs);
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-text-muted);
+    white-space: nowrap;
+  }
+
+  /* ── Aside ──────────────────────────────────────────────── */
+  .contact__aside {
+    align-self: start;
+    padding: var(--s-6);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--c-space);
+  }
+
+  .guide {
+    display: grid;
+    gap: var(--s-3);
+    margin-block: var(--s-4) var(--s-7);
+    padding: 0;
+    list-style: none;
+    color: var(--c-text-muted);
+  }
+
+  .guide li {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .guide li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    margin-top: 0.65em;
+    flex-shrink: 0;
+    background: var(--c-blue-bright);
+  }
+
+  .guide--warn {
+    margin-bottom: 0;
+  }
+
+  .guide--warn li::before {
+    background: none;
+    border: 1px solid var(--c-text-subtle);
+    border-radius: 50%;
+  }
+
+  .guide a {
+    color: var(--c-text);
+  }
+</style>

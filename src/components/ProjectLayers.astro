@@ -1,0 +1,146 @@
+---
+import StatusTag from './StatusTag.astro';
+import { layers } from '../data/project';
+---
+
+<ol class="layers" role="list">
+  {layers.map((layer, i) => (
+    <li class="layers__layer" data-reveal data-reveal-order={String(i)}>
+      <div class="layers__head">
+        <span class="layers__num" aria-hidden="true">
+          L{i + 1}
+        </span>
+        <h3 class="layers__name">{layer.name}</h3>
+        <p class="layers__role">{layer.role}</p>
+      </div>
+      <ul class="layers__items" role="list">
+        {layer.items.map((item) => (
+          <li class="layers__item">
+            <h4 class="layers__item-name">{item.name}</h4>
+            <p class="layers__item-body">{item.body}</p>
+            {item.status && (
+              <div class="layers__item-status">
+                <StatusTag status={item.status} />
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .layers {
+    position: relative;
+    display: grid;
+    gap: var(--s-3);
+    padding: 0;
+    list-style: none;
+    counter-reset: layer;
+  }
+
+  /* The vertical spine connecting layers: requests travel down, results up. */
+  .layers::before {
+    content: '';
+    position: absolute;
+    top: var(--s-6);
+    bottom: var(--s-6);
+    left: calc(var(--s-5) + 0.6rem);
+    width: 1px;
+    background: linear-gradient(180deg, var(--c-cyan), var(--c-blue) 50%, var(--c-line-strong));
+    opacity: 0.6;
+  }
+
+  .layers__layer {
+    position: relative;
+    display: grid;
+    gap: var(--s-5);
+    padding: var(--s-5) var(--s-5) var(--s-5) calc(var(--s-5) + 2.5rem);
+    border: var(--border);
+    border-radius: var(--radius-sm);
+    background: rgb(8 13 28 / 0.7);
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .layers__layer:hover {
+    border-color: var(--c-line-signal);
+  }
+
+  /* Node on the spine */
+  .layers__layer::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--s-5) + 0.55rem);
+    left: calc(var(--s-5) + 0.6rem - 5px);
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--c-cyan);
+    border-radius: 50%;
+    background: var(--c-void);
+    box-shadow: 0 0 10px rgb(0 224 255 / 0.4);
+  }
+
+  @media (min-width: 1024px) {
+    .layers__layer {
+      padding-block: var(--s-6);
+    }
+  }
+
+  .layers__head {
+    display: grid;
+    gap: var(--s-1);
+    align-content: start;
+  }
+
+  .layers__num {
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    color: var(--c-blue-bright);
+  }
+
+  .layers__name {
+    font-size: var(--fs-h3);
+  }
+
+  .layers__role {
+    font-size: var(--fs-small);
+    color: var(--c-text-subtle);
+  }
+
+  .layers__items {
+    display: grid;
+    gap: var(--s-4) var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 640px) {
+    .layers__items {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .layers__item {
+    padding-left: var(--s-4);
+    border-left: 1px solid var(--c-line-strong);
+  }
+
+  .layers__item-name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+  }
+
+  .layers__item-status {
+    margin-top: var(--s-3);
+  }
+
+  .layers__item-body {
+    margin-top: var(--s-1);
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--c-text-muted);
+  }
+</style>

@@ -1,0 +1,350 @@
+---
+import { triad } from '../../data/environment';
+
+// Geometry for the diagram, computed at build time.
+const C = 200;
+const ring = (r: number, n: number, offset = 0) =>
+  Array.from({ length: n }, (_, i) => {
+    const a = offset + (i / n) * Math.PI * 2;
+    return { x: +(C + Math.cos(a) * r).toFixed(2), y: +(C + Math.sin(a) * r).toFixed(2) };
+  });
+const outer = ring(168, 12, -Math.PI / 2);
+const middle = ring(104, 6, -Math.PI / 2 + Math.PI / 6);
+const polygon = middle.map((p) => `${p.x},${p.y}`).join(' ');
+const target = outer[2]!;
+const via = middle[0]!;
+---
+
+<section class="triad section" aria-labelledby="triad-title" data-triad>
+  <div class="container triad__layout">
+    <div class="triad__visual" aria-hidden="true">
+      <div class="triad__sticky">
+        <svg viewBox="0 0 400 400" class="triad__svg" focusable="false">
+          <defs>
+            <radialGradient id="triad-core" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffffff"></stop>
+              <stop offset="30%" stop-color="#00e0ff"></stop>
+              <stop offset="100%" stop-color="#1b4dff" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+
+          <circle cx={C} cy={C} r="168" class="triad__ring"></circle>
+          <circle cx={C} cy={C} r="104" class="triad__ring triad__ring--dashed"></circle>
+          <circle cx={C} cy={C} r="46" class="triad__ring"></circle>
+
+          <!-- Stage 1 — Understand: context drawn in toward the core -->
+          <g class="triad__stage" data-stage="0">
+            {outer.map((p, i) => (
+              <line
+                x1={p.x}
+                y1={p.y}
+                x2={C}
+                y2={C}
+                class="triad__inflow"
+                data-odd={i % 2 ? '' : undefined}
+              />
+            ))}
+          </g>
+
+          <!-- Stage 2 — Build: modules assembled into a structure -->
+          <g class="triad__stage" data-stage="1">
+            <polygon points={polygon} class="triad__structure"></polygon>
+            {middle.map((p) => (
+              <line x1={p.x} y1={p.y} x2={C} y2={C} class="triad__spoke" />
+            ))}
+            {middle.map((p) => (
+              <rect x={p.x - 7} y={p.y - 7} width="14" height="14" class="triad__module" />
+            ))}
+          </g>
+
+          <!-- Stage 3 — Execute: a single, visible path from intent to action -->
+          <g class="triad__stage" data-stage="2">
+            <path
+              d={`M${C} ${C} L${via.x} ${via.y} L${target.x} ${target.y}`}
+              class="triad__path"
+            ></path>
+            <circle cx={via.x} cy={via.y} r="6" class="triad__waypoint"></circle>
+            <circle cx={target.x} cy={target.y} r="11" class="triad__target"></circle>
+            <circle cx={target.x} cy={target.y} r="4" class="triad__target-core"></circle>
+          </g>
+
+          {outer.map((p) => (
+            <circle cx={p.x} cy={p.y} r="2.5" class="triad__node" />
+          ))}
+          <circle cx={C} cy={C} r="30" fill="url(#triad-core)" class="triad__core"></circle>
+        </svg>
+        <p class="triad__caption label" data-triad-caption>
+          Understand · Build · Execute
+        </p>
+      </div>
+    </div>
+
+    <div class="triad__content">
+      <header class="triad__head" data-reveal>
+        <p class="label label--signal">How it works</p>
+        <h2 id="triad-title" class="triad__title">
+          Three verbs.
+          <br />
+          One environment.
+        </h2>
+      </header>
+
+      <ol class="triad__steps" role="list">
+        {triad.map((step, i) => (
+          <li class="triad__step" data-step={i}>
+            <p class="triad__num label">0{i + 1}</p>
+            <h3 class="triad__verb">{step.verb}</h3>
+            <p class="triad__summary">{step.summary}</p>
+            <p class="triad__body">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initTriad } from '../../scripts/triad';
+  initTriad();
+</script>
+
+<style>
+  .triad__layout {
+    display: grid;
+    gap: var(--s-7);
+  }
+
+  @media (min-width: 1024px) {
+    .triad__layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--s-9);
+    }
+  }
+
+  /* ── Visual ─────────────────────────────────────────────── */
+  .triad__sticky {
+    position: sticky;
+    top: calc(50vh - min(38vw, 26rem) / 2);
+    display: grid;
+    justify-items: center;
+    gap: var(--s-5);
+  }
+
+  .triad__svg {
+    width: min(100%, 26rem);
+    overflow: visible;
+  }
+
+  @media (max-width: 1023px) {
+    .triad__visual {
+      order: 2;
+    }
+    .triad__sticky {
+      position: static;
+    }
+    .triad__svg {
+      width: min(80vw, 22rem);
+    }
+  }
+
+  .triad__ring {
+    fill: none;
+    stroke: var(--c-line-strong);
+    stroke-width: 1;
+  }
+
+  .triad__ring--dashed {
+    stroke-dasharray: 2 6;
+  }
+
+  .triad__node {
+    fill: var(--c-steel);
+    opacity: 0.6;
+  }
+
+  .triad__core {
+    filter: drop-shadow(0 0 18px rgb(0 224 255 / 0.5));
+  }
+
+  .triad__stage {
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+
+  /* Stacked layouts (and no-JS) show all three stages layered as a summary;
+     the side-by-side layout shows the stage for the step being read. */
+  [data-triad]:not([data-active]) .triad__stage {
+    opacity: 1;
+  }
+
+  @media (max-width: 1023px) {
+    .triad__stage {
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    [data-triad][data-active='0'] [data-stage='0'],
+    [data-triad][data-active='1'] [data-stage='1'],
+    [data-triad][data-active='2'] [data-stage='2'] {
+      opacity: 1;
+    }
+  }
+
+  .triad__inflow {
+    stroke: var(--c-blue-bright);
+    stroke-width: 0.8;
+    stroke-dasharray: 3 7;
+    opacity: 0.55;
+  }
+
+  .triad__structure {
+    fill: rgb(27 77 255 / 0.08);
+    stroke: var(--c-blue-bright);
+    stroke-width: 1;
+  }
+
+  .triad__spoke {
+    stroke: var(--c-line-signal);
+    stroke-width: 1;
+  }
+
+  .triad__module {
+    fill: var(--c-space);
+    stroke: var(--c-cyan);
+    stroke-width: 1.2;
+  }
+
+  .triad__path {
+    fill: none;
+    stroke: var(--c-cyan);
+    stroke-width: 1.6;
+    stroke-dasharray: 6 5;
+  }
+
+  .triad__waypoint {
+    fill: var(--c-space);
+    stroke: var(--c-cyan);
+  }
+
+  .triad__target {
+    fill: none;
+    stroke: var(--c-cyan);
+    stroke-width: 1.2;
+  }
+
+  .triad__target-core {
+    fill: var(--c-cyan);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .triad__inflow {
+      animation: flow-in 1.8s linear infinite;
+    }
+    .triad__inflow[data-odd] {
+      animation-duration: 2.6s;
+    }
+    .triad__path {
+      animation: flow-out 1.2s linear infinite;
+    }
+    .triad__target {
+      animation: ping 2.4s var(--ease-out) infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+  }
+
+  @keyframes flow-in {
+    to {
+      stroke-dashoffset: 20;
+    }
+  }
+
+  @keyframes flow-out {
+    to {
+      stroke-dashoffset: -22;
+    }
+  }
+
+  @keyframes ping {
+    0% {
+      transform: scale(0.6);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  .triad__caption {
+    color: var(--c-text-muted);
+  }
+
+  /* ── Content ────────────────────────────────────────────── */
+  .triad__title {
+    margin-top: var(--s-4);
+    font-size: var(--fs-h2);
+  }
+
+  .triad__steps {
+    padding: 0;
+    list-style: none;
+  }
+
+  .triad__step {
+    padding-block: var(--s-7);
+    border-top: var(--border);
+  }
+
+  @media (min-width: 1024px) {
+    .triad__steps {
+      margin-top: var(--s-8);
+    }
+    .triad__step {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 62vh;
+    }
+    /* Inactive steps recede by colour, not opacity, to keep WCAG AA contrast. */
+    [data-triad][data-active] .triad__step:not([data-current]) .triad__verb,
+    [data-triad][data-active] .triad__step:not([data-current]) .triad__summary {
+      color: var(--c-text-subtle);
+    }
+    [data-triad][data-active] .triad__step:not([data-current]) .triad__num {
+      color: var(--c-text-subtle);
+    }
+  }
+
+  .triad__num {
+    color: var(--c-blue-bright);
+  }
+
+  .triad__verb,
+  .triad__summary,
+  .triad__num {
+    transition: color var(--dur-slow) var(--ease-out);
+  }
+
+  .triad__verb {
+    margin-top: var(--s-4);
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .triad__summary {
+    margin-top: var(--s-4);
+    font-family: var(--font-display);
+    font-size: var(--fs-h4);
+    color: var(--c-text);
+  }
+
+  .triad__body {
+    max-width: 30rem;
+    margin-top: var(--s-3);
+    color: var(--c-text-muted);
+  }
+</style>

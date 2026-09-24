@@ -1,0 +1,50 @@
+---
+import { Font } from 'astro:assets';
+import SEO, { type SEOProps } from '../components/SEO.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { site } from '../config/site';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/patterns.css';
+
+type Props = SEOProps;
+const props = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.lang} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- No referrer is sent when leaving the site. Set here because GitHub
+         Pages cannot send a Referrer-Policy header. -->
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content={site.themeColor} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-grotesk" preload />
+    <SEO {...props} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      import { initMotion } from '../scripts/motion';
+      initMotion();
+    </script>
+  </body>
+</html>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

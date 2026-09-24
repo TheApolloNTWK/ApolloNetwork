@@ -1,0 +1,85 @@
+/* Shared page-composition patterns used across secondary pages. */
+
+/* Split: a narrow heading column beside a wide content column. The heading
+   stays in view while its content scrolls on large screens. */
+.split {
+  display: grid;
+  gap: var(--s-6) var(--s-9);
+}
+
+@media (min-width: 1024px) {
+  .split {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  }
+
+  .split__aside {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+    align-self: start;
+  }
+}
+
+.split__title {
+  margin-top: var(--s-4);
+  font-size: var(--fs-h2);
+}
+
+.split__aside .label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--c-blue-bright);
+}
+
+.split__aside .label::before {
+  content: '';
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* Spec: a ruled definition list for name → description rows. */
+.spec {
+  border-top: var(--border);
+}
+
+.spec__row {
+  display: grid;
+  gap: var(--s-2) var(--s-6);
+  padding-block: var(--s-5);
+  border-bottom: var(--border);
+}
+
+@media (min-width: 768px) {
+  .spec__row {
+    grid-template-columns: 12rem minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+}
+
+.spec__term {
+  font-family: var(--font-display);
+  font-size: var(--fs-h4);
+  color: var(--c-text);
+}
+
+.spec__detail {
+  color: var(--c-text-muted);
+}
+
+/* Band: a full-bleed tonal section to separate chapters. */
+.band-tone {
+  background: var(--c-space);
+  border-block: var(--border);
+}
+
+/* Stack: consistent vertical rhythm between blocks of a section. */
+.stack {
+  display: grid;
+  gap: var(--s-8);
+}
+
+.stack--sm {
+  gap: var(--s-6);
+}

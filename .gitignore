@@ -1,0 +1,63 @@
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Logs and debug output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Environment and secrets — this repository is PUBLIC. Nothing below may be committed.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.der
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.gpg
+secrets/
+credentials*.json
+*credentials*
+*secret*
+!**/SECURITY*.md
+.npmrc.local
+.netrc
+
+# Private APOLLO material must never enter this repository.
+private/
+apollo-private/
+.apollo/
+*.apollo.json
+*.private.*
+memory/
+
+# Assistant / tool local state
+.claude/settings.local.json
+.claude/*.local.*
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Test and QA output
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/

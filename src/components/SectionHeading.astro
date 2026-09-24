@@ -1,0 +1,90 @@
+---
+interface Props {
+  eyebrow: string;
+  /** Index shown before the eyebrow, e.g. "02". */
+  index?: string;
+  title: string;
+  id: string;
+  level?: 1 | 2;
+  align?: 'start' | 'center';
+}
+
+const { eyebrow, index, title, id, level = 2, align = 'start' } = Astro.props;
+const Heading = level === 1 ? 'h1' : 'h2';
+---
+
+<header class:list={['heading', `heading--${align}`]} data-reveal>
+  <p class="label heading__eyebrow">
+    {index && <span class="heading__index">{index}</span>}
+    <span class="heading__rule" aria-hidden="true"></span>
+    {eyebrow}
+  </p>
+  <Heading id={id} class:list={['heading__title', { 'heading__title--page': level === 1 }]}>
+    {title}
+  </Heading>
+  {Astro.slots.has('default') && (
+    <div class="heading__intro">
+      <slot />
+    </div>
+  )}
+</header>
+
+<style>
+  .heading {
+    display: grid;
+    gap: var(--s-5);
+    max-width: 48rem;
+  }
+
+  .heading--center {
+    margin-inline: auto;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .heading__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--c-blue-bright);
+  }
+
+  .heading__index {
+    color: var(--c-text-subtle);
+  }
+
+  .heading__rule {
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+    transform-origin: left;
+    transition: transform 1s var(--ease-out) 250ms;
+  }
+
+  /* The rule draws in as the heading is revealed. */
+  .heading:global(.is-pending) .heading__rule {
+    transform: scaleX(0);
+  }
+
+  .heading__title {
+    font-size: var(--fs-h2);
+  }
+
+  .heading__title--page {
+    font-size: var(--fs-h1);
+    letter-spacing: var(--tracking-display);
+    line-height: 1.04;
+  }
+
+  .heading__intro {
+    max-width: 38rem;
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--c-text-muted);
+  }
+
+  .heading__intro :global(p + p) {
+    margin-top: 1em;
+  }
+</style>

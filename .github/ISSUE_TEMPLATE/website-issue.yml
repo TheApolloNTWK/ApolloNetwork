@@ -1,0 +1,24 @@
+name: Website problem
+description: Report a broken link, display problem or accessibility issue on the website.
+title: 'Website: '
+labels: ['website']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the site. For security issues, use private vulnerability
+        reporting instead (see the security policy) — do not describe them here.
+  - type: input
+    id: page
+    attributes:
+      label: Page address
+      placeholder: https://theapollontwk.github.io/ApolloNetwork/...
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What went wrong?
+      description: What you expected, what happened, and your browser and device.
+    validations:
+      required: true

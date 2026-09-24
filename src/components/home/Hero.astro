@@ -1,0 +1,481 @@
+---
+import Button from '../Button.astro';
+import Icon from '../Icon.astro';
+import { triad } from '../../data/environment';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__visual" aria-hidden="true">
+    <div class="hero__fallback"></div>
+    <canvas class="hero__canvas" data-network-core></canvas>
+  </div>
+  <div class="hero__grid" aria-hidden="true"></div>
+
+  <div class="hero__content container">
+    <p class="hero__eyebrow label">
+      <span class="hero__eyebrow-line" aria-hidden="true"></span>
+      <span class="hero__brand">APOLLO Network</span>
+      <span class="hero__slash" aria-hidden="true">
+        /
+      </span>
+      <span class="text-accent">Personal Intelligence Environment</span>
+    </p>
+
+    <h1 id="hero-title" class="hero__title">
+      <span class="hero__line">Intelligence</span>
+      <span class="hero__line">that answers</span>
+      <span class="hero__line hero__line--accent">to you.</span>
+    </h1>
+
+    <p class="hero__lead">
+      APOLLO Network is building one environment for the AI you rely on — models, agents, tools,
+      memory and devices, configured by you and working under your authority.
+    </p>
+
+    <div class="hero__actions">
+      <Button href="environment/" variant="primary">
+        What that means
+      </Button>
+      <Button href="project/" variant="ghost">
+        See the project
+      </Button>
+    </div>
+
+    <ol class="hero__verbs" aria-label="Three things the environment is for">
+      {triad.map((item, i) => (
+        <li>
+          <span class="hero__verb-num" aria-hidden="true">
+            0{i + 1}
+          </span>
+          {item.verb}
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <div class="hero__foot container">
+    <a class="hero__scroll" href="#intro">
+      <span class="hero__scroll-ring">
+        <Icon name="down" size={16} />
+      </span>
+      <span class="label">Scroll to explore</span>
+    </a>
+
+    <dl class="hero__status">
+      <div>
+        <dt class="label">Status</dt>
+        <dd>
+          <span class="hero__dot" aria-hidden="true"></span>In private development
+        </dd>
+      </div>
+      <div>
+        <dt class="label">Access</dt>
+        <dd>Not yet public</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<script>
+  import { initNetworkCore } from '../../scripts/network-core';
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-network-core]');
+  // Start once the main thread is idle so the visual never competes with the
+  // page becoming interactive; the CSS fallback covers the gap.
+  if (canvas) {
+    const run = () => initNetworkCore(canvas);
+    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1500 });
+    else setTimeout(run, 200);
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: max(40rem, 100svh);
+    padding-block: calc(var(--header-h) + var(--s-7)) var(--s-9);
+    overflow: clip;
+    view-timeline: --hero block;
+  }
+
+  /* ── Visual ─────────────────────────────────────────────── */
+  .hero__visual {
+    position: absolute;
+    z-index: var(--z-canvas);
+    top: 50%;
+    right: -16%;
+    width: min(92vw, 68rem);
+    aspect-ratio: 1;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .hero__canvas,
+  .hero__fallback {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__canvas {
+    opacity: 0;
+    transition: opacity 0.8s var(--ease-out);
+  }
+
+  .hero__canvas[data-ready] {
+    opacity: 1;
+  }
+
+  /* Shown until (or instead of) the canvas: a still, CSS-only core. */
+  .hero__fallback {
+    background:
+      radial-gradient(circle at 50% 50%, rgb(0 224 255 / 0.25) 0 1.2%, transparent 1.6%),
+      radial-gradient(circle at 50% 50%, rgb(27 77 255 / 0.28), transparent 38%);
+    border-radius: 50%;
+  }
+
+  .hero__fallback::after {
+    content: '';
+    position: absolute;
+    inset: 26%;
+    border: 1px solid rgb(120 160 255 / 0.2);
+    border-radius: 50%;
+    transform: rotateX(68deg) rotateZ(-24deg);
+  }
+
+  /* Faint engineering grid, fading out from the upper left. */
+  .hero__grid {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+    background-image:
+      linear-gradient(var(--c-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--c-line) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(90% 70% at 20% 30%, #000 0%, transparent 70%);
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* ── Content ────────────────────────────────────────────── */
+  .hero__content {
+    position: relative;
+    z-index: var(--z-content);
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+    color: var(--c-text-muted);
+  }
+
+  .hero__eyebrow-line {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--c-blue-bright);
+  }
+
+  .hero__slash {
+    color: var(--c-text-subtle);
+  }
+
+  .hero__title {
+    margin-top: var(--s-6);
+    font-size: var(--fs-display);
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .hero__line {
+    display: block;
+  }
+
+  .hero__line--accent {
+    background: linear-gradient(100deg, #9bb6ff 0%, var(--c-blue-bright) 45%, var(--c-cyan) 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero__lead {
+    max-width: 34rem;
+    margin-top: var(--s-6);
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--c-text-muted);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-7);
+  }
+
+  .hero__verbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    margin-top: var(--s-8);
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--c-text);
+  }
+
+  .hero__verbs li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+  }
+
+  .hero__verb-num {
+    color: var(--c-blue-bright);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── HUD ────────────────────────────────────────────────── */
+  .hero__foot {
+    position: absolute;
+    inset: auto 0 var(--s-6);
+    z-index: var(--z-content);
+    display: none;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-6);
+  }
+
+  .hero__status {
+    display: flex;
+    gap: var(--s-6);
+    padding-left: var(--s-5);
+    border-left: 1px solid var(--c-line-strong);
+  }
+
+  .hero__status dd {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+    font-size: var(--fs-small);
+    color: var(--c-text);
+  }
+
+  .hero__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c-cyan);
+    box-shadow: var(--glow-cyan);
+    animation: blink 2.8s var(--ease-in-out) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    text-decoration: none;
+    color: var(--c-text-muted);
+  }
+
+  .hero__scroll-ring {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: var(--border-strong);
+    border-radius: 50%;
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .hero__scroll:hover .hero__scroll-ring {
+    border-color: var(--c-cyan);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__scroll-ring :global(svg) {
+      animation: nudge 2.4s var(--ease-in-out) infinite;
+    }
+  }
+
+  @keyframes nudge {
+    50% {
+      transform: translateY(3px);
+    }
+  }
+
+  /* ── Responsive composition ─────────────────────────────── */
+  @media (max-width: 767px) {
+    .hero {
+      align-items: end;
+    }
+
+    /* On phones the core sits above the copy rather than behind it. */
+    .hero__visual {
+      top: calc(var(--header-h) - 2rem);
+      right: 50%;
+      width: min(120vw, 34rem);
+      transform: translateX(50%);
+      opacity: 0.85;
+    }
+
+    .hero__content {
+      padding-top: min(78vw, 24rem);
+    }
+
+    /* The brand is already in the header on phones; keep the eyebrow to one line. */
+    .hero__brand,
+    .hero__slash,
+    .hero__eyebrow-line {
+      display: none;
+    }
+
+    .hero__verbs {
+      gap: var(--s-2) var(--s-4);
+      letter-spacing: 0.2em;
+    }
+
+    .hero__actions :global(.btn) {
+      flex: 1 1 12rem;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .hero__visual {
+      right: -30%;
+      opacity: 0.7;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__foot {
+      display: flex;
+    }
+
+    .hero__content {
+      padding-bottom: var(--s-6);
+    }
+  }
+
+  @media (min-width: 1024px) and (max-height: 760px) {
+    .hero {
+      padding-block: calc(var(--header-h) + var(--s-5)) var(--s-7);
+    }
+    .hero__title {
+      margin-top: var(--s-5);
+    }
+    .hero__lead {
+      margin-top: var(--s-5);
+    }
+    .hero__actions {
+      margin-top: var(--s-6);
+    }
+    .hero__verbs {
+      margin-top: var(--s-6);
+    }
+    .hero__foot {
+      display: none;
+    }
+  }
+
+  /* ── Arrival ──────────────────────────────────────────────
+     Small elements fade in; the headline and lead only settle into place,
+     so the largest text is painted immediately and never hidden. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__eyebrow,
+    .hero__actions,
+    .hero__verbs,
+    .hero__foot {
+      animation: hero-arrive 1s var(--ease-out) backwards;
+    }
+
+    .hero__eyebrow {
+      animation-delay: 80ms;
+    }
+    .hero__actions {
+      animation-delay: 420ms;
+    }
+    .hero__verbs {
+      animation-delay: 560ms;
+    }
+    .hero__foot {
+      animation-delay: 900ms;
+    }
+
+    .hero__line,
+    .hero__lead {
+      animation: hero-settle 1.2s var(--ease-out) backwards;
+    }
+
+    .hero__line:nth-child(2) {
+      animation-delay: 70ms;
+    }
+    .hero__line:nth-child(3) {
+      animation-delay: 140ms;
+    }
+    .hero__lead {
+      animation-delay: 240ms;
+    }
+  }
+
+  @keyframes hero-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  @keyframes hero-settle {
+    from {
+      transform: translateY(0.35em);
+    }
+  }
+
+  /* ── Scroll-linked exit (CSS scroll-driven animations) ─────
+     Supported browsers get a subtle recede as the hero leaves; others
+     simply scroll. No JavaScript involved. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__visual {
+        animation: hero-recede linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 100%;
+      }
+
+      .hero__content {
+        animation: hero-lift linear both;
+        animation-timeline: --hero;
+        animation-range: exit 0% exit 90%;
+      }
+    }
+  }
+
+  @keyframes hero-recede {
+    to {
+      opacity: 0;
+      scale: 0.82;
+      translate: 0 -12%;
+    }
+  }
+
+  @keyframes hero-lift {
+    to {
+      opacity: 0;
+      translate: 0 -8%;
+    }
+  }
+</style>

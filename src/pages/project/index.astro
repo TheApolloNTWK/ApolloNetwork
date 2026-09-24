@@ -1,0 +1,318 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProjectLayers from '../../components/ProjectLayers.astro';
+import StatusTag from '../../components/StatusTag.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import { privateVsPublic, projectFacts } from '../../data/project';
+
+const privateItems = [
+  'Source code and system design',
+  'Prompts and agent instructions',
+  'Memory and personal data',
+  'Infrastructure, endpoints and credentials',
+];
+---
+
+<BaseLayout
+  path="project/"
+  title="The project"
+  description="APOLLO Network is a real, working AI environment in active private development: a primary interface with voice, specialist agents, multiple models, memory, tools and a permission architecture its owner controls."
+>
+  <PageIntro
+    eyebrow="The project"
+    title="APOLLO Network, as it exists today."
+    lead="APOLLO Network is a real, working system — built privately, in active development, and not yet available to the public. This page describes what it does at the level of ideas, not implementation."
+  >
+    <dl class="facts">
+      {projectFacts.map((f) => (
+        <div class="facts__item">
+          <dt class="label">{f.term}</dt>
+          <dd>{f.detail}</dd>
+        </div>
+      ))}
+    </dl>
+  </PageIntro>
+
+  <section class="section" aria-labelledby="layers-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Structure</p>
+        <h2 id="layers-title" class="split__title">
+          Four layers, one line of authority.
+        </h2>
+        <p class="aside-note">
+          A request enters through the interface, is planned by the orchestrator, is carried out by
+          the right capability, and stays within the limits set by oversight. Every layer answers to
+          the one above it — and ultimately to the owner.
+        </p>
+        <p class="aside-note aside-note--small">
+          Everything listed exists in the private system today unless it is tagged otherwise. It is
+          described as it is: working and evolving, not finished.
+        </p>
+        <div class="aside-tag">
+          <StatusTag status="private" />
+        </div>
+      </div>
+      <ProjectLayers />
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="compare-title">
+    <div class="container stack">
+      <div class="split">
+        <div class="split__aside" data-reveal>
+          <p class="label">Private system, public product</p>
+          <h2 id="compare-title" class="split__title">
+            From one environment to yours.
+          </h2>
+        </div>
+        <p class="lead" data-reveal data-reveal-order="1">
+          The goal is not to hand out a copy of one person’s assistant. The public product will be a
+          configurable environment that each person shapes around their own work — built from what
+          the private system has proven.
+        </p>
+      </div>
+      <div class="compare">
+        {[privateVsPublic.private, privateVsPublic.public].map((col, i) => (
+          <div
+            class:list={['compare__col', { 'compare__col--future': i === 1 }]}
+            data-reveal
+            data-reveal-order={String(i)}
+          >
+            <div class="compare__head">
+              <h3 class="compare__title">{col.title}</h3>
+              <StatusTag status={col.status} />
+            </div>
+            <ul class="compare__list" role="list">
+              {col.points.map((pt) => (
+                <li>{pt}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <span class="compare__bridge" aria-hidden="true">
+          <Icon name="arrow" size={18} />
+        </span>
+      </div>
+      <div data-reveal>
+        <Button href="environment/" variant="text">
+          What a personal intelligence environment means
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Approach</p>
+        <h2 id="why-title" class="split__title">
+          Why build it privately first.
+        </h2>
+      </div>
+      <div class="prose" data-reveal data-reveal-order="1">
+        <p>
+          <strong>It holds real context.</strong> An environment worth using knows things about the
+          person using it. That demands a level of care that is easiest to get right before anyone
+          else’s data is involved.
+        </p>
+        <p>
+          <strong>It has to earn the claims.</strong> Ideas like understandable authority and
+          provider independence are easy to write down and hard to build. They are being tested in a
+          working system before they are promised to anyone.
+        </p>
+        <p>
+          <strong>Honesty about maturity.</strong> Some parts are solid, some are still being
+          refined, and some are still being built. When any of it is ready for other people, this
+          site will say so — clearly, and not before.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-tone" aria-labelledby="private-title">
+    <div class="container split">
+      <div class="split__aside" data-reveal>
+        <p class="label">Boundaries</p>
+        <h2 id="private-title" class="split__title">
+          What stays private.
+        </h2>
+      </div>
+      <div class="stack stack--sm" data-reveal data-reveal-order="1">
+        <p class="lead">
+          This website is public and its code is open. The system it describes is not, and the two
+          are entirely separate — nothing on this site connects to APOLLO Network itself.
+        </p>
+        <ul class="private" role="list">
+          {privateItems.map((item) => (
+            <li>
+              <Icon name="permissions" size={18} />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <ContactCTA
+    title="Interested in where this goes?"
+    body="Questions about APOLLO Network, thoughts on the approach, or a use you have in mind — all welcome."
+  />
+</BaseLayout>
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--s-5);
+    max-width: 56rem;
+    margin-top: var(--s-8);
+    padding-top: var(--s-5);
+    border-top: var(--border);
+  }
+
+  .facts dd {
+    margin-top: var(--s-2);
+    font-size: var(--fs-small);
+    color: var(--c-text);
+  }
+
+  .aside-note {
+    max-width: 24rem;
+    margin-top: var(--s-5);
+    color: var(--c-text-muted);
+  }
+
+  .aside-note--small {
+    font-size: var(--fs-small);
+    color: var(--c-text-subtle);
+  }
+
+  /* ── Private vs public ──────────────────────────────────── */
+  .compare {
+    position: relative;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  @media (min-width: 768px) {
+    .compare {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s-8);
+    }
+  }
+
+  .compare__col {
+    padding: var(--s-6);
+    border: var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(160deg, rgb(11 30 58 / 0.55), rgb(5 8 20 / 0.5) 60%);
+  }
+
+  .compare__col--future {
+    border-style: dashed;
+    background: transparent;
+  }
+
+  .compare__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding-bottom: var(--s-5);
+    border-bottom: var(--border);
+  }
+
+  .compare__title {
+    font-size: var(--fs-h3);
+  }
+
+  .compare__list {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: var(--s-5);
+    padding: 0;
+    list-style: none;
+    color: var(--c-text-muted);
+  }
+
+  .compare__list li {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .compare__list li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    margin-top: 0.65em;
+    flex-shrink: 0;
+    background: var(--c-blue-bright);
+  }
+
+  .compare__col--future .compare__list li::before {
+    background: none;
+    border: 1px solid var(--c-blue-bright);
+    border-radius: 50%;
+  }
+
+  /* The bridge between the two columns: lessons flow from one to the other. */
+  .compare__bridge {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .compare__bridge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border: 1px solid var(--c-line-signal);
+      border-radius: 50%;
+      background: var(--c-space);
+      color: var(--c-cyan);
+      transform: translate(-50%, -50%);
+      box-shadow: var(--glow-sm);
+    }
+  }
+
+  .aside-tag {
+    margin-top: var(--s-5);
+  }
+
+  .private {
+    display: grid;
+    gap: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .private {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--s-6);
+    }
+  }
+
+  .private li {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding-block: var(--s-4);
+    border-bottom: var(--border);
+    color: var(--c-text);
+  }
+
+  .private :global(svg) {
+    color: var(--c-blue-bright);
+  }
+</style>
